@@ -5,7 +5,7 @@ Requires at least: 1.5
 Tested up to: 2.3
 Stable tag: trunk
 
-The lazy and the productive will love it : all admin links available in a neat CSS driven drop down menu. No need to click on "Manage" then "Comments" to edit comments, go to *any admin page* from *any admin page*.
+All admin links available in a neat drop down menu. Go to any admin page from any admin page in 1 click.
 
 == Description ==
 
