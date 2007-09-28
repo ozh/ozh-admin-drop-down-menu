@@ -5,7 +5,11 @@ Requires at least: 1.5
 Tested up to: 2.3
 Stable tag: trunk
 
-The lazy and the productive will love it : all admin links available in a neat CSS driven drop down menu. No need to click on “Manage” then “Comments” to edit comments, go to *any admin page* from *any admin page*.
+The lazy and the productive will love it : all admin links available in a neat CSS driven drop down menu. No need to click on "Manage" then "Comments" to edit comments, go to *any admin page* from *any admin page*.
+
+== Description ==
+
+Please refer to the official plugin page for [Admin Drop Down Menu](http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/ "Admin Drop Down Menu")
 
 == Installation ==
 
