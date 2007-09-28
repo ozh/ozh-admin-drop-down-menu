@@ -1,6 +1,6 @@
 === Admin Drop Down Menu ===
 Donate link: http://planetozh.com/exit/donate
-Tags: ozh, menu, dashboard, admin, dropdown, drop down
+Tags: ozh, menu, menus, dashboard, admin, dropdown, drop down, productivity
 Requires at least: 1.5
 Tested up to: 2.3
 Stable tag: trunk
