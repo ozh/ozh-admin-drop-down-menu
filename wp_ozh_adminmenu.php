@@ -2,8 +2,8 @@
 /*
 Plugin Name: Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
-Description: Replaces admin menu and submenu with a 2 level horizontal CSS dropdown menu bar. Saves lots of clicks !
-Version: 1.3
+Description: Replaces admin menus with a CSS dropdown menu bar. Saves lots of clicks and page loads! <strong>For WordPress 2.5+</strong>
+Version: 2.0
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
@@ -13,22 +13,14 @@ Author URI: http://planetOzh.com/
  * 1.1 : Tiger Admin compatibility !
  * 1.2 : Multiple Page Plugin (ex: Akismet) compatibility and minor CSS improvements
  * 1.3 : Fix for plugins with subfolders on Windows WP installs
+ * 1.3.1 : Minor CSS tweak
+ * 2.0 : Complete rewrite for WordPress 2.5
  */
 
-/* Main function : creates the new set of intricated <ul> and <li> */
 function wp_ozh_adminmenu() {
-	global $is_winIE;
-	
-	if (function_exists('wp_admin_tiger_css') and !$is_winIE) {
-		$tiger = true;
-	} else {
-		$tiger = false;
-	}
-
-	$menu = wp_ozh_adminmenu_build ();
-	
-	$ozh_menu = '';
-	$printsub = 1;
+	$menu = wp_ozh_adminmenu_build();
+		
+	$ozh_menu = '</ul><ul id="ozhmenu">'; // close original <ul id="dashmenu"> and add ours
 	
 	foreach ($menu as $k=>$v) {
 		$url 	= $v['url'];
@@ -36,42 +28,30 @@ function wp_ozh_adminmenu() {
 		$anchor = $v['name'];
 		$class	= $v['class'];
 
-		if ($is_winIE)
-			$ie_code = " onmouseover='this.className=\\\"msieFix\\\"' onmouseout='this.className=\\\"\\\"'";
-		$ozh_menu .= '<li'.$ie_code."><a href='$url'$class>$anchor</a>";
+		$ozh_menu .= "\t<li class='ozhmenu_toplevel'><a href='$url'$class>$anchor</a>";
 		if (is_array($v['sub'])) {
 			
 			$ulclass='';
 			if ($class) $ulclass = " class='ulcurrent'";
-			$ozh_menu .= "<ul$ulclass>";
+			$ozh_menu .= "\n\t\t<ul$ulclass>\n";
 
 			foreach ($v['sub'] as $subk=>$subv) {
 				$suburl = $subv['url'];
 				$subanchor = $subv['name'];
 				$subclass='';
 				if (array_key_exists('class',$subv)) $subclass=$subv['class'];
-				$ozh_menu .= "<li><a href='$suburl'$subclass>$subanchor</a></li>";
+				$ozh_menu .= "\t\t\t<li class='ozhmenu_sublevel'><a href='$suburl'$subclass>$subanchor</a></li>\n";
 			}
-			$ozh_menu .= "</ul>";
-		} else {
-			if (!$tiger) {
-				$ozh_menu .= "<ul><li class='altmenu_empty' title='This menu has no sub menu'><small>&#8230;</small></li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li></ul>";
-				if ($class) $printsub = 0;
-			}
+			$ozh_menu .= "\t</ul>\n";
 		}
-		$ozh_menu .="</li> ";
-			
+		$ozh_menu .="\t</li>\n";
 	}
 	
-	if (!$tiger) {
-		wp_ozh_adminmenu_css($printsub);
-	} else {
-		wp_ozh_adminmenu_css_tiger($printsub);
-	}
+	echo $ozh_menu;
 	
-	wp_ozh_adminmenu_old_printjs($ozh_menu, $printsub, $tiger);
 }
-
+ 
+ 
 /* Core stuff : builds an array populated with all the infos needed for menu and submenu */
 function wp_ozh_adminmenu_build () {
 	global $menu, $submenu, $plugin_page, $pagenow;
@@ -79,7 +59,7 @@ function wp_ozh_adminmenu_build () {
 	/* Most of the following garbage are bits from admin-header.php,
 	 * modified to populate an array of all links to display in the menu
 	 */
-
+	 
 	$self = preg_replace('|^.*/wp-admin/|i', '', $_SERVER['PHP_SELF']);
 	$self = preg_replace('|^.*/plugins/|i', '', $self);
 	
@@ -140,176 +120,197 @@ function wp_ozh_adminmenu_build () {
 		}
 	}
 	
-	/**
 	// Uncomment to see how neat it is now !
-	print "<pre>Our Oh-So-Beautiful-4-Levels-";
-	print_r($altmenu);
+	/**
+	global $wpdb;
+	$wpdb->wp_ozh_adminmenu_neat_array = "<pre style='font-size:80%'>Our Oh-So-Beautiful-4-Levels-".htmlentities(print_r($altmenu,true))."</pre>";
+	add_action('admin_footer', create_function('', 'global $wpdb; echo $wpdb->wp_ozh_adminmenu_neat_array;')); 
 	/**/
 
 	return ($altmenu);
 }
 
-/* The javascript bits that replace the existing menu by our new one */
-function wp_ozh_adminmenu_old_printjs ($admin = '', $sub = 1, $tiger=false) {
-	print "<script>
-	document.getElementById('adminmenu').innerHTML=\"$admin\";";
-	if ($sub and !$tiger) print "document.getElementById('submenu').innerHTML=\"<li>&nbsp;</li>\"";
-	print "</script>";
+
+function wp_ozh_adminmenu_js($menu = '') {
+	echo <<<JS
+<script type="text/javascript"><!--//--><![CDATA[//><!--
+jQuery(document).ready(function() {
+	// Remove unnecessary links in the top right corner
+	var uselesslinks = jQuery('#user_info p').html();
+	uselesslinks = uselesslinks.replace(/ \| <a href="http:\/\/codex.wordpress.org.*$/i, '');
+	jQuery('#user_info p').html(uselesslinks);
+	jQuery('#user_info').css('z-index','1001');
+	// Remove original menus
+	jQuery('#sidemenu').hide();
+	jQuery('#adminmenu').hide();
+	jQuery('#submenu').html('');
+	jQuery('#dashmenu').hide();
+	jQuery('#user_info').css('right','1em');
+	// jQueryfication of the Son of Suckerfish Drop Down Menu
+	// Original at: http://www.htmldog.com/articles/suckerfish/dropdowns/
+	jQuery('#ozhmenu li.ozhmenu_toplevel').each(function() {
+		jQuery(this).mouseover(function(){
+			jQuery(this).addClass('ozhmenu_over');
+			if (jQuery.browser.msie) {ozhmenu_hide_selects(true);}
+		}).mouseout(function(){
+			jQuery(this).removeClass('ozhmenu_over');
+			if (jQuery.browser.msie) {ozhmenu_hide_selects(false);}
+		});
+	});
+	// Function to hide <select> elements (display bug with MSIE)
+	function ozhmenu_hide_selects(hide) {
+		var hidden = (hide) ? 'hidden' : 'visible';
+		jQuery('select').css('visibility',hidden);
+	}
+	// Show our new menu
+	jQuery('#ozhmenu').show();
+	// Make title header smaller
+	jQuery('#wphead #viewsite a').css('font-size','10px');
+	jQuery('#wphead h1').css('font-size','25px');
+})
+//--><!]]></script>
+JS;
+
 }
 
-/* Print the CSS stuff. Modify with care if you want to customize colors ! */
-function wp_ozh_adminmenu_css_tiger($sub = 1) {
-	$id = '#adminmenu';
-	
-	if ($sub == 0) {
-	$sub_opacity="$id li ul {
-		opacity: 0.8;
-		-moz-opacity: 0.8;
-		filter: alpha(opacity=80);
-	}
-	";
-	} else {$sub_opacity='';}
-	
-	print <<<CSS
-	<style>
-	#adminmenu li ul {
-		position:absolute;
-		left:-9000px;
-	}
-	#adminmenu li:hover {
-		background:#DDD;
-	}
-	#adminmenu li:hover ul {
-		left:140px;
-		z-index:90;
-		width:160px !important;
-		padding:0;
-		-moz-opacity:0.90;
-	}
-	#adminmenu li:hover ul li {
-		position:relative;
-		top:-2em;
-		background: #555;
-		padding:0;
-		margin:0;
-	}
-	#adminmenu li:hover ul li a, #adminmenu li:hover ul li a.current {
-		position:relative;
-		top:-3px;
-		left:-3px;
-		width:170px;
-		background:#DDD !important;
-		color:#222;
-	}
-	#zadminmenu li:hover ul li a.current {
-		background:none !important;
-	}
 
-	#adminmenu li:hover ul li a:hover {
-		background:transparent url(../wp-content/plugins/wp-admin-tiger/wp-admin-tiger_files/ol_admin_images/bg_menu_on.jpg) !important;
-	}
-	$sub_opacity
-	</style>
-
+function wp_ozh_adminmenu_css() {
+	echo <<<CSS
+<style type="text/css">
+#ozhmenu { /* our new ul */
+	display: none; /* hidden before javascript displays it */
+	font-size:12px;
+	left:0px;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin:0pt;
+	padding-left:8px;
+	position:absolute;
+	top:4px;
+	width:95%; /* width required for -wtf?- dropping li elements to be 100% wide in their containing ul */
+	z-index:1000;
+}
+#ozhmenu li { /* all list items */
+	display:inline;
+	line-height:200%;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin:0 3px;
+	padding:0;
+	white-space:nowrap;
+	float: left;
+	width: 1*; /* maybe needed for some Opera ? */
+}
+#ozhmenu a { /* all links */
+	text-decoration:none;
+	color:#bbb;
+	line-height:220%;
+	padding:0px 10px;
+	display:block;
+	width:1*;  /* maybe needed for some Opera ? */
+}
+#ozhmenu li:hover,
+#ozhmenu li.ozhmenu_over,
+#ozhmenu li .current {
+	background: #e4f2fd;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;	
+	color: #555;
+}
+#ozhmenu .ozhmenu_sublevel a:hover,
+#ozhmenu .ozhmenu_sublevel a.current,
+#ozhmenu .ozhmenu_sublevel a.current:hover {
+	background: #e4f2fd;
+	color: #555;
+}
+#ozhmenu li ul { /* drop down lists */
+	padding: 0;
+	margin: 0;
+	margin-left:-1px;
+	padding-bottom:5px;
+	list-style: none;
+	position: absolute;
+	background: white;
+	opacity:0.95;
+	filter:alpha(opacity=95);
+	border-left:1px solid #c6d9e9 ;
+	border-right:1px solid #c6d9e9 ;
+	border-bottom:1px solid #c6d9e9 ;
+	-moz-border-radius-bottomleft:5px;
+	-moz-border-radius-bottomright:5px;
+	width: 1*;  /* maybe needed for some Opera ? */
+	min-width:6em;
+	left: -999em; /* using left instead of display to hide menus because display: none isn't read by screen readers */
+	list-style-position:auto;
+	list-style-type:auto;
+}
+#ozhmenu li ul li { /* dropped down lists item */
+	float:none;
+	text-align:left;
+}
+#ozhmenu li ul li a { /* links in dropped down list items*/
+	margin:0px;
+	color:#666;
+}
+#ozhmenu li:hover ul, #ozhmenu li.ozhmenu_over ul { /* lists dropped down under hovered list items */
+	left: auto;
+	z-index:999999;
+}
+#ozhmenu li a #awaiting-mod {
+	position: absolute;
+	margin-left: 0.1em;
+	font-size: 0.8em;
+	background-image: url(images/comment-stalk.gif);
+	background-repeat: no-repeat;
+	background-position: -160px bottom;
+	height: 1.7em;
+	width: 1em;
+}
+#ozhmenu li.ozhmenu_over a #awaiting-mod, #ozhmenu li a:hover #awaiting-mod {
+	background-position: -2px bottom;
+}
+#ozhmenu li a #awaiting-mod span {
+	color: #fff;
+	top: -0.3em;
+	right: -0.5em;
+	position: absolute;
+	display: block;
+	height: 1.3em;
+	line-height: 1.3em;
+	padding: 0 0.8em;
+	background-color: #2583AD;
+	-moz-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+#ozhmenu li.ozhmenu_over a #awaiting-mod span, #ozhmenu li a:hover #awaiting-mod span {
+	background-color:#D54E21;
+}
+#ozhmenu .current {
+	border:0px; /* MSIE insists on having this */
+}
+#ozhmenu li ul li a.current:before {
+	content: "\\00BB \\0020";
+	color:#d54e21;
+}
+</style>
 CSS;
 }
 
-function wp_ozh_adminmenu_css($sub = 1) {
-	$id = '#adminmenu';
-	
-	if ($sub == 0) {
-	$sub_opacity="$id li ul {
-		opacity: 0.8;
-		-moz-opacity: 0.8;
-		filter: alpha(opacity=80);
-	}
-	";
-	} else {$sub_opacity='';}
-	
-	print <<<CSS
-	<style>
-	#submenu {
-		left:0px;
-		margin:0;
-		height:2em;
-	}
-	/* all lists */
-	$id {
-		height:2em;
-	}
-	$id li {
-		padding:0 0.3em;
-	}
-	$id li ul li {
-		background: #0d324f;
-		border-bottom: none;
-		line-height:160%;
-	}
-	$id li ul li a,$id li ul li a:link,$id li ul li a:visited {
-		color: #9090EE;
-		font-size: 12px;
-		border-bottom: none;
-	}
-	$id li ul li a:hover {
-		background: #ddeaf4;
-		color: #393939;
-	}
-	$id,$id ul {
-		padding:0;
-	}
-	/* Nested ULs */
-	$id li ul {
-		position:absolute;
-		left:-900px;
-	}
-	/* All LIs */
-	$id li {
-		float:left;
-		list-style-type:none;
-	}
-	$id li ul {
-		background: #0d324f;
-		padding: 3px 2em 0 2.9em;
-	}
-	$id li:hover ul,$id li.msieFix ul {
-		left:0px;
-		z-index:90;
-		right:0px;
-	}
-	$id li .ulcurrent {
-		left:0px;
-		right:0px;
-		z-index:89;
-		width:auto;
-	}
-	.altmenu_empty {
-		color:#6da6d1;
-		height:1.5em;
-	}
-	$sub_opacity
-	/* Stuff for MSIE */
-	* html $id li .ulcurrent {width:200%;}
-	* html $id li a {
-		border-top:2px solid #6da6d1;
-	}
-	* html $id li ul li a {
-		border:none;
-	}
-	* html $id li.msieFix ul, {
-		margin:2em 0;
-		width:300%;
-		left:0;
-	}
-	* html $id li ul {
-		margin:2em 0;
-	}
-	/**/
-	</style>
+/***** Hook things in ****/
 
-CSS;
+if (is_admin()) {
+	add_action('init', create_function('', 'wp_enqueue_script("jquery");')); 
 }
+add_action('dashmenu', 'wp_ozh_adminmenu');
+add_action('admin_head', 'wp_ozh_adminmenu_head');
 
-
-add_action('admin_footer', 'wp_ozh_adminmenu');
+function wp_ozh_adminmenu_head() {
+	wp_ozh_adminmenu_css();
+	wp_ozh_adminmenu_js();
+}
 
 ?>
