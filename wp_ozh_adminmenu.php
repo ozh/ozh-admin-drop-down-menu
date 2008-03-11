@@ -214,10 +214,10 @@ function wp_ozh_adminmenu_css() {
 #ozhmenu li:hover,
 #ozhmenu li.ozhmenu_over,
 #ozhmenu li .current {
-	background: #e4f2fd;
+	background: #14568A;
 	-moz-border-radius-topleft: 3px;
 	-moz-border-radius-topright: 3px;	
-	color: #555;
+	color: #ddd;
 }
 #ozhmenu .ozhmenu_sublevel a:hover,
 #ozhmenu .ozhmenu_sublevel a.current,
