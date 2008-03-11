@@ -228,7 +228,6 @@ function wp_ozh_adminmenu_css() {
 #ozhmenu li ul { /* drop down lists */
 	padding: 0;
 	margin: 0;
-	margin-left:-1px;
 	padding-bottom:5px;
 	list-style: none;
 	position: absolute;
