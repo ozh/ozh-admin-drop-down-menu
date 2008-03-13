@@ -3,18 +3,19 @@
 Plugin Name: Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Description: Replaces admin menus with a CSS dropdown menu bar. Saves lots of clicks and page loads! <strong>For WordPress 2.5+</strong>
-Version: 2.0
+Version: 2.0.1
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
 
 /* Release History :
- * 1.0 : initial release
+ * 1.0 : Initial release
  * 1.1 : Tiger Admin compatibility !
  * 1.2 : Multiple Page Plugin (ex: Akismet) compatibility and minor CSS improvements
  * 1.3 : Fix for plugins with subfolders on Windows WP installs
- * 1.3.1 : Minor CSS tweak
+ * 1.3.1 : Minor CSS tweaks
  * 2.0 : Complete rewrite for WordPress 2.5
+ * 2.0.1 : Fixed: bug with uploader
  */
 
 function wp_ozh_adminmenu() {
@@ -137,36 +138,38 @@ function wp_ozh_adminmenu_js($menu = '') {
 jQuery(document).ready(function() {
 	// Remove unnecessary links in the top right corner
 	var uselesslinks = jQuery('#user_info p').html();
-	uselesslinks = uselesslinks.replace(/ \| <a href="http:\/\/codex.wordpress.org.*$/i, '');
-	jQuery('#user_info p').html(uselesslinks);
-	jQuery('#user_info').css('z-index','1001');
-	// Remove original menus
-	jQuery('#sidemenu').hide();
-	jQuery('#adminmenu').hide();
-	jQuery('#submenu').html('');
-	jQuery('#dashmenu').hide();
-	jQuery('#user_info').css('right','1em');
-	// jQueryfication of the Son of Suckerfish Drop Down Menu
-	// Original at: http://www.htmldog.com/articles/suckerfish/dropdowns/
-	jQuery('#ozhmenu li.ozhmenu_toplevel').each(function() {
-		jQuery(this).mouseover(function(){
-			jQuery(this).addClass('ozhmenu_over');
-			if (jQuery.browser.msie) {ozhmenu_hide_selects(true);}
-		}).mouseout(function(){
-			jQuery(this).removeClass('ozhmenu_over');
-			if (jQuery.browser.msie) {ozhmenu_hide_selects(false);}
+	if (uselesslinks) {
+		uselesslinks = uselesslinks.replace(/ \| <a href="http:\/\/codex.wordpress.org.*$/i, '');
+		jQuery('#user_info p').html(uselesslinks);
+		jQuery('#user_info').css('z-index','81');
+		// Remove original menus
+		jQuery('#sidemenu').hide();
+		jQuery('#adminmenu').hide();
+		jQuery('#submenu').html('');
+		jQuery('#dashmenu').hide();
+		jQuery('#user_info').css('right','1em');
+		// jQueryfication of the Son of Suckerfish Drop Down Menu
+		// Original at: http://www.htmldog.com/articles/suckerfish/dropdowns/
+		jQuery('#ozhmenu li.ozhmenu_toplevel').each(function() {
+			jQuery(this).mouseover(function(){
+				jQuery(this).addClass('ozhmenu_over');
+				if (jQuery.browser.msie) {ozhmenu_hide_selects(true);}
+			}).mouseout(function(){
+				jQuery(this).removeClass('ozhmenu_over');
+				if (jQuery.browser.msie) {ozhmenu_hide_selects(false);}
+			});
 		});
-	});
-	// Function to hide <select> elements (display bug with MSIE)
-	function ozhmenu_hide_selects(hide) {
-		var hidden = (hide) ? 'hidden' : 'visible';
-		jQuery('select').css('visibility',hidden);
+		// Function to hide <select> elements (display bug with MSIE)
+		function ozhmenu_hide_selects(hide) {
+			var hidden = (hide) ? 'hidden' : 'visible';
+			jQuery('select').css('visibility',hidden);
+		}
+		// Show our new menu
+		jQuery('#ozhmenu').show();
+		// Make title header smaller
+		jQuery('#wphead #viewsite a').css('font-size','10px');
+		jQuery('#wphead h1').css('font-size','25px');
 	}
-	// Show our new menu
-	jQuery('#ozhmenu').show();
-	// Make title header smaller
-	jQuery('#wphead #viewsite a').css('font-size','10px');
-	jQuery('#wphead h1').css('font-size','25px');
 })
 //--><!]]></script>
 JS;
@@ -189,7 +192,7 @@ function wp_ozh_adminmenu_css() {
 	position:absolute;
 	top:4px;
 	width:95%; /* width required for -wtf?- dropping li elements to be 100% wide in their containing ul */
-	z-index:1000;
+	z-index:80;
 }
 #ozhmenu li { /* all list items */
 	display:inline;
