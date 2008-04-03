@@ -13,7 +13,7 @@ The lazy and the productive will love it : all admin links available in a neat C
 
 For documentation, examples, screenshot and a live demo, please refer to the official plugin page for [Admin Drop Down Menu](http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/ "Admin Drop Down Menu")
 
-Current version 2.0 is for WordPress 2.5+ only. For WordPress 2.3.3 and older, see the plugin's page and download the old version (1.3.1)
+Current version is for WordPress 2.5+ only. For WordPress 2.3.3 and older, see the plugin's page and download the old version (1.3.1)
 
 == Installation ==
 

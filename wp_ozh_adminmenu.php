@@ -3,20 +3,37 @@
 Plugin Name: Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Description: Replaces admin menus with a CSS dropdown menu bar. Saves lots of clicks and page loads! <strong>For WordPress 2.5+</strong>
-Version: 2.0.1
+Version: 2.0.2
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
 
 /* Release History :
- * 1.0 : Initial release
- * 1.1 : Tiger Admin compatibility !
- * 1.2 : Multiple Page Plugin (ex: Akismet) compatibility and minor CSS improvements
- * 1.3 : Fix for plugins with subfolders on Windows WP installs
- * 1.3.1 : Minor CSS tweaks
- * 2.0 : Complete rewrite for WordPress 2.5
- * 2.0.1 : Fixed: bug with uploader
- */
+ * 1.0:       Initial release
+ * 1.1:       Tiger Admin compatibility !
+ * 1.2:       Multiple Page Plugin (ex: Akismet) compatibility and minor CSS improvements
+ * 1.3:       Fix for plugins with subfolders on Windows WP installs
+ * 1.3.1:     Minor CSS tweaks
+ * 2.0:       Complete rewrite for WordPress 2.5
+ * 2.0.1:     Fixed: bug with uploader
+ * 2.0.2:     Improved: compatibility with admin custom CSS (some colors are now dynamically picked)
+              Fixed: bug with submenu under plugin toplevel menus
+              Fixed: WP's internal behavior or rewriting the "Manage" link according to the current "Write" page and vice-versa (makes sense?:)
+			  Added: Option to display original submenu, per popular demand
+*/
+
+/***********************************/
+/***** Options: Edit if wished *****/
+/***********************************/
+global $wp_ozh_adminmenu;
+
+$wp_ozh_adminmenu['display_submenu'] = false;
+	// boolean: do you want to still display the sublevel menus? Some find it more convenient.
+
+
+/***********************************/
+/*** Do not modify anything below **/
+/***********************************/
 
 function wp_ozh_adminmenu() {
 	$menu = wp_ozh_adminmenu_build();
@@ -64,7 +81,15 @@ function wp_ozh_adminmenu_build () {
 	$self = preg_replace('|^.*/wp-admin/|i', '', $_SERVER['PHP_SELF']);
 	$self = preg_replace('|^.*/plugins/|i', '', $self);
 	
-	get_admin_page_parent();
+	/* Make sure that "Manage" always stays the same. Stolen from Andy @ YellowSwordFish */
+	$menu[5][0] = __("Write");
+	$menu[5][1] = "edit_posts";
+	$menu[5][2] = "post-new.php";
+	$menu[10][0] = __("Manage");
+	$menu[10][1] = "edit_posts";
+	$menu[10][2] = "edit.php";	
+	
+	//get_admin_page_parent();
 	
 	$altmenu = array();
 	
@@ -94,15 +119,15 @@ function wp_ozh_adminmenu_build () {
 				
 				// What's the link ?
 				$menu_hook = get_plugin_page_hook($item[2], $k);
+
 				if (file_exists(ABSPATH . "wp-content/plugins/{$item[2]}") || ! empty($menu_hook)) {
-					if ( 'admin.php' == $pagenow )
-						$link = get_settings('siteurl') . "/wp-admin/admin.php?page={$item[2]}";
-					else
-						$link = get_settings('siteurl') . "/wp-admin/{$k}?page={$item[2]}";
+					list($_plugin_page,$temp) = explode('?',$altmenu[$k]['url']);
+					$link = $_plugin_page.'?page='.$item[2];
 				} else {
-					$link = get_settings('siteurl') . "/wp-admin/{$item[2]}";
+					$link =  $item[2];
 				}
-				/* Windows installs may have backslashes instead of slashes in some paths, fix this */
+				
+				/* Windows installs may put backslashes instead of slashes in paths, fix this */
 				$link = str_replace(chr(92),chr(92).chr(92),$link);
 				
 				$altmenu[$k]['sub'][$item[2]]['url'] = $link;
@@ -121,7 +146,16 @@ function wp_ozh_adminmenu_build () {
 		}
 	}
 	
-	// Uncomment to see how neat it is now !
+	// Dirty debugging: break page and dies
+	/**
+	echo "</ul><pre style='font-size:9px'>";
+	echo '__MENU ';print_r($menu);
+	echo 'SUBMENU ';print_r($submenu);
+	echo 'ALTMENU ';print_r($altmenu);
+	die();
+	/**/
+	
+	// Clean debugging: prints after footer
 	/**
 	global $wpdb;
 	$wpdb->wp_ozh_adminmenu_neat_array = "<pre style='font-size:80%'>Our Oh-So-Beautiful-4-Levels-".htmlentities(print_r($altmenu,true))."</pre>";
@@ -133,21 +167,32 @@ function wp_ozh_adminmenu_build () {
 
 
 function wp_ozh_adminmenu_js($menu = '') {
+	global $wp_ozh_adminmenu;
+	
+	$submenu = $wp_ozh_adminmenu['display_submenu'] ? '': "jQuery('#submenu').html('')";
+
 	echo <<<JS
 <script type="text/javascript"><!--//--><![CDATA[//><!--
 jQuery(document).ready(function() {
 	// Remove unnecessary links in the top right corner
-	var uselesslinks = jQuery('#user_info p').html();
-	if (uselesslinks) {
-		uselesslinks = uselesslinks.replace(/ \| <a href="http:\/\/codex.wordpress.org.*$/i, '');
-		jQuery('#user_info p').html(uselesslinks);
+	var ozhmenu_uselesslinks = jQuery('#user_info p').html();
+	if (ozhmenu_uselesslinks) {
+		ozhmenu_uselesslinks = ozhmenu_uselesslinks.replace(/ \| <a href="http:\/\/codex.wordpress.org.*$/i, '');
+		jQuery('#user_info p').html(ozhmenu_uselesslinks);
 		jQuery('#user_info').css('z-index','81');
-		// Remove original menus
+		// Get current menu colors
+		var ozhmenu_bgcolor = jQuery("#wphead").css('background-color');
+		var ozhmenu_bgcolor_off = jQuery('#wphead').css('border-top-color');
+		var ozhmenu_color = jQuery('#dashmenu li a').css('color');
+		// Remove original menus (this is, actually, not needed, since the CSS should have taken care of this)
 		jQuery('#sidemenu').hide();
 		jQuery('#adminmenu').hide();
-		jQuery('#submenu').html('');
+		$submenu
 		jQuery('#dashmenu').hide();
 		jQuery('#user_info').css('right','1em');
+		// Make title header smaller (same comment as above)
+		jQuery('#wphead #viewsite a').css('font-size','10px');
+		jQuery('#wphead h1').css('font-size','25px');
 		// jQueryfication of the Son of Suckerfish Drop Down Menu
 		// Original at: http://www.htmldog.com/articles/suckerfish/dropdowns/
 		jQuery('#ozhmenu li.ozhmenu_toplevel').each(function() {
@@ -166,9 +211,21 @@ jQuery(document).ready(function() {
 		}
 		// Show our new menu
 		jQuery('#ozhmenu').show();
-		// Make title header smaller
-		jQuery('#wphead #viewsite a').css('font-size','10px');
-		jQuery('#wphead h1').css('font-size','25px');
+JS;
+	if (!function_exists('wp_admin_fluency_css')) echo <<<JS
+		// Attempt to give new menu some consistent colors
+		jQuery('#ozhmenu li').hover(
+			function() { // hover on
+				jQuery(this).css('background-color', ozhmenu_bgcolor).css('color', ozhmenu_color);
+			},
+			function() { // hover off
+				jQuery(this).css('background-color', ozhmenu_bgcolor_off).css('color', ozhmenu_color);
+			}			
+		);
+JS;
+	echo <<<JS
+		jQuery('#ozhmenu li.ozhmenu_over').css('background-color', ozhmenu_bgcolor).css('color', ozhmenu_color);
+		jQuery('#ozhmenu li .current').css('background-color', ozhmenu_bgcolor).css('color', ozhmenu_color);
 	}
 })
 //--><!]]></script>
@@ -176,12 +233,25 @@ JS;
 
 }
 
-
 function wp_ozh_adminmenu_css() {
+	global $wp_ozh_adminmenu;
+	
+	$submenu = $wp_ozh_adminmenu['display_submenu'] ? '' : '#submenu li';
+	
 	echo <<<CSS
 <style type="text/css">
+/* Restyle or hide original items */
+#sidemenu, #adminmenu, #dashmenu, $submenu {
+	display:none;
+}
+#wphead h1 {
+	font-size:25px;
+}
+#wphead #viewsite a {
+	font-size:10px;
+}
+/* Styles for our new menu */
 #ozhmenu { /* our new ul */
-	display: none; /* hidden before javascript displays it */
 	font-size:12px;
 	left:0px;
 	list-style-image:none;
@@ -226,6 +296,8 @@ function wp_ozh_adminmenu_css() {
 #ozhmenu .ozhmenu_sublevel a.current,
 #ozhmenu .ozhmenu_sublevel a.current:hover {
 	background: #e4f2fd;
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-topright: 0px;
 	color: #555;
 }
 #ozhmenu li ul { /* drop down lists */
