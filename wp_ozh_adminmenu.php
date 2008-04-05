@@ -3,7 +3,7 @@
 Plugin Name: Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Description: Replaces admin menus with a CSS dropdown menu bar. Saves lots of clicks and page loads! <strong>For WordPress 2.5+</strong>
-Version: 2.0.2
+Version: 2.0.3
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
@@ -20,7 +20,8 @@ Author URI: http://planetOzh.com/
               Fixed: bug with submenu under plugin toplevel menus
               Fixed: WP's internal behavior or rewriting the "Manage" link according to the current "Write" page and vice-versa (makes sense?:)
 			  Added: Option to display original submenu, per popular demand
-*/
+ * 2.0.3:     Fixed: CSS bug with uploader, again. Grrrr.
+ */
 
 /***********************************/
 /***** Options: Edit if wished *****/
@@ -169,7 +170,7 @@ function wp_ozh_adminmenu_build () {
 function wp_ozh_adminmenu_js($menu = '') {
 	global $wp_ozh_adminmenu;
 	
-	$submenu = $wp_ozh_adminmenu['display_submenu'] ? '': "jQuery('#submenu').html('')";
+	$submenu = $wp_ozh_adminmenu['display_submenu'] ? '': "jQuery('#wpwrap #submenu').html('')";
 
 	echo <<<JS
 <script type="text/javascript"><!--//--><![CDATA[//><!--
@@ -234,9 +235,9 @@ JS;
 }
 
 function wp_ozh_adminmenu_css() {
-	global $wp_ozh_adminmenu;
+	global $wp_ozh_adminmenu, $pagenow;
 	
-	$submenu = $wp_ozh_adminmenu['display_submenu'] ? '' : '#submenu li';
+	$submenu = ($wp_ozh_adminmenu['display_submenu'] or ($pagenow == "media-upload.php") ) ? '' : '#wpwrap #submenu li';
 	
 	echo <<<CSS
 <style type="text/css">
@@ -244,8 +245,14 @@ function wp_ozh_adminmenu_css() {
 #sidemenu, #adminmenu, #dashmenu, $submenu {
 	display:none;
 }
+#media-upload-header #sidemenu li {
+	display:auto;
+}
 #wphead h1 {
 	font-size:25px;
+}
+#wphead #viewsite {
+	margin-top: 6px;
 }
 #wphead #viewsite a {
 	font-size:10px;
