@@ -343,7 +343,7 @@ function wp_ozh_adminmenu_css() {
 	position: absolute;
 	margin-left: 0.1em;
 	font-size: 0.8em;
-	background-image: url(images/comment-stalk.gif);
+	background-image: url(images/comment-stalk-fresh.gif);
 	background-repeat: no-repeat;
 	background-position: -160px bottom;
 	height: 1.7em;
