@@ -1,4 +1,4 @@
-=== Admin Drop Down Menu ===
+=== Ozh' Admin Drop Down Menu ===
 Donate link: http://planetozh.com/exit/donate
 Tags: ozh, menu, menus, dashboard, admin, dropdown, drop down, productivity
 Requires at least: 2.5
