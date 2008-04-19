@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Ozh' Admin Drop Down Menu
+Plugin Name: Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Description: Replaces admin menus with a CSS dropdown menu bar. Saves lots of clicks and page loads! <strong>For WordPress 2.5+</strong>
-Version: 2.0.3
+Version: 2.1
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
@@ -21,6 +21,10 @@ Author URI: http://planetOzh.com/
               Fixed: WP's internal behavior or rewriting the "Manage" link according to the current "Write" page and vice-versa (makes sense?:)
 			  Added: Option to display original submenu, per popular demand
  * 2.0.3:     Fixed: CSS bug with uploader, again. Grrrr.
+ * 2.1:		  Added: Wordpress Mu compatibility \o/
+              Fixed: CSS issues with IE7, thanks Stuart
+			  Added: Ability to dynamically resize menu on two lines when too many entries.
+			  Added: Option to set max number of submenu entries before switching to horizontal display
  */
 
 /***********************************/
@@ -31,7 +35,10 @@ global $wp_ozh_adminmenu;
 $wp_ozh_adminmenu['display_submenu'] = false;
 	// boolean: do you want to still display the sublevel menus? Some find it more convenient.
 
-
+$wp_ozh_adminmenu['too_many_plugins'] = 15; //false;
+	// integer: if more than this many entries in a drop down menu, make it
+	// horizontal so that it does not get longer than your screen height
+	
 /***********************************/
 /*** Do not modify anything below **/
 /***********************************/
@@ -47,7 +54,7 @@ function wp_ozh_adminmenu() {
 		$anchor = $v['name'];
 		$class	= $v['class'];
 
-		$ozh_menu .= "\t<li class='ozhmenu_toplevel'><a href='$url'$class>$anchor</a>";
+		$ozh_menu .= "\t<li class='ozhmenu_toplevel'><a href='$url'$class><span>$anchor</span></a>";
 		if (is_array($v['sub'])) {
 			
 			$ulclass='';
@@ -171,9 +178,29 @@ function wp_ozh_adminmenu_js($menu = '') {
 	global $wp_ozh_adminmenu;
 	
 	$submenu = $wp_ozh_adminmenu['display_submenu'] ? '': "jQuery('#wpwrap #submenu').html('')";
+	$toomanyplugins = $wp_ozh_adminmenu['too_many_plugins'];
 
 	echo <<<JS
 <script type="text/javascript"><!--//--><![CDATA[//><!--
+// Resize menu to make sure it doesnt overlap with #user_info or blog title
+function ozhmenu_resize() {
+	// Reinit positions
+	jQuery('#ozhmenu').css('width','');
+	jQuery('#wphead').css('border-top-width', '30px');
+	// Resize
+	var ozh_w = parseInt(jQuery('#ozhmenu').css('width').replace(/px/,''));
+	var info_w = parseInt(jQuery('#user_info').css('width').replace(/px/,'')) || 130; // the " or 130" part is for when width = 'auto' (on MSIE..) to get 130 instead of NaN
+	jQuery('#ozhmenu').css('width', (ozh_w - info_w - 1)+'px' );
+	var ozh_h = parseInt(jQuery('#ozhmenu').css('height').replace(/px/,''));
+	// Compare positions of first & last top level lis
+	var num_li=jQuery('#ozhmenu li.ozhmenu_toplevel').length;
+	var first_li = jQuery('#ozhmenu li.ozhmenu_toplevel').eq(0).offset();
+	var last_li = jQuery('#ozhmenu li.ozhmenu_toplevel').eq(num_li-1).offset(); // Dunno why, but jQuery('#ozhmenu li.ozhmenu_toplevel :last') doesn't work...
+	if (!ozh_h) {ozh_h = last_li.top + 25 }
+	if ( first_li.top < last_li.top ) {
+		jQuery('#wphead').css('border-top-width', (ozh_h+4)+'px'); 
+	}
+}
 jQuery(document).ready(function() {
 	// Remove unnecessary links in the top right corner
 	var ozhmenu_uselesslinks = jQuery('#user_info p').html();
@@ -181,10 +208,11 @@ jQuery(document).ready(function() {
 		ozhmenu_uselesslinks = ozhmenu_uselesslinks.replace(/ \| <a href="http:\/\/codex.wordpress.org.*$/i, '');
 		jQuery('#user_info p').html(ozhmenu_uselesslinks);
 		jQuery('#user_info').css('z-index','81');
-		// Get current menu colors
+		// Get and apply current menu colors
 		var ozhmenu_bgcolor = jQuery("#wphead").css('background-color');
-		var ozhmenu_bgcolor_off = jQuery('#wphead').css('border-top-color');
 		var ozhmenu_color = jQuery('#dashmenu li a').css('color');
+		jQuery('#ozhmenu li.ozhmenu_over').css('background-color', ozhmenu_bgcolor).css('color', ozhmenu_color);
+		jQuery('#ozhmenu li .current').css('background-color', ozhmenu_bgcolor).css('color', ozhmenu_color);
 		// Remove original menus (this is, actually, not needed, since the CSS should have taken care of this)
 		jQuery('#sidemenu').hide();
 		jQuery('#adminmenu').hide();
@@ -205,6 +233,17 @@ jQuery(document).ready(function() {
 				if (jQuery.browser.msie) {ozhmenu_hide_selects(false);}
 			});
 		});
+		// Dynamically float submenu elements if there are too many
+		jQuery('.ozhmenu_toplevel span').mouseover(
+			function(){
+				var menulength = jQuery(this).parent().parent().find('ul li').length;
+				if (menulength >= $toomanyplugins) {
+					jQuery(this).parent().parent().find('ul li').each(function(){
+						jQuery(this).css('float', 'left');
+					});
+				}
+			}
+		);
 		// Function to hide <select> elements (display bug with MSIE)
 		function ozhmenu_hide_selects(hide) {
 			var hidden = (hide) ? 'hidden' : 'visible';
@@ -212,23 +251,25 @@ jQuery(document).ready(function() {
 		}
 		// Show our new menu
 		jQuery('#ozhmenu').show();
-JS;
-	if (!function_exists('wp_admin_fluency_css')) echo <<<JS
-		// Attempt to give new menu some consistent colors
-		jQuery('#ozhmenu li').hover(
-			function() { // hover on
-				jQuery(this).css('background-color', ozhmenu_bgcolor).css('color', ozhmenu_color);
-			},
-			function() { // hover off
-				jQuery(this).css('background-color', ozhmenu_bgcolor_off).css('color', ozhmenu_color);
-			}			
-		);
-JS;
-	echo <<<JS
-		jQuery('#ozhmenu li.ozhmenu_over').css('background-color', ozhmenu_bgcolor).css('color', ozhmenu_color);
-		jQuery('#ozhmenu li .current').css('background-color', ozhmenu_bgcolor).css('color', ozhmenu_color);
+		ozhmenu_resize();
+		// Bind resize event		
+		jQuery(window).resize(function(){
+			ozhmenu_resize();
+		});
+		// WPMU : behavior for the "All my blogs" link
+		jQuery( function($) {
+			var form = $( '#all-my-blogs' ).submit( function() { document.location = form.find( 'select' ).val(); return false;} );
+			var tab = $('#all-my-blogs-tab a');
+			var head = $('#wphead');
+			$('.blog-picker-toggle').click( function() {
+				form.toggle();
+				tab.toggleClass( 'current' );
+				return false;
+			});
+		} );
 	}
 })
+
 //--><!]]></script>
 JS;
 
@@ -269,6 +310,7 @@ function wp_ozh_adminmenu_css() {
 	position:absolute;
 	top:4px;
 	width:95%; /* width required for -wtf?- dropping li elements to be 100% wide in their containing ul */
+	overflow:show;
 	z-index:80;
 }
 #ozhmenu li { /* all list items */
@@ -328,6 +370,7 @@ function wp_ozh_adminmenu_css() {
 	list-style-type:auto;
 }
 #ozhmenu li ul li { /* dropped down lists item */
+	background:transparent !important;
 	float:none;
 	text-align:left;
 }
@@ -377,11 +420,72 @@ function wp_ozh_adminmenu_css() {
 	content: "\\00BB \\0020";
 	color:#d54e21;
 }
+/* Mu Specific */
+#ozhmumenu_head {
+	color:#bbb;
+	font-weight:bolder;
+}
+#ozhmumenu_head #all-my-blogs {
+	position:relative;
+	top:0px;
+	background:#ffa;
+	color:#000;
+}
+/* Just for IE7 */
+#wphead {
+	#border-top-width: 31px;
+}
+#media-upload-header #sidemenu { display: block; }
 </style>
 CSS;
 }
 
+function wp_ozh_adminmenu_head() {
+	wp_ozh_adminmenu_css();
+	wp_ozh_adminmenu_js();
+}
+
+/***** Mu specific ****/
+
+function wp_ozh_adminmenu_remove_blogswitch_init() {
+	remove_action( '_admin_menu', 'blogswitch_init' );
+	add_action( '_admin_menu', 'wp_ozh_adminmenu_blogswitch_init' );
+}
+
+function wp_ozh_adminmenu_blogswitch_init() {
+	global $current_user, $current_blog;
+	$blogs = get_blogs_of_user( $current_user->ID );
+	if ( !$blogs )
+		return;
+	add_action( 'admin_menu', 'wp_ozh_adminmenu_blogswitch_ob_start' );
+	add_action( 'dashmenu', 'blogswitch_markup' );
+}
+
+
+function wp_ozh_adminmenu_blogswitch_ob_start() {
+	ob_start( 'wp_ozh_adminmenu_blogswitch_ob_content' );
+}
+
+function wp_ozh_adminmenu_blogswitch_ob_content( $content ) {
+	// Menu with blog list
+	$mumenu = preg_replace( '#.*%%REAL_DASH_MENU%%(.*?)%%END_REAL_DASH_MENU%%.*#s', '\\1', $content );
+	$mumenu = str_replace ('<li>', '<li class="ozhmenu_sublevel">', $mumenu);
+	$mumenu = preg_replace( '#</ul>.*?<form id="all-my-blogs"#s', '<li><form id="all-my-blogs"', $mumenu);
+	$mumenu = str_replace ('</form>', '</form></li></ul>', $mumenu);
+	
+	
+	$content = preg_replace( '#%%REAL_DASH_MENU%%(.*?)%%END_REAL_DASH_MENU%%#s', '', $content );
+	$content = str_replace( '<ul id="ozhmenu">', '<ul id="ozhmenu"><li class="ozhmenu_toplevel" id="ozhmumenu_head"><a href="">My blogs</a><ul id="ozhmumenu">'.$mumenu.'</li>', $content );
+	
+	return $content;
+}
+
+
 /***** Hook things in ****/
+
+global $wpmu_version;
+if ($wpmu_version)
+	add_action( '_admin_menu', 'wp_ozh_adminmenu_remove_blogswitch_init', -100 );
 
 if (is_admin()) {
 	add_action('init', create_function('', 'wp_enqueue_script("jquery");')); 
@@ -389,9 +493,5 @@ if (is_admin()) {
 add_action('dashmenu', 'wp_ozh_adminmenu');
 add_action('admin_head', 'wp_ozh_adminmenu_head');
 
-function wp_ozh_adminmenu_head() {
-	wp_ozh_adminmenu_css();
-	wp_ozh_adminmenu_js();
-}
 
 ?>
