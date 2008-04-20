@@ -35,7 +35,7 @@ global $wp_ozh_adminmenu;
 $wp_ozh_adminmenu['display_submenu'] = false;
 	// boolean: do you want to still display the sublevel menus? Some find it more convenient.
 
-$wp_ozh_adminmenu['too_many_plugins'] = 15; //false;
+$wp_ozh_adminmenu['too_many_plugins'] = 30; //false;
 	// integer: if more than this many entries in a drop down menu, make it
 	// horizontal so that it does not get longer than your screen height
 	
