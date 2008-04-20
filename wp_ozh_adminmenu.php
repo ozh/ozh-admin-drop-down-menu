@@ -35,9 +35,10 @@ global $wp_ozh_adminmenu;
 $wp_ozh_adminmenu['display_submenu'] = false;
 	// boolean: do you want to still display the sublevel menus? Some find it more convenient.
 
-$wp_ozh_adminmenu['too_many_plugins'] = 30; //false;
+$wp_ozh_adminmenu['too_many_plugins'] = 30;
 	// integer: if more than this many entries in a drop down menu, make it
 	// horizontal so that it does not get longer than your screen height
+	// Note: does not work with Fluency.
 	
 /***********************************/
 /*** Do not modify anything below **/
@@ -179,7 +180,18 @@ function wp_ozh_adminmenu_js($menu = '') {
 	
 	$submenu = $wp_ozh_adminmenu['display_submenu'] ? '': "jQuery('#wpwrap #submenu').html('')";
 	$toomanyplugins = $wp_ozh_adminmenu['too_many_plugins'];
-
+	if (!function_exists('wp_admin_fluency_css')) {
+	$resize = <<<JS
+		ozhmenu_resize();
+		// Bind resize event		
+		jQuery(window).resize(function(){
+			ozhmenu_resize();
+		});
+JS;
+	} else {
+		$resize = '';
+	}
+	
 	echo <<<JS
 <script type="text/javascript"><!--//--><![CDATA[//><!--
 // Resize menu to make sure it doesnt overlap with #user_info or blog title
@@ -251,11 +263,7 @@ jQuery(document).ready(function() {
 		}
 		// Show our new menu
 		jQuery('#ozhmenu').show();
-		ozhmenu_resize();
-		// Bind resize event		
-		jQuery(window).resize(function(){
-			ozhmenu_resize();
-		});
+		$resize
 		// WPMU : behavior for the "All my blogs" link
 		jQuery( function($) {
 			var form = $( '#all-my-blogs' ).submit( function() { document.location = form.find( 'select' ).val(); return false;} );
