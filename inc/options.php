@@ -73,7 +73,7 @@ HTML;
 	
     <tr><th scope="row">Submenus</th>
 	<td><label><input type="checkbox" $checked_displaysub name="oam_displaysub"> Display sub menus the regular way</label><br/>
-	Some like it better when sub menus don't even need you to hover the top menu link (might need a <a href="options-general.php?page=ozh_admin_menu">page refresh</a> here)
+	Some like it better when sub menus don't even need you to hover the top menu link
 	</td></tr>
 	
     <tr><th scope="row">Break Long Lists</th>
@@ -93,7 +93,7 @@ HTML;
 	</tbody></table>
 	
 	<p class="submit">
-	<input name="submit" value="Save Changes" type="submit" />
+	<input name="submit" value="Save Changes" type="submit" /> (might need a page refresh here)
 	</p>
 
 	</form>

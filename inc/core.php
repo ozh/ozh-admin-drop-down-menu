@@ -33,9 +33,12 @@ function wp_ozh_adminmenu() {
 		$name 	= $k;
 		$anchor = $v['name'];
 		$class	= $v['class'];
-		$href =  ($wp_ozh_adminmenu['toplinks'] ? "href='$url'" : '');
-
-
+		if ($wp_ozh_adminmenu['toplinks']) {
+			$href = "href='$url'";
+		} else {
+			$href =  ( $v['sub'] )? '' : "href='$url'" ;
+		}
+		
 		$ozh_menu .= "\t<li class='ozhmenu_toplevel'><a $href $class><span>$anchor</span></a>";
 		if (is_array($v['sub'])) {
 			
@@ -161,15 +164,11 @@ function wp_ozh_adminmenu_js($init = true) {
 	
 	$submenu = $wp_ozh_adminmenu['display_submenu'] ? 'false': 'true';
 	$toomanyplugins = $wp_ozh_adminmenu['too_many_plugins'];
-	if (!function_exists('wp_admin_fluency_css')) {
-		$resize = 'true';
-	} else {
-		$resize = 'false';
-	}
+	$fluency = function_exists('wp_admin_fluency_css') ? 'true' : 'false';
 
 	if ($init) {
 		$plugin_url = WP_CONTENT_URL.'/plugins/'.plugin_basename(dirname(__FILE__));
-		$insert_main_js = '<script src="'.$plugin_url.'/adminmenu.js" type="text/javascript"></script>';
+		$insert_main_js = '<script src="'.$plugin_url.'/adminmenu.js?2.2.1" type="text/javascript"></script>';
 	} else {
 		$insert_main_js = '';
 	}
@@ -178,7 +177,7 @@ function wp_ozh_adminmenu_js($init = true) {
 <script type="text/javascript"><!--//--><![CDATA[//><!--
 var oam_toomanypluygins = $toomanyplugins;
 var oam_adminmenu = false;
-var oam_menuresize = $resize;
+var oam_fluency = $fluency;
 var oam_hidesubmenu = $submenu;
 
 jQuery(document).ready(function() {
@@ -198,12 +197,12 @@ JS;
 function wp_ozh_adminmenu_css($init = true) {
 	global $wp_ozh_adminmenu, $pagenow;
 	
-	$submenu = ($wp_ozh_adminmenu['display_submenu'] or ($pagenow == "media-upload.php") ) ? '' : '#wpwrap #submenu li';
-	if ($submenu) echo <<<CSS
+	$submenu = ($wp_ozh_adminmenu['display_submenu'] or ($pagenow == "media-upload.php") ) ? '' : '#wpwrap #submenu li {display:none;}';
+	$fluency = (function_exists('wp_admin_fluency_css')) ? "#TB_overlay {z-index:99001;}\n#TB_window {z-index:99002;}" : '' ;
+	if ($submenu or $fluency) echo <<<CSS
 <style type="text/css">
-$submenu {
-	display:none;
-}
+$submenu
+$fluency
 </style>
 CSS;
 

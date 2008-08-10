@@ -59,7 +59,11 @@ http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 #ozhmenu li .current {
 	background: #14568A;
 	-moz-border-radius-topleft: 3px;
-	-moz-border-radius-topright: 3px;	
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-left-radius:3px;
+	-webkit-border-top-right-radius:3px;
+	border-top-left-radius:3px;
+	border-top-right-radius:3px;
 	color: #ddd;
 }
 #ozhmenu .ozhmenu_sublevel a:hover,
@@ -68,6 +72,10 @@ http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 	background: #e4f2fd;
 	-moz-border-radius-topleft: 0px;
 	-moz-border-radius-topright: 0px;
+	-webkit-border-top-left-radius:0;
+	-webkit-border-top-right-radius:0;
+	border-top-left-radius:0;
+	border-top-right-radius:0;
 	color: #555;
 }
 #ozhmenu li ul { /* drop down lists */
@@ -84,6 +92,10 @@ http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 	border-bottom:1px solid #c6d9e9 ;
 	-moz-border-radius-bottomleft:5px;
 	-moz-border-radius-bottomright:5px;
+	-webkit-border-bottom-left-radius:5px;
+	-webkit-border-bottom-right-radius:5px;
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
 	width: 1*;  /* maybe needed for some Opera ? */
 	min-width:6em;
 	left: -999em; /* using left instead of display to hide menus because display: none isn't read by screen readers */

@@ -22,9 +22,10 @@ function ozhmenu_resize() {
 		jQuery('#wphead').css('border-top-width', (ozh_h+4)+'px'); 
 	}
 }
+
 jQuery(document).ready(function() {
-	// Remove unnecessary links in the top right corner
 	if (oam_adminmenu) {
+		// Remove unnecessary links in the top right corner
 		var ozhmenu_uselesslinks = jQuery('#user_info p').html();
 		ozhmenu_uselesslinks = ozhmenu_uselesslinks.replace(/ \| <a href="http:\/\/codex.wordpress.org\/">Help<\/a>/i, '');
 		ozhmenu_uselesslinks = ozhmenu_uselesslinks.replace(/ \| <a href="http:\/\/wordpress.org\/support\/">Forums<\/a>/i, '');
@@ -57,17 +58,6 @@ jQuery(document).ready(function() {
 				if (jQuery.browser.msie) {ozhmenu_hide_selects(false);}
 			});
 		});
-		// Dynamically float submenu elements if there are too many
-		jQuery('.ozhmenu_toplevel span').mouseover(
-			function(){
-				var menulength = jQuery(this).parent().parent().find('ul li').length;
-				if (menulength >= oam_toomanypluygins) {
-					jQuery(this).parent().parent().find('ul li').each(function(){
-						jQuery(this).css('float', 'left');
-					});
-				}
-			}
-		);
 		// Function to hide <select> elements (display bug with MSIE)
 		function ozhmenu_hide_selects(hide) {
 			var hidden = (hide) ? 'hidden' : 'visible';
@@ -75,14 +65,31 @@ jQuery(document).ready(function() {
 		}
 		// Show our new menu
 		jQuery('#ozhmenu').show();
-		// Resize if needed
-		if (oam_menuresize) {
+
+		// Fluency conditional stuff. A few stuff disabled with this plugin.
+		if (!oam_fluency) {
+			// Resize menu if needed and bind the resize event
 			ozhmenu_resize();
-			// Bind resize event		
-			jQuery(window).resize(function(){
-				ozhmenu_resize();
-			});
+			jQuery(window).resize(function(){ozhmenu_resize();});
+			
+			// Transform the bubble element to point to edit-comments.php?comment_status=moderated
+			var moderated = jQuery('#awaiting-mod').parent().parent().attr('href') + '?comment_status=moderated';
+			jQuery('#awaiting-mod').wrap('<a href="'+moderated+'" style="display:inline;padding:0px"></a>');
+
+			// Dynamically float submenu elements if there are too many
+			jQuery('.ozhmenu_toplevel span').mouseover(
+				function(){
+					var menulength = jQuery(this).parent().parent().find('ul li').length;
+					if (menulength >= oam_toomanypluygins) {
+						jQuery(this).parent().parent().find('ul li').each(function(){
+							jQuery(this).css('float', 'left');
+						});
+					}
+				}
+			);
+
 		}
+
 		// WPMU : behavior for the "All my blogs" link
 		jQuery( function($) {
 			var form = $( '#all-my-blogs' ).submit( function() { document.location = form.find( 'select' ).val(); return false;} );
