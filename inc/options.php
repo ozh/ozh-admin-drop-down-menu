@@ -87,8 +87,27 @@ HTML;
 	</td></tr>
 	
     <tr><th scope="row">Give Some &hearts;</th>
-	<td>Do you like this plugin? Please <a href="post-new.php">blog about it</a>! Tell your readers you like it so they will discover, try and hopefully like it too&nbsp;:)<br/>(and if you definitely <em>love</em> this plugin, you could also consider <a href="http://planetozh.com/exit/donate">buying me a beer</a>!)
+	<td>Do you like this plugin? Then <a href="http://wordpress.org/extend/plugins/ozh-admin-drop-down-menu/">rate it 5 Stars</a> on the official Plugin Directory!<br/>
+	Do you <em>love</em> this plugin? Please <a href="post-new.php">blog about it</a>! Tell your readers you like it so they will discover, try and hopefully like it too&nbsp;:)<br/>
+	Are you <span id="totallycrazy">crazy</span> about this plugin? <a href="http://planetozh.com/exit/donate">Paypal me a beer</a>! Every donation warms my heart and motivate me to release free stuff!
 	</td></tr>
+	
+	<script type="text/javascript">
+	function oam_dance() {
+		var fontstyle, delay;
+		if (jQuery('#totallycrazy').css('font-style') == 'italic') {
+			fontstyle = 'normal';
+			delay = 1200;		
+		} else {
+			fontstyle = 'italic';
+			delay = 200;		
+		}
+		jQuery('#totallycrazy').css('font-style',fontstyle);
+		oam_danceagain(delay);
+	}
+	function oam_danceagain(delay) {setTimeout(function(){oam_dance();}, delay);}
+	oam_danceagain(100);	
+	</script>
 
 	</tbody></table>
 	
