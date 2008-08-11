@@ -89,7 +89,7 @@ HTML;
     <tr><th scope="row">Give Some &hearts;</th>
 	<td>Do you like this plugin? Then <a href="http://wordpress.org/extend/plugins/ozh-admin-drop-down-menu/">rate it 5 Stars</a> on the official Plugin Directory!<br/>
 	Do you <em>love</em> this plugin? Please <a href="post-new.php">blog about it</a>! Tell your readers you like it so they will discover, try and hopefully like it too&nbsp;:)<br/>
-	Are you <span id="totallycrazy">crazy</span> about this plugin? <a href="http://planetozh.com/exit/donate">Paypal me a beer</a>! Every donation warms my heart and motivate me to release free stuff!
+	Are you <span id="totallycrazy">crazy</span> about this plugin? <a href="http://planetozh.com/exit/donate">Paypal me a beer</a>! Every donation warms my heart and motivates me to release free stuff!
 	</td></tr>
 	
 	<script type="text/javascript">
