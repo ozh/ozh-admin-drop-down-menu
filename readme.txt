@@ -16,8 +16,8 @@ Current version is for WordPress 2.5+ only. For WordPress 2.3.3 and older, see t
 
 == Screenshots ==
 
-1. Drop down menu with no icons
-2. Drop down menu with icons
+1. Regular drop down menu, with no icons
+2. Drop down menu with icons (optional)
 
 == Installation ==
 
