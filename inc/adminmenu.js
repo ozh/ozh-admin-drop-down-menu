@@ -27,8 +27,8 @@ jQuery(document).ready(function() {
 	if (oam_adminmenu) {
 		// Remove unnecessary links in the top right corner
 		var ozhmenu_uselesslinks = jQuery('#user_info p').html();
-		ozhmenu_uselesslinks = ozhmenu_uselesslinks.replace(/ \| <a href="http:\/\/codex.wordpress.org\/">Help<\/a>/i, '');
-		ozhmenu_uselesslinks = ozhmenu_uselesslinks.replace(/ \| <a href="http:\/\/wordpress.org\/support\/">Forums<\/a>/i, '');
+		ozhmenu_uselesslinks = ozhmenu_uselesslinks.replace(/ \| <a href="http:\/\/codex.wordpress.org\/.*?">.*?<\/a>/i, ''); // remove any link from the codex
+		ozhmenu_uselesslinks = ozhmenu_uselesslinks.replace(/ \| <a href="http:\/\/wordpress.org\/support\/">.*?<\/a>/i, '');
 		jQuery('#user_info p').html(ozhmenu_uselesslinks);
 		jQuery('#user_info').css('z-index','81');
 		// Get and apply current menu colors

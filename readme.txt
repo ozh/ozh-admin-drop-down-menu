@@ -14,6 +14,11 @@ For documentation, examples, screenshot and a live demo, please refer to the off
 
 Current version is for WordPress 2.5+ only. For WordPress 2.3.3 and older, see the plugin's page and download the old version (1.3.1)
 
+== Screenshots ==
+
+1. Drop down menu with no icons
+2. Drop down menu with icons
+
 == Installation ==
 
 Installation is, as usual :

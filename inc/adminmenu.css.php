@@ -1,7 +1,21 @@
+<?php
 /*
 Part of Plugin: Ozh' Admin Drop Down Menu
 http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 */
+
+function make_link_relative( $link ) {
+	return preg_replace('|https?://[^/]+(/.*)|i', '$1', $link );
+}
+
+// Get needed links, make them relative to be sure no one will be leeching icons or anything from someone else
+$admin  = make_link_relative( $_GET['admin'] );
+$plugin = make_link_relative( $_GET['plugin'] );
+
+$icons = ($_GET['icons'] == 1) ? true : false ;
+
+header('Content-type:text/css');
+?>
 
 /* Restyle or hide original items */
 #sidemenu, #adminmenu, #dashmenu {
@@ -57,7 +71,7 @@ http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 #ozhmenu li:hover,
 #ozhmenu li.ozhmenu_over,
 #ozhmenu li .current {
-	background: #14568A;
+	background-color: #14568A;
 	-moz-border-radius-topleft: 3px;
 	-moz-border-radius-topright: 3px;
 	-webkit-border-top-left-radius:3px;
@@ -69,7 +83,7 @@ http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 #ozhmenu .ozhmenu_sublevel a:hover,
 #ozhmenu .ozhmenu_sublevel a.current,
 #ozhmenu .ozhmenu_sublevel a.current:hover {
-	background: #e4f2fd;
+	background-color: #e4f2fd;
 	-moz-border-radius-topleft: 0px;
 	-moz-border-radius-topright: 0px;
 	-webkit-border-top-left-radius:0;
@@ -119,7 +133,7 @@ http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 	position: absolute;
 	margin-left: 0.1em;
 	font-size: 0.8em;
-	background-image: url(../../../../wp-admin/images/comment-stalk-fresh.gif);
+	background-image: url(<?php echo $admin; ?>/images/comment-stalk-fresh.gif);
 	background-repeat: no-repeat;
 	background-position: -160px bottom;
 	height: 1.7em;
@@ -169,3 +183,24 @@ http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 	#border-top-width: 31px;
 }
 #media-upload-header #sidemenu { display: block; }
+
+
+<?php if ($icons) { 
+	require(dirname(__FILE__).'/icons.php');
+?>
+/* Icons */
+#ozhmenu .ozhmenu_sublevel a {
+	padding-left:20px;
+	background-repeat:no-repeat;
+	background-position:2px center;
+}
+.oam_plugin a {
+	background-image:url(<?php echo $plugin; ?>/images/plugin.png);
+}
+<?php
+	foreach($wp_ozh_adminmenu['icon_names'] as $link=>$icon) {
+		$link = str_replace(array('.php','.','/'),array('','_','_'),$link);
+		echo "#oamsub_$link a {background-image:url($plugin/images/$icon.png);}\n";
+	}
+
+} ?>
