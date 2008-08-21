@@ -10,7 +10,7 @@ All admin links available in a neat drop down menu. Go to any admin page from an
 
 The lazy and the productive will love it : all admin links available in a neat CSS driven drop down menu. No need to click on "Manage" then "Pages" to edit pages, go to *any admin page* from *any admin page*.
 
-For documentation, examples, screenshot and a live demo, please refer to the official plugin page for [Admin Drop Down Menu](http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/ "Admin Drop Down Menu")
+For documentation, examples, screenshot and a live demo, please refer to the official plugin page for [Admin Drop Down Menu](http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/ "Admin Drop Down Menu"). There is also an API for plugin coders (give your plugin its own special icon!).
 
 Current version is for WordPress 2.5+ only. For WordPress 2.3.3 and older, see the plugin's page and download the old version (1.3.1)
 
