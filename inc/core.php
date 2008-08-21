@@ -37,7 +37,7 @@ function wp_ozh_adminmenu() {
 				$suburl = $subv['url'];
 				$subanchor = $subv['name'];
 				$icon = $subv['icon'];
-				if ($subv['hook']) {
+				if ($subv['hook'] && $wp_ozh_adminmenu['icons']) {
 					// we're dealing with a plugin, does it have a special icon?
 					$plugin_icon = apply_filters('ozh_adminmenu_icon', $subv['hook']);
 					// if no filter is defined, $plugin_icon = $subv['hook']
