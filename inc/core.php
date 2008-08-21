@@ -103,11 +103,11 @@ function wp_ozh_adminmenu_build () {
 	foreach ($menu as $item) {
 		// 0 = name, 1 = capability, 2 = file
 		if ( current_user_can($item[1]) ) {
-			if ( file_exists(ABSPATH . "wp-content/plugins/{$item[2]}") )
-				$altmenu[$item[2]]['url'] = get_option('siteurl') . "/wp-admin/admin.php?page={$item[2]}";			
-			else
+			if ( file_exists(ABSPATH . "wp-admin/{$item[2]}"))
 				$altmenu[$item[2]]['url'] = get_option('siteurl') . "/wp-admin/{$item[2]}";
-
+			else
+				$altmenu[$item[2]]['url'] = get_option('siteurl') . "/wp-admin/admin.php?page={$item[2]}";			
+				
 			if (( strcmp($self, $item[2]) == 0 && empty($parent_file)) || ($parent_file && ($item[2] == $parent_file)))
 			$altmenu[$item[2]]['class'] = " class='current'";
 			
