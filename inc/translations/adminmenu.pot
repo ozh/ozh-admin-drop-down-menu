@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ozh' Admin Drop Down Menu\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-08-20 23:08+0100\n"
+"PO-Revision-Date: 2008-08-22 08:42+0100\n"
 "Last-Translator: Ozh <ozh[at]planetozh[dot]com>\n"
 "Language-Team: Ozh <ozh at planetozh dot com>\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,8 @@ msgid "Display menu icons"
 msgstr ""
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:83
-msgid "They're so cute."
+#, php-format
+msgid "They're so cute (and they're from %s)"
 msgstr ""
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:86
