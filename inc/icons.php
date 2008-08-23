@@ -37,4 +37,14 @@ $wp_ozh_adminmenu['icon_names'] = array(
 'profile.php' => 'user'
 );
 
+$wp_ozh_adminmenu['icon_names_mu'] = array(
+'wpmu-admin.php' => 'tux',
+'wpmu-blogs.php' => 'world_link',
+'wpmu-users.php' => 'user_go',
+'wpmu-themes.php' => 'layers',
+'wpmu-options.php' => 'computer_edit',
+'wpmu-upgrade-site.php' => 'lightning_go',
+'delete-blog' => 'world_delete',
+)
+
 ?>

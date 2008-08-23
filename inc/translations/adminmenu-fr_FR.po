@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ozh' Admin Drop Down Menu\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2008-08-22 11:12+0100\n"
+"PO-Revision-Date: 2008-08-22 17:14+0100\n"
 "Last-Translator: Ozh <ozh at planetozh dot com>\n"
 "Language-Team: Ozh <ozh at planetozh dot com>\n"
 "MIME-Version: 1.0\n"
@@ -10,121 +10,122 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: wp_ozh_adminmenu__\n"
 "X-Poedit-Basepath: E:\\home\\ozh\\planetozh.com\\blog\\wp-content\\plugins\\ozh-admin-drop-down-menu\n"
-"X-Poedit-Language: English\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
 "X-Poedit-SearchPath-0: E:\\home\\ozh\\planetozh.com\\blog\\wp-content\\plugins\\ozh-admin-drop-down-menu\n"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:32
 msgid "updated"
-msgstr ""
+msgstr "mises à jour"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:37
 msgid "deleted"
-msgstr ""
+msgstr "supprimées"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:42
 #, php-format
 msgid "Admin Drop Down Menu settings <strong>%s</strong>"
-msgstr ""
+msgstr "Préférences pour Admin Drop Down Menu <strong>%s</strong>"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:81
 msgid "Icons"
-msgstr ""
+msgstr "Icones"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:82
 msgid "Display menu icons"
-msgstr ""
+msgstr "Afficher les icones dans les menus"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:83
 #, php-format
 msgid "They're so cute (and they're from %s)"
-msgstr ""
+msgstr "Elles sont si mignonnes (et elles viennent de %s)"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:86
 msgid "Submenus"
-msgstr ""
+msgstr "Sous-menus"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:87
 msgid "Display sub menus the regular way"
-msgstr ""
+msgstr "Afficher les sous-menus à l'ancienne"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:88
 msgid "Some like it better when sub menus don't even need you to hover the top menu link"
-msgstr ""
+msgstr "Pour ceux qui préfèrent quand les sous-menus sont directement accessibles sans avoir besoin de survoler les menus du haut."
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:91
 msgid "Break Long Lists"
-msgstr ""
+msgstr "Couper les longues listes"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:92
 #, php-format
 msgid "Break if more than %s menu entries"
-msgstr ""
+msgstr "Couper si un menu a plus de %s lignes"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:93
 msgid "If a dropdown gets longer than this value, it will switch to horizontal mode so that it will hopefully fit in your screen (requires javascript)"
-msgstr ""
+msgstr "Si un menu comporte plus d'éléments que cette valeur, il basculera en mode horizontal afin de pouvoir être affiché en entier (nécessite que javascript soit activé)"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:96
 msgid "Top Links"
-msgstr ""
+msgstr "Liens du haut"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:97
 msgid "Make top links clickable"
-msgstr ""
+msgstr "Rendre les liens du haut clicables"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:98
 msgid "Uncheck this option to improve compatibility with browsers that cannot handle the \"hover\" event (<em>ie</em> most handheld devices)"
-msgstr ""
+msgstr "Décocher cette option améliore la compatibilité avec les navigateurs qui ne supportent pas l'évènement \"hover\" (la plupart des PDA et téléphones)"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:101
 msgid "Give Some &hearts;"
-msgstr ""
+msgstr "Un peu d'&hearts;"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:102
 #, php-format
 msgid "Do you like this plugin? Then <a href=\"%s\">rate it 5 Stars</a> on the official Plugin Directory!"
-msgstr ""
+msgstr "Vous appréciez ce plugin? Alors <a href=\"%s\">donnez lui 5 étoiles</a> dans le répertoire officiel des plugins!"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:103
 #, php-format
 msgid "Do you <em>love</em> this plugin? Please <a href=\"%s\">blog about it</a>! Tell your readers you like it so they will discover, try and hopefully like it too&nbsp;:)"
-msgstr ""
+msgstr "Vous <em>aimez</em> ce plugin? Parlez-en, <a href=\"%s\">blogguez-le</a>! Faites le découvrir à vos lecteurs qui peut-être l'essaieront et l'aimeront aussi!&nbsp;:)"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:104
 #, php-format
 msgid "Are you <span id=\"totallycrazy\">crazy</span> about this plugin? <a href=\"%s\">Paypal me a beer</a>! Every donation warms my heart and motivates me to release free stuff!"
-msgstr ""
+msgstr "Vous êtes <span id=\"totallycrazy\">dingue</span> de ce plugin? <a href=\"%s\">Paypalez moi une bière</a>! Chaque donation me fait chaud au coeur et me motive pour continuer à faire et améliorer mes plugins!"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:127
 msgid "Save Changes"
-msgstr ""
+msgstr "Sauver"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:127
 msgid "(might need a page refresh here)"
-msgstr ""
+msgstr "(nécessitera peut-être un rafraîchissement de la page)"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:133
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:147
 msgid "Reset Settings"
-msgstr ""
+msgstr "Réinitialiser les préférences"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:142
 msgid "Clicking the following button will remove all the settings for this plugin from your database. You might want to do so in the following cases:"
-msgstr ""
+msgstr "Cliquer sur ce bouton effacera toutes les préférences pour ce plugin de la base de données, ce que vous pourriez vouloir faire pour deux raisons:"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:144
 msgid "you want to uninstall the plugin and leave no unnecessary entries in your database."
-msgstr ""
+msgstr "vous voulez désinstaller ce plugin et ne laisser aucune trace inutile dans la base de données"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:145
 msgid "you want all settings to be reverted to their default values"
-msgstr ""
+msgstr "vous voulez réinitialiser les préférences de ce plugin à leurs valeurs par défaut"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:147
 msgid "Really do?"
-msgstr ""
+msgstr "Vraiment?"
 
 #: E:\home\ozh\planetozh.com\blog\wp-content\plugins\ozh-admin-drop-down-menu/inc/options.php:148
 msgid "There is no undo, so be very sure you want to click the button!"
-msgstr ""
+msgstr "Il n'y a pas de fonction \"annuler\", soyez donc sûr de ce que vous faites!"
 

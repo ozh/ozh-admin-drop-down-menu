@@ -40,6 +40,12 @@ Author URI: http://planetOzh.com/
 			  Added: Ready for translation
  * 2.3.1:     Fixed: Was always showing plugin special icons even with icons disabled
  * 2.3.2:     Fixed: Top level links could be wrong
+ * 2.3.4:     Improved: Compatibility with Fluency yet again
+ 			  Improved: Smarter submenu breaking with too long lists (now columns)
+			  Improved: Better handling of POST on plugin page
+			  Fixed: Bug with Safari and the resize menu stuff
+			  Added: French and Italian translations
+			  Improved: Support for WordPress Mu with specific icons
  */
 
 
@@ -49,7 +55,7 @@ if (is_admin()) {
 	global $wp_ozh_adminmenu;
 	require_once(dirname(__FILE__).'/inc/core.php');
 	add_action('init', create_function('', 'wp_enqueue_script("jquery");')); // Make sure jQuery is always loaded
-	add_action('plugins_loaded', 'wp_ozh_adminmenu_init');	// Init plugin defaults or read options
+	add_action('admin_init', 'wp_ozh_adminmenu_init');	// Init plugin defaults or read options
 	add_action('admin_menu', 'wp_ozh_adminmenu_add_page', -999); // Add option page
 	add_action('dashmenu', 'wp_ozh_adminmenu'); // Replace the menus with our stuff
 	add_action('admin_head', 'wp_ozh_adminmenu_head', 999); // Insert CSS & JS in <head>

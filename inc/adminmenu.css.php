@@ -8,11 +8,13 @@ function make_link_relative( $link ) {
 	return preg_replace('|https?://[^/]+(/.*)|i', '$1', $link );
 }
 
-// Get needed links, make them relative to be sure no one will be leeching icons or anything from someone else
-$admin  = make_link_relative( $_GET['admin'] );
-$plugin = make_link_relative( $_GET['plugin'] );
-
-$icons = ($_GET['icons'] == 1) ? true : false ;
+// Get vars & needed links, make them relative to be sure no one will be leeching icons or anything from someone else
+$admin   = make_link_relative( $_GET['admin'] );
+$plugin  = make_link_relative( $_GET['plugin'] );
+$icons   = ($_GET['icons'] == 1) ? true : false ;
+$fluency = ($_GET['fluency'] == 1) ? true : false;
+$submenu = ($_GET['submenu'] == 1) ? true : false;
+$mu      = ($_GET['mu'] == 1) ? true : false;
 
 header('Content-type:text/css');
 ?>
@@ -184,15 +186,29 @@ header('Content-type:text/css');
 }
 #media-upload-header #sidemenu { display: block; }
 
+<?php if (!$submenu) { ?>
+/* Hide vanilla submenu */
+#wpwrap #submenu li {display:none;}
+<?php } ?>
 
-<?php if ($icons) { 
+<?php if ($fluency) { ?>
+/* Fluency compat + fixes */
+#TB_overlay {z-index:99001;}
+#TB_window {z-index:99002;}
+<?php } ?>
+
+<?php if ($fluency && $icons) { ?>
+#ozhmenu li.ozhmenu_toplevel ul li.ozhmenu_sublevel a {padding-left:22px;}
+<?php } ?>
+
+<?php if ($icons) {
 	require(dirname(__FILE__).'/icons.php');
 ?>
 /* Icons */
 #ozhmenu .ozhmenu_sublevel a {
-	padding-left:20px;
+	padding-left:22px;
 	background-repeat:no-repeat;
-	background-position:2px center;
+	background-position:3px center;
 }
 .oam_plugin a {
 	background-image:url(<?php echo $plugin; ?>/images/plugin.png);
@@ -204,3 +220,15 @@ header('Content-type:text/css');
 	}
 
 } ?>
+
+<?php if ($mu && $icons) { ?>
+#ozhmumenu .ozhmenu_sublevel a {background-image:url(<?php echo $plugin; ?>/images/world_link.png);}
+<?php
+	foreach($wp_ozh_adminmenu['icon_names_mu'] as $link=>$icon) {
+		$link = str_replace(array('.php','.','/'),array('','_','_'),$link);
+		echo "#oamsub_$link a {background-image:url($plugin/images/$icon.png);}\n";
+	}
+
+} ?>
+
+/**/

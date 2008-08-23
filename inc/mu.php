@@ -18,6 +18,7 @@ function wp_ozh_adminmenu_blogswitch_init() {
 		return;
 	add_action( 'admin_menu', 'wp_ozh_adminmenu_blogswitch_ob_start' );
 	add_action( 'dashmenu', 'blogswitch_markup' );
+
 }
 
 

@@ -40,7 +40,7 @@ function wp_ozh_adminmenu() {
 				if ($subv['hook'] && $wp_ozh_adminmenu['icons']) {
 					// we're dealing with a plugin, does it have a special icon?
 					$plugin_icon = apply_filters('ozh_adminmenu_icon', $subv['hook']);
-					// if no filter is defined, $plugin_icon = $subv['hook']
+					// if no filter is defined, $plugin_icon = $subv['hook'], otherwise keep track of the returned value
 					if ($plugin_icon != $subv['hook']) {
 						$plugin_icons[str_replace(array('.php','.','/'),array('','_','_'),$subv['hook'])] = $plugin_icon;
 					}
@@ -55,7 +55,7 @@ function wp_ozh_adminmenu() {
 	}
 	
 	if ($plugin_icons) {
-		echo "\n<!-- special plugin icons! -->\n".'<style type="text/css">'."\n";
+		echo "\n".'<style type="text/css">'."\n";
 		foreach($plugin_icons as $hook=>$icon) {
 			$hook = plugin_basename($hook);
 			echo "#oamsub_$hook a {background-image:url($icon);}\n";
@@ -158,8 +158,8 @@ function wp_ozh_adminmenu_build () {
 	// Dirty debugging: break page and dies
 	/**
 	echo "</ul><pre style='font-size:9px'>";
-	//echo '__MENU ';print_r($menu);
-	//echo 'SUBMENU ';print_r($submenu);
+	echo '__MENU  ';print_r($menu);
+	echo 'SUBMENU ';print_r($submenu);
 	echo 'ALTMENU ';print_r($altmenu);
 	die();
 	/**/
@@ -178,19 +178,15 @@ function wp_ozh_adminmenu_build () {
 }
 
 
-function wp_ozh_adminmenu_js($init = true) {
+function wp_ozh_adminmenu_js() {
 	global $wp_ozh_adminmenu;
 	
 	$submenu = $wp_ozh_adminmenu['display_submenu'] ? 'false': 'true';
 	$toomanyplugins = $wp_ozh_adminmenu['too_many_plugins'];
 	$fluency = function_exists('wp_admin_fluency_css') ? 'true' : 'false';
 
-	if ($init) {
-		$plugin_url = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__));
-		$insert_main_js = '<script src="'.$plugin_url.'/adminmenu.js" type="text/javascript"></script>';
-	} else {
-		$insert_main_js = '';
-	}
+	$plugin_url = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__));
+	$insert_main_js = '<script src="'.$plugin_url.'/adminmenu.js" type="text/javascript"></script>';
 
 	echo <<<JS
 <script type="text/javascript"><!--//--><![CDATA[//><!--
@@ -198,7 +194,6 @@ var oam_toomanypluygins = $toomanyplugins;
 var oam_adminmenu = false;
 var oam_fluency = $fluency;
 var oam_hidesubmenu = $submenu;
-
 jQuery(document).ready(function() {
 	// Do we need to init everything ?
 	var ozhmenu_uselesslinks = jQuery('#user_info p').html();
@@ -213,31 +208,24 @@ JS;
 }
 
 
-function wp_ozh_adminmenu_css($init = true) {
+function wp_ozh_adminmenu_css() {
 	global $wp_ozh_adminmenu, $pagenow;
-	
-	$submenu = ($wp_ozh_adminmenu['display_submenu'] or ($pagenow == "media-upload.php") ) ? '' : '#wpwrap #submenu li {display:none;}';
-	$fluency = (function_exists('wp_admin_fluency_css')) ? "#TB_overlay {z-index:99001;}\n#TB_window {z-index:99002;}" : '' ;
-	if ($submenu or $fluency) echo <<<CSS
-<style type="text/css">
-$submenu
-$fluency
-</style>
-CSS;
+		
+	$submenu = ($wp_ozh_adminmenu['display_submenu'] or ($pagenow == "media-upload.php") ) ? 1 : 0;
+	$fluency = (function_exists('wp_admin_fluency_css')) ? 1 : 0;
+	$plugin  = wp_make_link_relative(WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)));
+	$admin   = wp_make_link_relative(get_option('siteurl') . '/wp-admin');
+	$mu      = (function_exists('wp_ozh_adminmenu_blogswitch_init')) ? 1 : 0;
+	// Making links relative so they're more readable and shorter in the query string (also made relative in the .css.php)
+	$icons   = $wp_ozh_adminmenu['icons'];
+	echo '<link rel="stylesheet" href="'.$plugin."/adminmenu.css.php?admin=$admin&plugin=$plugin&icons=$icons&submenu=$submenu&fluency=$fluency&mu=$mu\" type=\"text/css\" media=\"all\" />\n";
 
-	if ($init) {
-		$plugin = wp_make_link_relative(WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)));
-		$admin = wp_make_link_relative(get_option('siteurl') . '/wp-admin');
-		$icons = $wp_ozh_adminmenu['icons'];
-		echo '<link rel="stylesheet" href="'.$plugin."/adminmenu.css.php?admin=$admin&plugin=$plugin&icons=$icons\" type=\"text/css\" media=\"all\" />\n";
-	}
 }
 
 
-function wp_ozh_adminmenu_head($init = true) {
-	if ($init === '') $init = true; // $init set to '' when this func is triggered by the add_action('admin_head')
-	wp_ozh_adminmenu_css($init);
-	wp_ozh_adminmenu_js($init);
+function wp_ozh_adminmenu_head() {
+	wp_ozh_adminmenu_css();
+	wp_ozh_adminmenu_js();
 
 }
 
@@ -245,7 +233,11 @@ function wp_ozh_adminmenu_head($init = true) {
 // Read plugin options or set default values
 function wp_ozh_adminmenu_init() {
 	global $wp_ozh_adminmenu;
-
+	
+	global $plugin_page, $pagenow;
+	$page_hook = get_plugin_page_hook($plugin_page, $pagenow);
+	add_action('load-'.$page_hook, 'wp_ozh_adminmenu_load_page'); // if we're on the plugin page, load translation file. Don't bother otherwise
+	
 	if ( !defined('WP_CONTENT_URL') )
 		define( 'WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
 	if ( !defined('WP_PLUGIN_URL') )
@@ -268,21 +260,35 @@ function wp_ozh_adminmenu_init() {
 	}
 	
 	$wp_ozh_adminmenu = array_merge($defaults, $wp_ozh_adminmenu);
+	// upon Fluency activation+deactivation, too_many_plugins can be 0, let's fix this
+	if (!$wp_ozh_adminmenu['too_many_plugins']) $wp_ozh_adminmenu['too_many_plugins'] = 30;
 	
 	// This plugin will have its own icon of course
 	add_filter( 'ozh_adminmenu_icon', 'wp_ozh_adminmenu_customicon');
+
+	add_filter( 'plugin_action_links', 'wp_ozh_adminmenu_plugin_actions', -10, 2);
 }
 
 
+// Stuff to do when loading the admin plugin page
+function wp_ozh_adminmenu_load_page() {
+	wp_ozh_adminmenu_load_text_domain();
+	if (isset($_POST['ozh_adminmenu']) && ($_POST['ozh_adminmenu'] == 1) )
+		wp_ozh_adminmenu_processform();
+}
+
+
+// Hooked into 'ozh_adminmenu_icon', this function give this plugin its own icon
 function wp_ozh_adminmenu_customicon($in) {
 	if ($in == 'ozh_admin_menu') return WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/images/ozh.png';
 	return $in;
 }
 
+
 function wp_ozh_adminmenu_add_page() {
 	add_options_page('Admin Drop Down Menu', 'Admin Menu', 'manage_options', 'ozh_admin_menu', 'wp_ozh_adminmenu_options_page_includes');
-	add_filter( 'plugin_action_links', 'wp_ozh_adminmenu_plugin_actions', -10, 2);
 }
+
 
 function wp_ozh_adminmenu_options_page_includes() {
 	require_once(dirname(__FILE__).'/options.php');
@@ -290,6 +296,7 @@ function wp_ozh_adminmenu_options_page_includes() {
 }
 
 
+// Add the 'Settings' link to the plugin page
 function wp_ozh_adminmenu_plugin_actions($links, $file) {
 	if ($file == plugin_basename(dirname(dirname(__FILE__)).'/wp_ozh_adminmenu.php'))
 		$links[] = "<a href='options-general.php?page=ozh_admin_menu'><b>Settings</b></a>";
@@ -297,11 +304,65 @@ function wp_ozh_adminmenu_plugin_actions($links, $file) {
 }
 
 
+// Translation wrapper
+function wp_ozh_adminmenu__($string) {
+	return __($string, 'adminmenu');
+}
+
+
+// Load translation file if any
+function wp_ozh_adminmenu_load_text_domain() {
+	$locale = get_locale();
+	$mofile = WP_PLUGIN_DIR.'/'.plugin_basename(dirname(__FILE__)).'/translations/adminmenu' . '-' . $locale . '.mo';
+	load_textdomain('adminmenu', $mofile);
+}
+
 
 function wp_ozh_adminmenu_footer() {
 	echo <<<HTML
 Thank you for using <a href="http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/">Admin Drop Down Menu</a>, a wonderful plugin by <a href="http://planetozh.com/blog/">Ozh</a><br/>
 HTML;
+}
+
+
+// Process $_POST
+function wp_ozh_adminmenu_processform() {
+
+	global $wp_ozh_adminmenu;
+	
+	check_admin_referer('ozh-adminmenu');
+	
+	// Debug:
+	// echo "<pre>";echo htmlentities(print_r($_POST,true));echo "</pre>";	
+	
+	switch ($_POST['action']) {
+	case 'update_options':
+	
+		$options['display_submenu'] = ($_POST['oam_displaysub']) ? '1' : '0';
+		$options['toplinks'] = ($_POST['oam_toplinks'])? '1' : '0';
+		$options['icons'] = ($_POST['oam_icons'])? '1' : '0';
+		$options['too_many_plugins'] = intval($_POST['oam_too_many_plugins']);
+		
+		if (!update_option('ozh_adminmenu', $options))
+			add_option('ozh_adminmenu', $options);
+			
+		$wp_ozh_adminmenu = array_merge( (array)$wp_ozh_adminmenu, $options );
+		
+		$msg = wp_ozh_adminmenu__("updated");
+		break;
+
+	case 'reset_options':
+		delete_option('ozh_adminmenu');
+		$msg = wp_ozh_adminmenu__("deleted");
+		break;
+	}
+
+	$message  = '<div id="message" class="updated fade">';
+	$message .= '<p>'.sprintf(wp_ozh_adminmenu__('Admin Drop Down Menu settings <strong>%s</strong>'), $msg)."</p>\n";
+	$message .= "</div>\n";
+
+	// 'admin_notices' is definitely under used, should use more!
+	add_action('admin_notices', create_function( '', "echo '$message';" ) );
 }
 
 

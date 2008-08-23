@@ -69,22 +69,36 @@ jQuery(document).ready(function() {
 		// Fluency conditional stuff. A few stuff disabled with this plugin.
 		if (!oam_fluency) {
 			// Resize menu if needed and bind the resize event
-			ozhmenu_resize();
+			if (!jQuery.browser.safari) ozhmenu_resize(); // Safari+Mac doesn't like this on load. Safari sucks to be honest.
 			jQuery(window).resize(function(){ozhmenu_resize();});
 			
-			// Transform the bubble element to point to edit-comments.php?comment_status=moderated
-			var moderated = jQuery('#awaiting-mod').parent().parent().attr('href') + '?comment_status=moderated';
-			jQuery('#awaiting-mod').wrap('<a href="'+moderated+'" style="display:inline;padding:0px"></a>');
-
+			// Give the comment bubble
+			
 			// Dynamically float submenu elements if there are too many
+			var menuresize = {};
 			jQuery('.ozhmenu_toplevel span').mouseover(
 				function(){
-					var menulength = jQuery(this).parent().parent().find('ul li').length;
-					if (menulength >= oam_toomanypluygins) {
-						jQuery(this).parent().parent().find('ul li').each(function(){
+					var target = jQuery(this).parent().parent().attr('id');
+					if (!target || menuresize[target]) return; // we've hovered a speech bubble, or we've already reworked this menu
+					var menulength = jQuery('#'+target+' ul li').length;
+					if (menulength > oam_toomanypluygins) {
+						var maxw = 0;
+						// float every item to the left and get the biggest size
+						jQuery('#'+target+' ul li').each(function(){
 							jQuery(this).css('float', 'left');
+							maxw = Math.max(parseInt(jQuery(this).css('width')), maxw);
 						});
+						// Resize the whole submenu
+						if (maxw) {
+							var cols = parseInt(menulength / oam_toomanypluygins)+1;
+							jQuery('#'+target+' ul li').each(function(){
+								jQuery(this).css('width', maxw+'px');
+							});
+							// Give the submenu a width = (max item width)*number of columns + 20px between each column
+							jQuery('#'+target+' ul').css('width', ( cols*maxw + (20*(cols-1)) )+'px');
+						}
 					}
+					menuresize[target] = true;
 				}
 			);
 

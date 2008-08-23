@@ -6,56 +6,8 @@ http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 
 global $wp_ozh_adminmenu;
 
-
-function wp_ozh_adminmenu_processform() {
-
-	global $wp_ozh_adminmenu;
-	
-	check_admin_referer('ozh-adminmenu');
-	
-	// Debug:
-	// echo "<pre>";echo htmlentities(print_r($_POST,true));echo "</pre>";	
-	
-	switch ($_POST['action']) {
-	case 'update_options':
-	
-		$options['display_submenu'] = ($_POST['oam_displaysub']) ? '1' : '0';
-		$options['toplinks'] = ($_POST['oam_toplinks'])? '1' : '0';
-		$options['icons'] = ($_POST['oam_icons'])? '1' : '0';
-		$options['too_many_plugins'] = intval($_POST['oam_too_many_plugins']);
-		
-		if (!update_option('ozh_adminmenu', $options))
-			add_option('ozh_adminmenu', $options);
-			
-		$wp_ozh_adminmenu = array_merge( (array)$wp_ozh_adminmenu, $options );
-		
-		$msg = wp_ozh_adminmenu__("updated");
-		break;
-
-	case 'reset_options':
-		delete_option('ozh_adminmenu');
-		$msg = wp_ozh_adminmenu__("deleted");
-		break;
-	}
-
-	echo '<div id="message" class="updated fade">';
-	echo '<p>'.sprintf(wp_ozh_adminmenu__('Admin Drop Down Menu settings <strong>%s</strong>'), $msg)."</p>\n";
-	echo "</div>\n";
-	wp_ozh_adminmenu_head(false);
-}
-
 function wp_ozh_adminmenu_options_page() {
 	global $wp_ozh_adminmenu;
-	
-	if (isset($_POST['ozh_adminmenu']) && ($_POST['ozh_adminmenu'] == 1) )
-		wp_ozh_adminmenu_processform();
-	
-	wp_ozh_adminmenu_init();
-	
-	// Load translation file if any
-	$locale = get_locale();
-	$mofile = WP_PLUGIN_DIR.'/'.plugin_basename(dirname(__FILE__)).'/translations/adminmenu' . '-' . $locale . '.mo';
-	load_textdomain('adminmenu', $mofile);	
 	
 	//echo "<pre>".wp_ozh_adminmenu_sanitize(print_r($wp_ozh_adminmenu,true))."</pre>";
 	
@@ -83,6 +35,8 @@ function wp_ozh_adminmenu_options_page() {
 	<?php printf(wp_ozh_adminmenu__("They're so cute (and they're from %s)"),'<a href="http://www.famfamfam.com/">famfamfam</a>'); ?>
 	</td></tr>
 
+	<?php if (!function_exists('wp_admin_fluency_css') ) { // stuff that are disabled with Fluency ?>
+	
     <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Submenus'); ?></th>
 	<td><label><input type="checkbox" <?php echo $checked_displaysub; ?> name="oam_displaysub"> <?php echo wp_ozh_adminmenu__('Display sub menus the regular way'); ?></label><br/>
 	<?php echo wp_ozh_adminmenu__("Some like it better when sub menus don't even need you to hover the top menu link"); ?>
@@ -92,6 +46,8 @@ function wp_ozh_adminmenu_options_page() {
 	<td><label><?php printf(wp_ozh_adminmenu__('Break if more than %s menu entries'), "<input type=\"text\" value=\"$too_many_plugins\" size=\"2\" name=\"oam_too_many_plugins\">"); ?></label><br/>
 	<?php echo wp_ozh_adminmenu__('If a dropdown gets longer than this value, it will switch to horizontal mode so that it will hopefully fit in your screen (requires javascript)'); ?>
 	</td></tr>
+	
+	<?php } ?>
 
     <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Top Links'); ?></th>
 	<td><label><input type="checkbox" <?php echo $checked_toplinks; ?> name="oam_toplinks"> <?php echo wp_ozh_adminmenu__('Make top links clickable'); ?></label><br/>
@@ -108,11 +64,9 @@ function wp_ozh_adminmenu_options_page() {
 	function oam_dance() {
 		var fontstyle, delay;
 		if (jQuery('#totallycrazy').css('font-style') == 'italic') {
-			fontstyle = 'normal';
-			delay = 1200;		
+			fontstyle = 'normal'; delay = 500;
 		} else {
-			fontstyle = 'italic';
-			delay = 200;		
+			fontstyle = 'italic'; delay = 200;
 		}
 		jQuery('#totallycrazy').css('font-style',fontstyle);
 		oam_danceagain(delay);
@@ -124,7 +78,7 @@ function wp_ozh_adminmenu_options_page() {
 	</tbody></table>
 	
 	<p class="submit">
-	<input name="submit" value="<?php echo wp_ozh_adminmenu__('Save Changes');?>" type="submit" /> <?php echo wp_ozh_adminmenu__('(might need a page refresh here)');?>
+	<input name="submit" value="<?php echo wp_ozh_adminmenu__('Save Changes');?>" type="submit" />
 	</p>
 
 	</form>
@@ -152,12 +106,6 @@ function wp_ozh_adminmenu_options_page() {
 <?php
 
 }
-
-// Translation wrapper
-function wp_ozh_adminmenu__($string) {
-	return __($string, 'adminmenu');
-}
-
 
 // Sanitize string for display: escape HTML but preserve UTF8 (or whatever)
 function wp_ozh_adminmenu_sanitize($string) {
