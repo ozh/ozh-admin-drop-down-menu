@@ -3,7 +3,7 @@
 Plugin Name: Ozh' Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Description: Replaces admin menus with a CSS dropdown menu bar. Saves lots of clicks and page loads! <strong>For WordPress 2.5+</strong>
-Version: 2.3.4
+Version: 2.3.4.1
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
@@ -46,6 +46,7 @@ Author URI: http://planetOzh.com/
 			  Fixed: Bug with Safari and the resize menu stuff
 			  Added: French and Italian translations
 			  Improved: Support for WordPress Mu with specific icons
+ * 2.3.4.1:   Fixed, or maybe not: same bug with Safari on Mac. This browser is a crap, Safari users I pity you.
  */
 
 

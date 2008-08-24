@@ -37,9 +37,9 @@ jQuery(document).ready(function() {
 		jQuery('#ozhmenu li.ozhmenu_over').css('background-color', ozhmenu_bgcolor).css('color', ozhmenu_color);
 		jQuery('#ozhmenu li .current').css('background-color', ozhmenu_bgcolor).css('color', ozhmenu_color);
 		// Remove original menus (this is, actually, not needed, since the CSS should have taken care of this)
-		jQuery('#sidemenu').hide();
-		jQuery('#adminmenu').hide();
-		jQuery('#dashmenu').hide();
+		jQuery('#sidemenu').remove();
+		jQuery('#adminmenu').remove();
+		jQuery('#dashmenu').remove();
 		jQuery('#user_info').css('right','1em');
 		if (oam_hidesubmenu) {
 			jQuery('#wpwrap #submenu').html('');
@@ -69,10 +69,10 @@ jQuery(document).ready(function() {
 		// Fluency conditional stuff. A few stuff disabled with this plugin.
 		if (!oam_fluency) {
 			// Resize menu if needed and bind the resize event
-			if (!jQuery.browser.safari) ozhmenu_resize(); // Safari+Mac doesn't like this on load. Safari sucks to be honest.
-			jQuery(window).resize(function(){ozhmenu_resize();});
-			
-			// Give the comment bubble
+			if (!jQuery.browser.safari) { // Safari on Mac doesn't like this. Safari sucks to be honest.
+				ozhmenu_resize(); 
+				jQuery(window).resize(function(){ozhmenu_resize();});
+			}
 			
 			// Dynamically float submenu elements if there are too many
 			var menuresize = {};

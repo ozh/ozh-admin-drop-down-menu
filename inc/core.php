@@ -218,15 +218,13 @@ function wp_ozh_adminmenu_css() {
 	$mu      = (function_exists('wp_ozh_adminmenu_blogswitch_init')) ? 1 : 0;
 	// Making links relative so they're more readable and shorter in the query string (also made relative in the .css.php)
 	$icons   = $wp_ozh_adminmenu['icons'];
-	echo '<link rel="stylesheet" href="'.$plugin."/adminmenu.css.php?admin=$admin&plugin=$plugin&icons=$icons&submenu=$submenu&fluency=$fluency&mu=$mu\" type=\"text/css\" media=\"all\" />\n";
-
+	echo '<link rel="stylesheet" href="'.$plugin."/adminmenu.css.php?admin=$admin&amp;plugin=$plugin&amp;icons=$icons&amp;submenu=$submenu&amp;fluency=$fluency&amp;mu=$mu\" type=\"text/css\" media=\"all\" />\n";
 }
 
 
 function wp_ozh_adminmenu_head() {
 	wp_ozh_adminmenu_css();
 	wp_ozh_adminmenu_js();
-
 }
 
 
@@ -247,7 +245,6 @@ function wp_ozh_adminmenu_init() {
 	if ( !defined('WP_PLUGIN_DIR') )
 		define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' ); // full path, no trailing slash
 	
-
 	$defaults = array(
 		'display_submenu' => 0,
 		'too_many_plugins' => 30,
