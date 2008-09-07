@@ -47,6 +47,7 @@ Author URI: http://planetOzh.com/
 			  Added: French and Italian translations
 			  Improved: Support for WordPress Mu with specific icons
  * 2.3.4.1:   Fixed, or maybe not: same bug with Safari on Mac. This browser is a crap, Safari users I pity you.
+ * 2.3.4.2:   Fixed: potential incompatibility with plugins using post-admin.php
  */
 
 
@@ -56,7 +57,7 @@ if (is_admin()) {
 	global $wp_ozh_adminmenu;
 	require_once(dirname(__FILE__).'/inc/core.php');
 	add_action('init', create_function('', 'wp_enqueue_script("jquery");')); // Make sure jQuery is always loaded
-	add_action('admin_init', 'wp_ozh_adminmenu_init');	// Init plugin defaults or read options
+	add_action('admin_menu', 'wp_ozh_adminmenu_init', -1000);	// Init plugin defaults or read options
 	add_action('admin_menu', 'wp_ozh_adminmenu_add_page', -999); // Add option page
 	add_action('dashmenu', 'wp_ozh_adminmenu'); // Replace the menus with our stuff
 	add_action('admin_head', 'wp_ozh_adminmenu_head', 999); // Insert CSS & JS in <head>
