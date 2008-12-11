@@ -6,61 +6,215 @@ http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 
 global $wp_ozh_adminmenu;
 
+function wp_ozh_adminmenu_checkbox($chk) {
+	global $wp_ozh_adminmenu;
+	$checked = ($wp_ozh_adminmenu[$chk] == 1) ? 'checked="checked"' : '' ;
+	echo <<<CHK
+</label><input type="hidden" value="0" name="oam_$chk"/><label><input type="checkbox" id="oam_check_$chk" $checked name="oam_$chk" value="1">
+CHK;
+
+}
+
 function wp_ozh_adminmenu_options_page() {
 	global $wp_ozh_adminmenu;
 	
-	//echo "<pre>".wp_ozh_adminmenu_sanitize(print_r($wp_ozh_adminmenu,true))."</pre>";
+	/**
+	echo "<pre>".wp_ozh_adminmenu_sanitize(print_r($_POST,true))."</pre>";
+	echo "<pre>".wp_ozh_adminmenu_sanitize(print_r($wp_ozh_adminmenu,true))."</pre>";
+	/**/
 	
-	$checked_displaysub = ($wp_ozh_adminmenu['display_submenu'] == 1) ? 'checked="checked"' : '' ;
-	$checked_icons = ($wp_ozh_adminmenu['icons'] == 1) ? 'checked="checked"' : '' ;
-	$checked_toplinks = ($wp_ozh_adminmenu['toplinks'] == 1) ? 'checked="checked"' : '' ;
 	$too_many_plugins = intval($wp_ozh_adminmenu['too_many_plugins']);
+	$grad = $wp_ozh_adminmenu['grad'];
 	
 	echo '
 	<style type="text/css">
 	.wrap {margin-bottom:2em}
+	.wrap ul {list-style-type:disc;padding-left:3em;}
+	input {border:0}
+	#oam_cp_wrap {overflow:hidden;}
+	#oam_cp_toggle {vertical-align:-2px;cursor:pointer}
+	.oam_cp_preset {cursor:pointer;float:left;width:30px;height:30px;-moz-border-radius:30px;-webkit-border-radius:30px;margin:4px 5px 2px 5px;}
+	#oam_colorpicker {float:left;}
+	
 	</style>
     <div class="wrap">
-    <h2>Admin Drop Down Menu</h2>
+    <div class="icon32" id="icon-options-general"><br/></div><h2>Admin Drop Down Menu</h2>
     <form method="post" action="">
 	';
 	wp_nonce_field('ozh-adminmenu');
 ?>
+	<h3>Icons and Colors</h3>
 	<table class="form-table"><tbody>
 	<input type="hidden" name="ozh_adminmenu" value="1"/>
     <input type="hidden" name="action" value="update_options">
 	
-    <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Icons'); ?></th>
-	<td><label><input type="checkbox" <?php echo $checked_icons; ?> name="oam_icons"> <?php echo wp_ozh_adminmenu__('Display menu icons');?></label><br/>
+    <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Top Level Icons'); ?></th>
+	<td><label><?php wp_ozh_adminmenu_checkbox('wpicons'); ?> <?php echo wp_ozh_adminmenu__('Display original menu icons in top level links');?></label><br/>
+	<?php printf(wp_ozh_adminmenu__('Checking this enables Compact Mode &darr;')); ?>
+	</td></tr>
+
+    <tr id="oam_compact_row" <?php echo ($wp_ozh_adminmenu['wpicons'] ? '' : 'style="display:none"') ?>><th scope="row"><?php echo wp_ozh_adminmenu__('Compact Mode'); ?></th>
+	<td><label><?php wp_ozh_adminmenu_checkbox('compact'); ?> <?php echo wp_ozh_adminmenu__('Shrink top level links down to their icons');?></label><br/>
+	<?php printf(wp_ozh_adminmenu__('That was a cool WordPress feature, so I stole it :)')); ?>
+	</td></tr>
+
+    <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Sublevel Icons'); ?></th>
+	<td><label><?php wp_ozh_adminmenu_checkbox('icons'); ?>  <?php echo wp_ozh_adminmenu__('Display icons in drop down menus');?></label><br/>
 	<?php printf(wp_ozh_adminmenu__("They're so cute (and they're from %s)"),'<a href="http://www.famfamfam.com/">famfamfam</a>'); ?>
 	</td></tr>
 
-	<?php if (!function_exists('wp_admin_fluency_css') ) { // stuff that are disabled with Fluency ?>
+    <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Gradient'); ?></th>
+	<td><input type="text" id="oam_grad" name="oam_grad" size="7" value="<?php echo $grad ?>" /><img id="oam_cp_toggle" src="<?php echo WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/images/'; ?>color_wheel.png" /> <label for="oam_grad"><?php printf(wp_ozh_adminmenu__("Pick a color for your menu bar, using the color wheel or one of the presets")); ?>
+	<div id="oam_cp_wrap">
+	<div id="oam_colorpicker" style="display:none"></div>
+	<?php
+	$colors = array(
+		'#cad2da',
+		'#e61fea',
+		'#6969ce',
+		'#c91313',
+		'#057979',
+		'#078208',
+		'#676768',
+		'#81b7ee',
+		'#ee8c81',
+		'#eb8d19',
+		'#6cd440',
+	);	
+	$bgurl = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/images/grad-trans.png';
+	foreach ($colors as $color) {
+		echo '
+		<div class="oam_cp_preset" title="'.$color.'" style="background:'.$color.' url('.$bgurl.') repeat-x left top;"></div>
+		';
+	} ?>
+	</div>
 	
-    <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Submenus'); ?></th>
-	<td><label><input type="checkbox" <?php echo $checked_displaysub; ?> name="oam_displaysub"> <?php echo wp_ozh_adminmenu__('Display sub menus the regular way'); ?></label><br/>
-	<?php echo wp_ozh_adminmenu__("Some like it better when sub menus don't even need you to hover the top menu link"); ?>
+	</td></tr>
+
+	</tbody></table>
+	<h3>Advanced Settings</h3>
+	<table class="form-table"><tbody>
+
+    <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Minimal Mode'); ?></th>
+	<td><label><?php wp_ozh_adminmenu_checkbox('minimode'); ?>  <?php echo wp_ozh_adminmenu__('Hide header'); ?></label><br/>
+	<?php echo wp_ozh_adminmenu__("Remove the whole header bar for maximum screen real estate. The quick link to your blog will be added in the submenu, the Logout link in the Users menu."); ?>
+	</td></tr>
+
+    <tr id="oam_fav_row" <?php echo ($wp_ozh_adminmenu['displayfav'] ? '' : 'style="display:none"') ?>><th scope="row"><?php echo wp_ozh_adminmenu__('Favorite Actions'); ?></th>
+	<td><label><?php wp_ozh_adminmenu_checkbox('displayfav'); ?>  <?php echo wp_ozh_adminmenu__('Display Favorite Actions'); ?></label><br/>
+	<?php echo wp_ozh_adminmenu__("Just in case you realize you don't need this anymore with such a fast and usable menu."); ?>
 	</td></tr>
 	
     <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Break Long Lists'); ?></th>
 	<td><label><?php printf(wp_ozh_adminmenu__('Break if more than %s menu entries'), "<input type=\"text\" value=\"$too_many_plugins\" size=\"2\" name=\"oam_too_many_plugins\">"); ?></label><br/>
 	<?php echo wp_ozh_adminmenu__('If a dropdown gets longer than this value, it will switch to horizontal mode so that it will hopefully fit in your screen (requires javascript)'); ?>
 	</td></tr>
-	
-	<?php } ?>
 
     <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Top Links'); ?></th>
-	<td><label><input type="checkbox" <?php echo $checked_toplinks; ?> name="oam_toplinks"> <?php echo wp_ozh_adminmenu__('Make top links clickable'); ?></label><br/>
+	<td><label><?php wp_ozh_adminmenu_checkbox('toplinks'); ?>  <?php echo wp_ozh_adminmenu__('Make top links clickable'); ?></label><br/>
 	<?php echo wp_ozh_adminmenu__('Uncheck this option to improve compatibility with browsers that cannot handle the "hover" event (<em>ie</em> most handheld devices)'); ?>
 	</td></tr>
 	
+    <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Hide "0" Bubbles'); ?></th>
+	<td><label><?php wp_ozh_adminmenu_checkbox('hidebubble'); ?> <?php echo wp_ozh_adminmenu__('Hide speech bubbles when no awaiting comments or outdated plugins'); ?></label><br/>
+	<?php echo wp_ozh_adminmenu__('Check if those tiny "0" speech bubble are too distracting for your taste'); ?>
+	</td></tr>
+
     <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Give Some &hearts;'); ?></th>
 	<td><?php printf(wp_ozh_adminmenu__('Do you like this plugin? Then <a href="%s">rate it 5 Stars</a> on the official Plugin Directory!'),'http://wordpress.org/extend/plugins/ozh-admin-drop-down-menu/'); ?><br/>
 	<?php printf(wp_ozh_adminmenu__('Do you <em>love</em> this plugin? Please <a href="%s">blog about it</a>! Tell your readers you like it so they will discover, try and hopefully like it too&nbsp;:)'),'post-new.php'); ?><br/>
 	<?php printf(wp_ozh_adminmenu__('Are you <span id="totallycrazy">crazy</span> about this plugin? <a href="%s">Paypal me a beer</a>! Every donation warms my heart and motivates me to release free stuff!'),'http://planetozh.com/exit/donate'); ?>
 	</td></tr>
+
+	</tbody></table>
+	
 	
 	<script type="text/javascript">
+	var wpicons = <?php echo $wp_ozh_adminmenu['wpicons']; ?>;
+
+	// Top level icons
+	jQuery('#oam_check_wpicons').click(function(){
+		oam_toggle_row('#oam_compact_row');
+		if (jQuery(this).attr('checked')) {
+			jQuery('#ozhmenu .ozhmenu_toplevel a.menu-top').css('padding', '0 5px 0 1px');
+		} else {
+			if (jQuery('#oam_check_compact').attr('checked')) {
+				jQuery('#oam_check_compact').click();
+			}
+			jQuery('#ozhmenu .ozhmenu_toplevel a.menu-top').css('padding', '0px 10px');
+		}
+		jQuery('li.ozhmenu_toplevel div.wp-menu-image, li.ozhmenu_toplevel img').toggle();
+	});
+
+	// Compact mode
+	jQuery('#oam_check_compact').click(function(){
+		jQuery('.ozhmenu_toplevel span.compact').toggle();
+		jQuery('.ozhmenu_toplevel span.full').toggle();
+		jQuery('.toplevel_label').toggle();
+	});
+	
+	// Sublevel icons
+	// TODO
+	
+	
+	// Color picking
+	var f;
+	f = jQuery.farbtastic('#oam_colorpicker', function(){oam_gradient()});
+	f.linkTo(jQuery('#oam_grad')).setColor(jQuery('#oam_grad').val());
+	f.linkTo(function(col){oam_gradient(col)});
+	function oam_gradient(col) {
+		jQuery('#ozhmenu, #ozhmenu li.ozhmenu_over, #ozhmenu li .wp-has-current-submenu').css('backgroundColor', col);
+		f.linkTo(jQuery('#oam_grad')).setColor(col);
+		f.linkTo(function(col){oam_gradient(col)});
+	}
+	jQuery('#oam_cp_toggle').click(function(){
+		jQuery('#oam_colorpicker').toggle(300);
+	});
+	jQuery('.oam_cp_preset').click(function(){
+		oam_gradient(jQuery(this).attr('title'));
+	});
+	
+	
+	
+	// Minimode
+	jQuery('#oam_check_minimode').click(function(){
+		jQuery('#wphead').slideToggle();
+		oam_toggle_row('#oam_fav_row');
+	});
+	
+	// Display favs
+	jQuery('#oam_check_displayfav').click(function(){
+		jQuery('#favorite-actions').toggle(200);
+	});
+
+	// Hide bubbles
+	jQuery('#oam_check_hidebubble').click(function(){
+		var display = (jQuery(this).attr('checked')) ? 'none' : 'inline';
+		jQuery('li.ozhmenu_toplevel span.count-0').css('display', display);
+	});
+
+	/* functions */
+
+	
+	// Row toggling on checkbox change
+	function oam_toggle_row(row) {
+		var row = jQuery(row);
+		if (row.css('display') == 'none') {
+			var bg = row.css('backgroundColor');
+			row.fadeIn(900);
+		} else {
+			row.fadeOut(600);
+		}
+	}
+
+	// Preset div styling
+	function oam_label_border(color) {
+		jQuery('.oam_label').css({'border':'0px','margin':'2px 10px 0 2px'});
+		jQuery('#oam_label_'+color).css({'border':'2px solid #111','margin':'0 8px 0 0'});
+	}
+	//oam_label_border('<?php echo $wp_ozh_adminmenu['grad']; ?>');
+
+	// The silly dancing word
 	function oam_dance() {
 		var fontstyle, delay;
 		if (jQuery('#totallycrazy').css('font-style') == 'italic') {
@@ -72,13 +226,11 @@ function wp_ozh_adminmenu_options_page() {
 		oam_danceagain(delay);
 	}
 	function oam_danceagain(delay) {setTimeout(function(){oam_dance();}, delay);}
-	oam_danceagain(100);	
+	oam_danceagain(100);
 	</script>
 
-	</tbody></table>
-	
 	<p class="submit">
-	<input name="submit" value="<?php echo wp_ozh_adminmenu__('Save Changes');?>" type="submit" />
+	<input name="submit" class="button-primary" value="<?php echo wp_ozh_adminmenu__('Save Changes');?>" type="submit" />
 	</p>
 
 	</form>

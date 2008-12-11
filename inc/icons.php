@@ -31,10 +31,17 @@ $wp_ozh_adminmenu['icon_names'] = array(
 'options-privacy.php' => 'eye',
 'options-permalink.php' => 'link_edit',
 'options-misc.php' => 'wrench_orange',
-'plugins.php' => 'plugin_add',
+'plugins.php' => 'plugin',
+'plugin-install.php' => 'plugin_add',
 'plugin-editor.php' => 'plugin_edit',
 'users.php' => 'group',
-'profile.php' => 'user'
+'user-new.php' => 'user_add',
+'ozh_admin_menu_logout' => 'cancel',
+'profile.php' => 'user',
+'options-media.php' => 'image_options',
+'tools.php' => 'application_lightning',
+'update-core' => 'wordpress_icon',
+'media-new.php' => 'image_add'
 );
 
 $wp_ozh_adminmenu['icon_names_mu'] = array(

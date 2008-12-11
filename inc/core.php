@@ -4,55 +4,162 @@ Part of Plugin: Ozh' Admin Drop Down Menu
 http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 */
 
-function wp_ozh_adminmenu() {
-	global $wp_ozh_adminmenu;
+function wp_ozh_adminmenu () {
+	global $menu, $submenu, $self, $parent_file, $submenu_file, $plugin_page, $pagenow, $wp_ozh_adminmenu;
+	
+	// echo "<pre>";print_r($menu);print_r($submenu);echo "</pre>";
+	
+	$ozh_menu = '<div id="ozhmenu_wrap"><ul id="ozhmenu">';
+	
+	if ($wp_ozh_adminmenu['minimode'])
+		$ozh_menu .= '<li id="oam_bloglink" class="ozhmenu_toplevel">'.wp_ozh_adminmenu_blogtitle().'</li>';
 
-	$menu = wp_ozh_adminmenu_build();
-	
-	echo "</ul>"; // close original <ul id="dashmenu"> before we add ours
-	
-	$ozh_menu = '<ul id="ozhmenu">'; 
-	
-	foreach ($menu as $k=>$v) {
-		$url 	= $v['url'];
-		$name 	= $k;
-		$id 	= 'oam_'.str_replace('.php','',$k);
-		$anchor = $v['name'];
-		$class	= $v['class'];
-		if ($wp_ozh_adminmenu['toplinks']) {
-			$href = "href='$url'";
+	$first = true;
+	// 0 = name, 1 = capability, 2 = file, 3 = class, 4 = id, 5 = icon src
+	foreach ( $menu as $key => $item ) {
+		// Top level menu
+		if (strpos($item[4],'wp-menu-separator') !== false)
+			continue;
+		
+		$admin_is_parent = false;
+		$class = array();
+		if ( $first ) {
+			$class[] = 'wp-first-item';
+			$first = false;
+		}
+		if ( !empty($submenu[$item[2]]) )
+			$class[] = 'wp-has-submenu';
+
+		if ( ( $parent_file && $item[2] == $parent_file ) || strcmp($self, $item[2]) == 0 ) {
+			if ( !empty($submenu[$item[2]]) )
+				$class[] = 'wp-has-current-submenu current wp-menu-open';
+			else
+				$class[] = 'current';
+		}
+
+		if ( isset($item[4]) && ! empty($item[4]) )
+			$class[] = $item[4];
+
+		$class = $class ? ' class="' . join( ' ', $class ) . '"' : '';
+		$id = isset($item[5]) && ! empty($item[5]) ? 'oam_' . $item[5] : '';
+		$anchor = $item[0];
+		if ($wp_ozh_adminmenu['compact']) {
+			$compactstyle = 'inline';
+			$fullstyle = 'none';
 		} else {
-			$href =  ( $v['sub'] )? '' : "href='$url'" ;
+			$compactstyle = 'none';
+			$fullstyle = 'inline';
+		}
+
+		if ( $submenu_as_parent && !empty($submenu[$item[2]]) ) {
+			$submenu[$item[2]] = array_values($submenu[$item[2]]);  // Re-index.
+			$menu_hook = get_plugin_page_hook($submenu[$item[2]][0][2], $item[2]);
+			if ( file_exists(WP_PLUGIN_DIR . "/{$submenu[$item[2]][0][2]}") || !empty($menu_hook)) {
+				$admin_is_parent = true;
+				$href = "admin.php?page={$submenu[$item[2]][0][2]}";
+			} else {
+				$href = $submenu[$item[2]][0][2];
+			}
+		} else if ( current_user_can($item[1]) ) {
+			$menu_hook = get_plugin_page_hook($item[2], 'admin.php');
+			if ( file_exists(WP_PLUGIN_DIR . "/{$item[2]}") || !empty($menu_hook) ) {
+				$admin_is_parent = true;
+				$href = "admin.php?page={$item[2]}";
+			} else {
+				$href = $item[2];
+			}
 		}
 		
-		$ozh_menu .= "\t<li class='ozhmenu_toplevel' id='$id'><a $href $class><span>$anchor</span></a>";
-		if (is_array($v['sub'])) {
-			
-			$ulclass='';
-			if ($class) $ulclass = " class='ulcurrent'";
-			$ozh_menu .= "\n\t\t<ul$ulclass>\n";
-
-			foreach ($v['sub'] as $subk=>$subv) {
-				$id = 'oamsub_'.str_replace(array('.php','.','/'),array('','_','_'),$subk);
-				$suburl = $subv['url'];
-				$subanchor = $subv['name'];
-				$icon = $subv['icon'];
-				if ($subv['hook'] && $wp_ozh_adminmenu['icons']) {
-					// we're dealing with a plugin, does it have a special icon?
-					$plugin_icon = apply_filters('ozh_adminmenu_icon', $subv['hook']);
-					// if no filter is defined, $plugin_icon = $subv['hook'], otherwise keep track of the returned value
-					if ($plugin_icon != $subv['hook']) {
-						$plugin_icons[str_replace(array('.php','.','/'),array('','_','_'),$subv['hook'])] = $plugin_icon;
-					}
-				}
-				$subclass='';
-				if (array_key_exists('class',$subv)) $subclass=$subv['class'];
-				$ozh_menu .= "\t\t\t<li class='ozhmenu_sublevel $icon' id='$id'><a href='$suburl'$subclass>$subanchor</a></li>\n";
-			}
-			$ozh_menu .= "\t</ul>\n";
+		$imgstyle = ($wp_ozh_adminmenu['wpicons']) ? '' : 'style="display:none"';
+		$img = '';
+		if ( isset($item[6]) && ! empty($item[6]) ) {
+			if ( 'div' === $item[6] )
+				$img = '<div '.$imgstyle.' class="wp-menu-image"><br /></div>';
+			else
+				$img = '<img '.$imgstyle.' class="wp-menu-image" src="' . $item[6] . '" alt="" />';
 		}
-		$ozh_menu .="\t</li>\n";
+
+		
+		if ($wp_ozh_adminmenu['toplinks']) {
+			$href = "href='$href'";
+		} else {
+			$href =  ( !empty($submenu[$item[2]]) )? '' : "href='$href'" ;
+		}
+		
+		
+		$ozh_menu .= "\t<li class='ozhmenu_toplevel' id='$id'><a $href $class>{$img}<span class='compact' style='display:$compactstyle'>&nbsp;</span><span class='full' style='display:$fullstyle'>$anchor</span></a>";
+
+		// Sub level menus
+		if ( !empty($submenu[$item[2]]) ) {
+			$ozh_menu .= "\n\t\t<ul$ulclass><li class='toplevel_label'>$anchor</li>\n";
+			$first = true;
+			foreach ( $submenu[$item[2]] as $sub_key => $sub_item ) {
+				if ( !current_user_can($sub_item[1]) )
+					continue;
+
+				$class = array();
+				if ( $first ) {
+					$class[] = 'wp-first-item';
+					$first = false;
+				}
+				if ( isset($submenu_file) ) {
+					if ( $submenu_file == $sub_item[2] )
+						$class[] = 'current';
+				// If plugin_page is set the parent must either match the current page or not physically exist.
+				// This allows plugin pages with the same hook to exist under different parents.
+				} else if ( (isset($plugin_page) && $plugin_page == $sub_item[2] && (!file_exists($item[2]) || ($item[2] == $self))) || (!isset($plugin_page) && $self == $sub_item[2]) ) {
+					$class[] = 'current';
+				}
+
+				$subclass = $class ? ' class="' . join( ' ', $class ) . '"' : '';
+
+				$menu_hook = get_plugin_page_hook($sub_item[2], $item[2]);
+				
+				if ( file_exists(WP_PLUGIN_DIR . "/{$sub_item[2]}") || ! empty($menu_hook) ) {
+					// If admin.php is the current page or if the parent exists as a file in the plugins or admin dir
+					$parent_exists = (!$admin_is_parent && file_exists(WP_PLUGIN_DIR . "/{$item[2]}") && !is_dir(WP_PLUGIN_DIR . "/{$item[2]}") ) || file_exists($item[2]);
+					if ( $parent_exists )
+						$suburl = "{$item[2]}?page={$sub_item[2]}";
+					elseif ( 'admin.php' == $pagenow || !$parent_exists )
+						$suburl = "admin.php?page={$sub_item[2]}";
+					else
+						$suburl = "{$item[2]}?page={$sub_item[2]}";
+						
+					// Get icons?
+					if ($wp_ozh_adminmenu['icons']) {
+						$plugin_icon = apply_filters('ozh_adminmenu_icon', $sub_item[2]);
+						if ($plugin_icon != $sub_item[2]) {
+							// we have an icon: no default plugin class & we store the icon location
+							$plugin_icons[wp_ozh_adminmenu_sanitize_id($sub_item[2])] = $plugin_icon;
+							$icon = '';
+						} else {
+							// no icon: default plugin class
+							$icon = 'oam_plugin';
+						}
+					}
+				} else {
+					$suburl = $sub_item[2];
+				}
+
+				// Custom logout menu?
+				if ($sub_item[2] == 'ozh_admin_menu_logout')
+					$suburl = wp_logout_url();				
+				
+				$subid = 'oamsub_'.wp_ozh_adminmenu_sanitize_id($sub_item[2]);
+				$subanchor = strip_tags($sub_item[0]);
+
+				$ozh_menu .= "\t\t\t<li class='ozhmenu_sublevel $icon' id='$subid'><a href='$suburl'$subclass>$subanchor</a></li>\n";
+			}			
+			
+			$ozh_menu .=  "</ul>";
+		}
+		$ozh_menu .=  "</li>";
 	}
+	
+	// On minimode, add the logout link on last position of the "users" menu
+	// '<li><a href="'.wp_logout_url().'" title="'. __('Log Out') .'">'.__('Log Out').'</a></li>'
+	
+	$ozh_menu .= "</ul></div>";
 	
 	if ($plugin_icons) {
 		echo "\n".'<style type="text/css">'."\n";
@@ -64,127 +171,36 @@ function wp_ozh_adminmenu() {
 	}
 	
 	echo $ozh_menu;
-	
 }
- 
- 
-/* Core stuff : builds an array populated with all the infos needed for menu and submenu */
-function wp_ozh_adminmenu_build () {
-	global $menu, $submenu, $plugin_page, $pagenow;
-	
-	/* Most of the following garbage are bits from admin-header.php,
-	 * modified to populate an array of all links to display in the menu
-	 */
-	 
-	$self = preg_replace('|^.*/wp-admin/|i', '', $_SERVER['PHP_SELF']);
-	$self = preg_replace('|^.*/plugins/|i', '', $self);
-	
-	// Other plugins can use add_filter('pre_ozh_adminmenu_menu', 'my_function') to modify $menu as WP defines it
-	$menu = apply_filters('pre_ozh_adminmenu_menu', $menu);
-	
-	/* Make sure that "Manage" always stays the same. Stolen from Andy @ YellowSwordFish */
-	$menu[5][0] = __("Write");
-	$menu[5][1] = "edit_posts";
-	$menu[5][2] = "post-new.php";
-	$menu[10][0] = __("Manage");
-	$menu[10][1] = "edit_posts";
-	$menu[10][2] = "edit.php";
 
-	// Other plugins can use add_filter('ozh_adminmenu_menu', 'my_function') to modify our modified $menu
-	$menu = apply_filters('ozh_adminmenu_menu', $menu);
-	
-	// The array containing all menu entries
-	$altmenu = array();
-	
-	// Other plugins can use add_filter('pre_ozh_adminmenu_altmenu', 'my_function') to "pre-populate" $altmenu
-	$altmenu = apply_filters('pre_ozh_adminmenu_altmenu', $altmenu );
-	
-	/* Step 1 : populate first level menu as per user rights */
-	foreach ($menu as $item) {
-		// 0 = name, 1 = capability, 2 = file
-		if ( current_user_can($item[1]) ) {
-			if ( file_exists(ABSPATH . "wp-admin/{$item[2]}"))
-				$altmenu[$item[2]]['url'] = get_option('siteurl') . "/wp-admin/{$item[2]}";
-			else
-				$altmenu[$item[2]]['url'] = get_option('siteurl') . "/wp-admin/admin.php?page={$item[2]}";			
-				
-			if (( strcmp($self, $item[2]) == 0 && empty($parent_file)) || ($parent_file && ($item[2] == $parent_file)))
-			$altmenu[$item[2]]['class'] = " class='current'";
-			
-			$altmenu[$item[2]]['name'] = $item[0];
-
-			/* Windows installs may have backslashes instead of slashes in some paths, fix this */
-			$altmenu[$item[2]]['name'] = str_replace(chr(92),chr(92).chr(92),$altmenu[$item[2]]['name']);
-		}
+function wp_ozh_adminmenu_blogtitle() {
+	$blogname = get_bloginfo('name', 'display');
+	if ( '' == $blogname )
+		$blogname = '&nbsp;';
+	$title_class = '';
+	if ( function_exists('mb_strlen') ) {
+		if ( mb_strlen($blogname, 'UTF-8') > 30 )
+			$title_class = 'class="long-title"';
+	} else {
+		if ( strlen($blogname) > 30 )
+			$title_class = 'class="long-title"';
 	}
+	$url = trailingslashit( get_bloginfo('url') );
 	
-	/* Step 2 : populate second level menu */
-	foreach ($submenu as $k=>$v) {
-		foreach ($v as $item) {
-			if (array_key_exists($k,$altmenu) and current_user_can($item[1])) {
-				
-				// What's the link ?
-				$menu_hook = get_plugin_page_hook($item[2], $k);
-
-				if (file_exists(ABSPATH . "wp-content/plugins/{$item[2]}") || ! empty($menu_hook)) {
-					list($_plugin_page,$temp) = explode('?',$altmenu[$k]['url']);
-					$link = $_plugin_page.'?page='.$item[2];
-					$altmenu[$k]['sub'][$item[2]]['icon'] = 'oam_plugin';
-					$altmenu[$k]['sub'][$item[2]]['hook'] = $item[2];
-				} else {
-					$link =  $item[2];
-					$altmenu[$k]['sub'][$item[2]]['icon'] = 'oam_'.str_replace(array('.php','.','/'),array('','_','_'),$item[2]);
-				}
-				
-				/* Windows installs may put backslashes instead of slashes in paths, fix this */
-				$link = str_replace(chr(92),chr(92).chr(92),$link);
-				
-				$altmenu[$k]['sub'][$item[2]]['url'] = $link;
-				
-				// Is it current page ?
-				$class = '';
-				if ( (isset($plugin_page) && $plugin_page == $item[2] && $pagenow == $k) || (!isset($plugin_page) && $self == $item[2] ) ) $class=" class='current'";
-				if ($class) {
-					$altmenu[$k]['sub'][$item[2]]['class'] = $class;
-					$altmenu[$k]['class'] = $class;
-				}
-				
-				// What's its name again ?
-				$altmenu[$k]['sub'][$item[2]]['name'] = $item[0];
-			}
-		}
-	}
-	
-	// Dirty debugging: break page and dies
-	/**
-	echo "</ul><pre style='font-size:9px'>";
-	echo '__MENU  ';print_r($menu);
-	echo 'SUBMENU ';print_r($submenu);
-	echo 'ALTMENU ';print_r($altmenu);
-	die();
-	/**/
-		
-	// Clean debugging: prints after footer
-	/**
-	global $wpdb;
-	$wpdb->wp_ozh_adminmenu_neat_array = "<pre style='font-size:80%'>Our Oh-So-Beautiful-4-Levels-".htmlentities(print_r($altmenu,true))."</pre>";
-	add_action('admin_footer', create_function('', 'global $wpdb; echo $wpdb->wp_ozh_adminmenu_neat_array;')); 
-	/**/
-	
-	// Other plugins can use add_filter('ozh_adminmenu_array', 'my_function') to modify $altmenu
-	$altmenu = apply_filters('ozh_adminmenu_altmenu', $altmenu );
-
-	return ($altmenu);
+	return "<a $title_class href='$url' title='".__('Visit site')."'>$blogname &raquo;</a>";
 }
 
 
+function wp_ozh_adminmenu_sanitize_id($url) {
+	$url = preg_replace('/(&|&amp;|&#038;)?_wpnonce=([^&]+)/', '', $url);
+	return str_replace(array('.php','.','/','?','='),array('','_','_','_','_'),$url);
+}
+
+ 
 function wp_ozh_adminmenu_js() {
 	global $wp_ozh_adminmenu;
 	
-	$submenu = $wp_ozh_adminmenu['display_submenu'] ? 'false': 'true';
 	$toomanyplugins = $wp_ozh_adminmenu['too_many_plugins'];
-	$fluency = function_exists('wp_admin_fluency_css') ? 'true' : 'false';
-
 	$plugin_url = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__));
 	$insert_main_js = '<script src="'.$plugin_url.'/adminmenu.js" type="text/javascript"></script>';
 
@@ -192,8 +208,6 @@ function wp_ozh_adminmenu_js() {
 <script type="text/javascript"><!--//--><![CDATA[//><!--
 var oam_toomanypluygins = $toomanyplugins;
 var oam_adminmenu = false;
-var oam_fluency = $fluency;
-var oam_hidesubmenu = $submenu;
 jQuery(document).ready(function() {
 	// Do we need to init everything ?
 	var ozhmenu_uselesslinks = jQuery('#user_info p').html();
@@ -211,14 +225,25 @@ JS;
 function wp_ozh_adminmenu_css() {
 	global $wp_ozh_adminmenu, $pagenow;
 		
-	$submenu = ($wp_ozh_adminmenu['display_submenu'] or ($pagenow == "media-upload.php") ) ? 1 : 0;
-	$fluency = (function_exists('wp_admin_fluency_css')) ? 1 : 0;
-	$plugin  = wp_make_link_relative(WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)));
-	$admin   = wp_make_link_relative(get_option('siteurl') . '/wp-admin');
-	$mu      = (function_exists('wp_ozh_adminmenu_blogswitch_init')) ? 1 : 0;
+	// $submenu = ($wp_ozh_adminmenu['display_submenu'] or ($pagenow == "media-upload.php") ) ? 1 : 0;
 	// Making links relative so they're more readable and shorter in the query string (also made relative in the .css.php)
-	$icons   = $wp_ozh_adminmenu['icons'];
-	echo '<link rel="stylesheet" href="'.$plugin."/adminmenu.css.php?admin=$admin&amp;plugin=$plugin&amp;icons=$icons&amp;submenu=$submenu&amp;fluency=$fluency&amp;mu=$mu\" type=\"text/css\" media=\"all\" />\n";
+	$plugin = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__));
+	// query vars
+	$query = array(
+		'p' => wp_make_link_relative($plugin),
+		// 'a' => wp_make_link_relative(get_option('siteurl') . '/wp-admin'),
+		// 'mu => ((function_exists('wp_ozh_adminmenu_blogswitch_init')) ? 1 : 0),
+		'i' => $wp_ozh_adminmenu['icons'],
+		'w' => 	$wp_ozh_adminmenu['wpicons'],
+		'm' => $wp_ozh_adminmenu['minimode'],
+		'c' => $wp_ozh_adminmenu['compact'],
+		'h' => $wp_ozh_adminmenu['hidebubble'],
+		'f' => $wp_ozh_adminmenu['displayfav'],
+		'g' => $wp_ozh_adminmenu['grad'], // gradient color
+	);
+	$query = http_build_query($query);
+
+	echo "<link rel='stylesheet' href='$plugin/adminmenu.css.php?$query' type='text/css' media='all' />\n";
 }
 
 
@@ -227,15 +252,35 @@ function wp_ozh_adminmenu_head() {
 	wp_ozh_adminmenu_js();
 }
 
+// Set defaults
+function wp_ozh_adminmenu_defaults() {
+	return array(
+		'grad' => '#676768',
+		'displayfav' => 1,
+		'compact' => 0,
+		'minimode' => 0,
+		'hidebubble' => 0,
+		'too_many_plugins' => 30,
+		'toplinks' => 1,
+		'icons' => 1,
+		'wpicons' => 1,
+	);
+}
+
 
 // Read plugin options or set default values
 function wp_ozh_adminmenu_init() {
 	global $wp_ozh_adminmenu;
 	
+	if (isset($_POST['ozh_adminmenu']) && ($_POST['ozh_adminmenu'] == 1) ) {
+		wp_ozh_adminmenu_processform();
+	}
+
 	global $plugin_page, $pagenow;
 	$page_hook = get_plugin_page_hook($plugin_page, $pagenow);
 	add_action('load-'.$page_hook, 'wp_ozh_adminmenu_load_page'); // if we're on the plugin page, load translation file. Don't bother otherwise
 	
+	// Superfluous double checking
 	if ( !defined('WP_CONTENT_URL') )
 		define( 'WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
 	if ( !defined('WP_PLUGIN_URL') )
@@ -245,33 +290,35 @@ function wp_ozh_adminmenu_init() {
 	if ( !defined('WP_PLUGIN_DIR') )
 		define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' ); // full path, no trailing slash
 	
-	$defaults = array(
-		'display_submenu' => 0,
-		'too_many_plugins' => 30,
-		'toplinks' => 1,
-		'icons' => 1);
-		
+	$defaults = wp_ozh_adminmenu_defaults();
+	
 	if (!count($wp_ozh_adminmenu)) {
 		$wp_ozh_adminmenu = (array)get_option('ozh_adminmenu');
 		unset($wp_ozh_adminmenu[0]);
 	}
 	
 	$wp_ozh_adminmenu = array_merge($defaults, $wp_ozh_adminmenu);
+	// Cannot have wpicons == 0 && compact == 1
+	if ($wp_ozh_adminmenu['compact'] == 1)
+		$wp_ozh_adminmenu['wpicons'] = 1;
 	// upon Fluency activation+deactivation, too_many_plugins can be 0, let's fix this
 	if (!$wp_ozh_adminmenu['too_many_plugins']) $wp_ozh_adminmenu['too_many_plugins'] = 30;
 	
 	// This plugin will have its own icon of course
 	add_filter( 'ozh_adminmenu_icon', 'wp_ozh_adminmenu_customicon');
-
+	// Add Config link to plugin list
 	add_filter( 'plugin_action_links', 'wp_ozh_adminmenu_plugin_actions', -10, 2);
-}
+	// Add the new admin menu right after the header area. Make sure we're first.
+	add_filter( 'admin_notices', 'wp_ozh_adminmenu', -9999);
 
+	// On minimode, add a Logout link to the Users menu
+	if ($wp_ozh_adminmenu['minimode'])
+		add_users_page(__('Log Out'), __('Log Out'), 1, 'ozh_admin_menu_logout');
+}
 
 // Stuff to do when loading the admin plugin page
 function wp_ozh_adminmenu_load_page() {
 	wp_ozh_adminmenu_load_text_domain();
-	if (isset($_POST['ozh_adminmenu']) && ($_POST['ozh_adminmenu'] == 1) )
-		wp_ozh_adminmenu_processform();
 }
 
 
@@ -283,6 +330,8 @@ function wp_ozh_adminmenu_customicon($in) {
 
 
 function wp_ozh_adminmenu_add_page() {
+	wp_enqueue_script('farbtastic');
+	wp_enqueue_style('farbtastic');
 	add_options_page('Admin Drop Down Menu', 'Admin Menu', 'manage_options', 'ozh_admin_menu', 'wp_ozh_adminmenu_options_page_includes');
 }
 
@@ -295,8 +344,13 @@ function wp_ozh_adminmenu_options_page_includes() {
 
 // Add the 'Settings' link to the plugin page
 function wp_ozh_adminmenu_plugin_actions($links, $file) {
-	if ($file == plugin_basename(dirname(dirname(__FILE__)).'/wp_ozh_adminmenu.php'))
+	if ($file == plugin_basename(dirname(dirname(__FILE__)).'/wp_ozh_adminmenu.php')) {
+		foreach($links as $k=>$v) {
+			if (strpos($v, 'plugin-editor.php?file=') !== false)
+				unset($links[$k]);
+		}
 		$links[] = "<a href='options-general.php?page=ozh_admin_menu'><b>Settings</b></a>";
+	}
 	return $links;
 }
 
@@ -335,10 +389,14 @@ function wp_ozh_adminmenu_processform() {
 	switch ($_POST['action']) {
 	case 'update_options':
 	
-		$options['display_submenu'] = ($_POST['oam_displaysub']) ? '1' : '0';
-		$options['toplinks'] = ($_POST['oam_toplinks'])? '1' : '0';
-		$options['icons'] = ($_POST['oam_icons'])? '1' : '0';
-		$options['too_many_plugins'] = intval($_POST['oam_too_many_plugins']);
+		$defaults = wp_ozh_adminmenu_defaults();
+		
+		foreach ($_POST as $k=>$v) {
+			$k = str_replace('oam_','',$k);
+			if (array_key_exists($k, $defaults)) {
+				$options[$k] = attribute_escape($v);
+			}
+		}
 		
 		if (!update_option('ozh_adminmenu', $options))
 			add_option('ozh_adminmenu', $options);
@@ -358,7 +416,6 @@ function wp_ozh_adminmenu_processform() {
 	$message .= '<p>'.sprintf(wp_ozh_adminmenu__('Admin Drop Down Menu settings <strong>%s</strong>'), $msg)."</p>\n";
 	$message .= "</div>\n";
 
-	// 'admin_notices' is definitely under used, should use more!
 	add_action('admin_notices', create_function( '', "echo '$message';" ) );
 }
 

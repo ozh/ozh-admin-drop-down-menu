@@ -2,8 +2,8 @@
 /*
 Plugin Name: Ozh' Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
-Description: Replaces admin menus with a CSS dropdown menu bar. Saves lots of clicks and page loads! <strong>For WordPress 2.5+</strong>
-Version: 2.3.4.1
+Description: Replaces admin menus with a CSS dropdown menu bar. Saves lots of clicks and page loads! <strong>For WordPress 2.7+</strong>
+Version: 3.0
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
@@ -48,6 +48,7 @@ Author URI: http://planetOzh.com/
 			  Improved: Support for WordPress Mu with specific icons
  * 2.3.4.1:   Fixed, or maybe not: same bug with Safari on Mac. This browser is a crap, Safari users I pity you.
  * 2.3.4.2:   Fixed: potential incompatibility with plugins using post-admin.php
+ * 3.0:       Yet another complete rework for WP 2.7.
  */
 
 
@@ -59,15 +60,24 @@ if (is_admin()) {
 	add_action('init', create_function('', 'wp_enqueue_script("jquery");')); // Make sure jQuery is always loaded
 	add_action('admin_menu', 'wp_ozh_adminmenu_init', -1000);	// Init plugin defaults or read options
 	add_action('admin_menu', 'wp_ozh_adminmenu_add_page', -999); // Add option page
-	add_action('dashmenu', 'wp_ozh_adminmenu'); // Replace the menus with our stuff
 	add_action('admin_head', 'wp_ozh_adminmenu_head', 999); // Insert CSS & JS in <head>
 	add_action('in_admin_footer', 'wp_ozh_adminmenu_footer'); // Add unobstrusive credits in footer
-	
+
+	/*
+	// Mu stuff. Disabled for now, we'll see when wpmu & wp sync
 	global $wpmu_version;
 	if ($wpmu_version) {
 		require_once(dirname(__FILE__).'/inc/mu.php');
 		add_action( '_admin_menu', 'wp_ozh_adminmenu_remove_blogswitch_init', -100 ); // MU specific menu takeover
 	}
+	*/
 }
+
+/*
+TODO
+apply_filter pour gradient
+live preview dans options
+
+*/
 
 ?>
