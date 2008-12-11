@@ -97,7 +97,7 @@ function wp_ozh_adminmenu_options_page() {
 
     <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Minimal Mode'); ?></th>
 	<td><label><?php wp_ozh_adminmenu_checkbox('minimode'); ?>  <?php echo wp_ozh_adminmenu__('Hide header'); ?></label><br/>
-	<?php echo wp_ozh_adminmenu__("Remove the whole header bar for maximum screen real estate. The quick link to your blog will be added in the submenu, the Logout link in the Users menu."); ?>
+	<?php echo wp_ozh_adminmenu__("Remove the whole header bar for maximum screen real estate. Note: The quick link to your blog will be added to the menu, the Logout link in the Users sub-menu."); ?>
 	</td></tr>
 
     <tr id="oam_fav_row" <?php echo ($wp_ozh_adminmenu['displayfav'] ? '' : 'style="display:none"') ?>><th scope="row"><?php echo wp_ozh_adminmenu__('Favorite Actions'); ?></th>

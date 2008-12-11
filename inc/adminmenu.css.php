@@ -44,15 +44,12 @@ header('Content-type:text/css');
 #wpbody, div.folded #wpbody {margin-left:0px}
 
 #wpbody-content .wrap {margin-left:15px}
-#wphead h1:hover:after{
-	content:"\00BB";
-	color:white;
-}
+
 #media-upload-header #sidemenu li {
 	display:auto;
 }
 #screen-meta {
-	display:none;
+	display:none; /* hidden in case we have no JS to move it */
 }
 /* Styles for our new menu */
 #ozhmenu_wrap {

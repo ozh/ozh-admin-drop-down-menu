@@ -57,10 +57,11 @@ jQuery(document).ready(function() {
 			}
 		);
 		
-		// #screen-meta move
-		jQuery('#screen-meta').css('display','block');
-		jQuery('#ozhmenu_wrap').after(jQuery('#screen-meta').clone(true));
-		jQuery('#screen-meta').remove();
+		// #screen-meta move under our menu
+		jQuery('#ozhmenu_wrap').after(jQuery('#screen-meta').clone(true).attr('id', 'screen-meta-ozhmenucopy')); // copy after menu and name it screen-meta-ozhmenucopy
+		jQuery('#screen-meta').remove(); // delete original
+		jQuery('#screen-meta-ozhmenucopy').attr('id', 'screen-meta').css('display','block'); // rename & show
+		/**/
 
 		// WPMU : behavior for the "All my blogs" link
 		jQuery( function($) {

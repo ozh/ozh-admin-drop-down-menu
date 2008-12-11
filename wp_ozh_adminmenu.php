@@ -3,7 +3,7 @@
 Plugin Name: Ozh' Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Description: Replaces admin menus with a CSS dropdown menu bar. Saves lots of clicks and page loads! <strong>For WordPress 2.7+</strong>
-Version: 3.0
+Version: 3.0.1
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
@@ -49,6 +49,8 @@ Author URI: http://planetOzh.com/
  * 2.3.4.1:   Fixed, or maybe not: same bug with Safari on Mac. This browser is a crap, Safari users I pity you.
  * 2.3.4.2:   Fixed: potential incompatibility with plugins using post-admin.php
  * 3.0:       Yet another complete rework for WP 2.7.
+ * 3.0.1:     Fixed: #screen-meta positioning in MSIE6
+              Updated: Translation .pot file
  */
 
 
@@ -64,7 +66,7 @@ if (is_admin()) {
 	add_action('in_admin_footer', 'wp_ozh_adminmenu_footer'); // Add unobstrusive credits in footer
 
 	/*
-	// Mu stuff. Disabled for now, we'll see when wpmu & wp sync
+	// Mu stuff. Disabled for now, we'll see when wpmu & wp 2.7 sync
 	global $wpmu_version;
 	if ($wpmu_version) {
 		require_once(dirname(__FILE__).'/inc/mu.php');
@@ -72,12 +74,5 @@ if (is_admin()) {
 	}
 	*/
 }
-
-/*
-TODO
-apply_filter pour gradient
-live preview dans options
-
-*/
 
 ?>
