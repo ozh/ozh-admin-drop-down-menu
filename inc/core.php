@@ -239,7 +239,8 @@ function wp_ozh_adminmenu_css() {
 		'c' => $wp_ozh_adminmenu['compact'],
 		'h' => $wp_ozh_adminmenu['hidebubble'],
 		'f' => $wp_ozh_adminmenu['displayfav'],
-		'g' => $wp_ozh_adminmenu['grad'], // gradient color
+		'g' => $wp_ozh_adminmenu['grad'], // menu color
+		'n' => $wp_ozh_adminmenu['nograd'], // disable gradient bg
 	);
 	$query = http_build_query($query);
 
@@ -256,6 +257,7 @@ function wp_ozh_adminmenu_head() {
 function wp_ozh_adminmenu_defaults() {
 	return array(
 		'grad' => '#676768',
+		'nograd' => 0,
 		'displayfav' => 1,
 		'compact' => 0,
 		'minimode' => 0,

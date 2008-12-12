@@ -63,12 +63,27 @@ function wp_ozh_adminmenu_options_page() {
 	<?php printf(wp_ozh_adminmenu__("They're so cute (and they're from %s)"),'<a href="http://www.famfamfam.com/">famfamfam</a>'); ?>
 	</td></tr>
 
-    <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Gradient'); ?></th>
-	<td><input type="text" id="oam_grad" name="oam_grad" size="7" value="<?php echo $grad ?>" /><img id="oam_cp_toggle" src="<?php echo WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/images/'; ?>color_wheel.png" /> <label for="oam_grad"><?php printf(wp_ozh_adminmenu__("Pick a color for your menu bar, using the color wheel or one of the presets")); ?>
+    <tr><th scope="row"><?php echo wp_ozh_adminmenu__('Color Scheme'); ?></th>
+	<td><input type="text" id="oam_grad" name="oam_grad" size="7" value="<?php echo $grad ?>" /><img id="oam_cp_toggle" src="<?php echo WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/images/'; ?>color_wheel.png" /> <label for="oam_grad"><?php printf(wp_ozh_adminmenu__("Pick a color for your menu bar, using the color wheel or one of the presets")); ?><br/>
+	<label><?php wp_ozh_adminmenu_checkbox('nograd'); ?>  <?php echo wp_ozh_adminmenu__('No subtle gradient, just plain color.');?></label>
 	<div id="oam_cp_wrap">
 	<div id="oam_colorpicker" style="display:none"></div>
 	<?php
-	$colors = array(
+	$colors = $wp_ozh_adminmenu['nograd'] ? 
+	array(
+	// colors for solid menu
+		'#616161',
+		'#9a109d',
+		'#3838a3',
+		'#c91313',
+		'#057979',
+		'#078208',
+		'#023b79',
+		'#9c5654',
+		'#854700',
+		'#406a2f',
+	) : array(
+	// colors for gradient menu
 		'#cad2da',
 		'#e61fea',
 		'#6969ce',
@@ -80,8 +95,8 @@ function wp_ozh_adminmenu_options_page() {
 		'#ee8c81',
 		'#eb8d19',
 		'#6cd440',
-	);	
-	$bgurl = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/images/grad-trans.png';
+	);
+	$bgurl = $wp_ozh_adminmenu['nograd'] ? '' : WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/images/grad-trans.png';
 	foreach ($colors as $color) {
 		echo '
 		<div class="oam_cp_preset" title="'.$color.'" style="background:'.$color.' url('.$bgurl.') repeat-x left top;"></div>

@@ -3,7 +3,7 @@
 Plugin Name: Ozh' Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Description: Replaces admin menus with a CSS dropdown menu bar. Saves lots of clicks and page loads! <strong>For WordPress 2.7+</strong>
-Version: 3.0.1
+Version: 3.0.2
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
@@ -51,6 +51,7 @@ Author URI: http://planetOzh.com/
  * 3.0:       Yet another complete rework for WP 2.7.
  * 3.0.1:     Fixed: #screen-meta positioning in MSIE6
               Updated: Translation .pot file
+ * 3.0.2:     Added: option for solid color menu bar
  */
 
 

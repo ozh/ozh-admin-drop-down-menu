@@ -18,15 +18,15 @@ function wp_ozh_adminmenu_color($col) {
 }
 
 // Get vars & needed links, make them relative to be sure no one will be leeching icons or anything from somewhere else
-// $admin      = make_link_relative( $_GET['a'] );
-$plugin     = make_link_relative( $_GET['p'] );
-$icons      = ($_GET['i'] == 1) ? true : false ;
-$wpicons      = ($_GET['w'] == 1) ? true : false ;
-$compact      = ($_GET['c'] == 1) ? true : false ;
-$minimode   = ($_GET['m'] == 1) ? true : false ;
-$hidebubble = ($_GET['h'] == 1) ? true : false ;
+$plugin      = make_link_relative( $_GET['p'] );
+$icons       = ($_GET['i'] == 1) ? true : false ;
+$wpicons     = ($_GET['w'] == 1) ? true : false ;
+$compact     = ($_GET['c'] == 1) ? true : false ;
+$minimode    = ($_GET['m'] == 1) ? true : false ;
+$hidebubble  = ($_GET['h'] == 1) ? true : false ;
 $display_fav = ($_GET['f'] == 1) ? true : false ;
-$grad       = ($_GET['g']) ? wp_ozh_adminmenu_color($_GET['g']) : '#676768' ;
+$nograd      = ($_GET['n'] == 1) ? true : false ;
+$grad        = ($_GET['g']) ? wp_ozh_adminmenu_color($_GET['g']) : '#676768' ;
 
 $fluency = ($_GET['fluency'] == 1) ? true : false;
 $mu      = ($_GET['mu'] == 1) ? true : false;
@@ -71,7 +71,7 @@ header('Content-type:text/css');
 	width:100%; /* width required for -wtf?- dropping li elements to be 100% wide in their containing ul */
 	overflow:hidden;
 	z-index:1000;
-	background:<?php echo $grad; ?> url(<?php echo $plugin; ?>/images/grad-trans.png) repeat-x left top;
+	background:<?php echo $grad; ?> <?php if (!$nograd) { ?>url(<?php echo $plugin; ?>/images/grad-trans.png) repeat-x left top<?php } ?>;
 }
 #ozhmenu li { /* all list items */
 	display:inline;
@@ -99,7 +99,7 @@ header('Content-type:text/css');
 	-moz-border-radius: 11px;
 	-webkit-border-radius: 11px;
 	color: #ffe;
-	background: <?php echo $grad; ?> url(<?php echo $plugin; ?>/images/grad-trans.png) repeat-x left -5px;
+	background: <?php echo $grad; ?> <?php if (!$nograd) { ?>url(<?php echo $plugin; ?>/images/grad-trans.png) repeat-x left -5px<?php } ?>;
 }
 
 #ozhmenu li:hover {
