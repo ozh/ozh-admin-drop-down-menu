@@ -16,7 +16,7 @@ function wp_ozh_adminmenu () {
 
 	$first = true;
 	// 0 = name, 1 = capability, 2 = file, 3 = class, 4 = id, 5 = icon src
-	foreach ( $menu as $key => $item ) {
+	foreach ( $_menu = $menu as $key => $item ) {
 		// Top level menu
 		if (strpos($item[4],'wp-menu-separator') !== false)
 			continue;
@@ -155,9 +155,6 @@ function wp_ozh_adminmenu () {
 		}
 		$ozh_menu .=  "</li>";
 	}
-	
-	// On minimode, add the logout link on last position of the "users" menu
-	// '<li><a href="'.wp_logout_url().'" title="'. __('Log Out') .'">'.__('Log Out').'</a></li>'
 	
 	$ozh_menu .= "</ul></div>";
 	
