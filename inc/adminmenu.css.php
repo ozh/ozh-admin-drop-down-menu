@@ -28,15 +28,14 @@ $display_fav = ($_GET['f'] == 1) ? true : false ;
 $nograd      = ($_GET['n'] == 1) ? true : false ;
 $grad        = ($_GET['g']) ? wp_ozh_adminmenu_color($_GET['g']) : '#676768' ;
 
+/*
 $fluency = ($_GET['fluency'] == 1) ? true : false;
 $mu      = ($_GET['mu'] == 1) ? true : false;
+*/
 
 header('Content-type:text/css');
 
 ?>
-/* Debug
-<?php var_dump($grad); ?>
-*/
 
 /* Style for Ozh's Admin Drop Down Menu */
 /* Restyle or hide original items */

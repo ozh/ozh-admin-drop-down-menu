@@ -274,10 +274,11 @@ function wp_ozh_adminmenu_init() {
 	if (isset($_POST['ozh_adminmenu']) && ($_POST['ozh_adminmenu'] == 1) ) {
 		wp_ozh_adminmenu_processform();
 	}
-
-	global $plugin_page, $pagenow;
-	$page_hook = get_plugin_page_hook($plugin_page, $pagenow);
-	add_action('load-'.$page_hook, 'wp_ozh_adminmenu_load_page'); // if we're on the plugin page, load translation file. Don't bother otherwise
+	
+	
+	global $plugin_page;
+	if ($plugin_page == 'ozh_admin_menu')
+		wp_ozh_adminmenu_load_page();
 	
 	// Superfluous double checking
 	if ( !defined('WP_CONTENT_URL') )
