@@ -269,16 +269,13 @@ function wp_ozh_adminmenu_defaults() {
 
 // Read plugin options or set default values
 function wp_ozh_adminmenu_init() {
-	global $wp_ozh_adminmenu;
+	global $wp_ozh_adminmenu, $plugin_page;
 	
-	if (isset($_POST['ozh_adminmenu']) && ($_POST['ozh_adminmenu'] == 1) ) {
-		wp_ozh_adminmenu_processform();
-	}
-	
-	
-	global $plugin_page;
 	if ($plugin_page == 'ozh_admin_menu')
 		wp_ozh_adminmenu_load_page();
+
+	if (isset($_POST['ozh_adminmenu']) && ($_POST['ozh_adminmenu'] == 1) )
+		wp_ozh_adminmenu_processform();
 	
 	// Superfluous double checking
 	if ( !defined('WP_CONTENT_URL') )
