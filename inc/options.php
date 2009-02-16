@@ -43,7 +43,7 @@ function wp_ozh_adminmenu_options_page() {
 	';
 	wp_nonce_field('ozh-adminmenu');
 ?>
-	<h3><?php echo wp_ozh_adminmenu__('Icons and Colors'); ?>/h3>
+	<h3><?php echo wp_ozh_adminmenu__('Icons and Colors'); ?></h3>
 	<table class="form-table"><tbody>
 	<input type="hidden" name="ozh_adminmenu" value="1"/>
     <input type="hidden" name="action" value="update_options">
