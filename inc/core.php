@@ -4,6 +4,7 @@ Part of Plugin: Ozh' Admin Drop Down Menu
 http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 */
 
+// The main function that hacks the original menu and display ours instead. Triggered in the _init function by the admin_notice hook.
 function wp_ozh_adminmenu () {
 	global $menu, $submenu, $self, $parent_file, $submenu_file, $plugin_page, $pagenow, $wp_ozh_adminmenu;
 	
@@ -354,6 +355,7 @@ function wp_ozh_adminmenu_plugin_actions($links, $file) {
 
 // Translation wrapper
 function wp_ozh_adminmenu__($string) {
+	// return "<span style='color:red;background:yellow'>$string</span>"; // The debugging stuff so I'm sure I didnt miss any of the translatable string
 	return __($string, 'adminmenu');
 }
 

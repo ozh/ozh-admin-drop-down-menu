@@ -173,10 +173,12 @@ function wp_ozh_adminmenu_options_page() {
 	
 	
 	// Color picking
-	var f;
-	f = jQuery.farbtastic('#oam_colorpicker', function(){oam_gradient()});
-	f.linkTo(jQuery('#oam_grad')).setColor(jQuery('#oam_grad').val());
-	f.linkTo(function(col){oam_gradient(col)});
+	jQuery(document).ready(function(){
+		var f;
+		f = jQuery.farbtastic('#oam_colorpicker', function(){oam_gradient()});
+		f.linkTo(jQuery('#oam_grad')).setColor(jQuery('#oam_grad').val());
+		f.linkTo(function(col){oam_gradient(col)});
+	});
 	function oam_gradient(col) {
 		jQuery('#ozhmenu, #ozhmenu li.ozhmenu_over, #ozhmenu li .wp-has-current-submenu').css('backgroundColor', col);
 		f.linkTo(jQuery('#oam_grad')).setColor(col);
@@ -227,7 +229,6 @@ function wp_ozh_adminmenu_options_page() {
 		jQuery('.oam_label').css({'border':'0px','margin':'2px 10px 0 2px'});
 		jQuery('#oam_label_'+color).css({'border':'2px solid #111','margin':'0 8px 0 0'});
 	}
-	//oam_label_border('<?php echo $wp_ozh_adminmenu['grad']; ?>');
 
 	// The silly dancing word
 	function oam_dance() {
