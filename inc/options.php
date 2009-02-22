@@ -173,8 +173,8 @@ function wp_ozh_adminmenu_options_page() {
 	
 	
 	// Color picking
+	var f;
 	jQuery(document).ready(function(){
-		var f;
 		f = jQuery.farbtastic('#oam_colorpicker', function(){oam_gradient()});
 		f.linkTo(jQuery('#oam_grad')).setColor(jQuery('#oam_grad').val());
 		f.linkTo(function(col){oam_gradient(col)});

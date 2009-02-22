@@ -2,9 +2,10 @@
 Donate link: http://planetozh.com/exit/donate
 Tags: ozh, menu, menus, dashboard, admin, dropdown, drop down, productivity, css
 Requires at least: 2.7
+Tested up to: 9.9
 Stable tag: trunk
 
-All admin links available in a neat drop down menu. Go to any admin page from any admin page in 1 click.
+All admin links available in a neat horizontal drop down menu. Saves lots of screen real estate!
 
 == Description ==
 
