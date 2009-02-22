@@ -68,6 +68,8 @@ Author URI: http://planetOzh.com/
               Updated: ko_KR (thanks Jong-In Kim!)
  * 3.1.3.2:   Updated: es_ES (thanks Karin Sequen!)
  * 3.1.3.3:   Fixed: Javascript error in the color picker preventing from saving color scheme
+ * 3.1.3.3.7: Updated: it_IT (thanks Gianni Diurno!)
+              Laughed: at this totally 31337 version number. Next laugh at 6.6.6 :)
  */
 
 /***** Hook things in when visiting an admin page. When viewing a blog page, nothing even loads in memory. ****/
