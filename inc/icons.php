@@ -14,6 +14,7 @@ $wp_ozh_adminmenu['icon_names'] = array(
 'link-manager.php' => 'link',
 'categories.php' => 'tag_red',
 'edit-tags.php' => 'tag_blue_edit',
+'edit-tags.php?taxonomy=post_tag' => 'tag_blue_edit',
 'edit-link-categories.php' => 'link_edit',
 'upload.php' => 'image',
 'import.php' => 'door_in',

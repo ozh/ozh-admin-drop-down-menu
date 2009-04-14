@@ -26,12 +26,11 @@ $minimode    = ($_GET['m'] == 1) ? true : false ;
 $hidebubble  = ($_GET['h'] == 1) ? true : false ;
 $display_fav = ($_GET['f'] == 1) ? true : false ;
 $nograd      = ($_GET['n'] == 1) ? true : false ;
+$dir         = ($_GET['d'] == 'right') ? 'right' : 'left' ; // text direction
+$opdir         = ($_GET['d'] == 'right') ? 'left' : 'right' ; // OPposite DIRection
 $grad        = ($_GET['g']) ? wp_ozh_adminmenu_color($_GET['g']) : '#676768' ;
-
-/*
-$fluency = ($_GET['fluency'] == 1) ? true : false;
-$mu      = ($_GET['mu'] == 1) ? true : false;
-*/
+// $mu      = ($_GET['mu'] == 1) ? true : false;
+$mu = false;
 
 header('Content-type:text/css');
 
@@ -40,9 +39,9 @@ header('Content-type:text/css');
 /* Style for Ozh's Admin Drop Down Menu */
 /* Restyle or hide original items */
 #adminmenu 					{display:none;}
-#wpbody, div.folded #wpbody {margin-left:0px}
+#wpbody, div.folded #wpbody {margin-<?php echo $dir; ?>:0px}
 
-#wpbody-content .wrap {margin-left:15px}
+#wpbody-content .wrap {margin-<?php echo $dir; ?>:15px}
 
 #media-upload-header #sidemenu li {
 	display:auto;
@@ -59,18 +58,18 @@ header('Content-type:text/css');
 }
 #ozhmenu { /* our new ul */
 	font-size:12px;
-	left:0px;
+	<?php echo $dir; ?>:0px;
 	list-style-image:none;
 	list-style-position:outside;
 	list-style-type:none;
 	margin:0pt;
 	margin-bottom:1px;
-	padding-left:8px;
+	padding-<?php echo $dir; ?>:8px;
 	top:0px;
 	width:100%; /* width required for -wtf?- dropping li elements to be 100% wide in their containing ul */
 	overflow:hidden;
 	z-index:1000;
-	background:<?php echo $grad; ?> <?php if (!$nograd) { ?>url(<?php echo $plugin; ?>/images/grad-trans.png) repeat-x left top<?php } ?>;
+	background:<?php echo $grad; ?> <?php if (!$nograd) { ?>url(<?php echo $plugin; ?>/images/grad-trans.png) repeat-x <?php echo $dir; ?> top<?php } ?>;
 }
 #ozhmenu li { /* all list items */
 	display:inline;
@@ -81,7 +80,7 @@ header('Content-type:text/css');
 	margin:0 3px;
 	padding:0;
 	white-space:nowrap;
-	float: left;
+	float: <?php echo $dir; ?>;
 	width: 1*; /* maybe needed for some Opera ? */
 }
 #ozhmenu a { /* all links */
@@ -98,7 +97,7 @@ header('Content-type:text/css');
 	-moz-border-radius: 11px;
 	-webkit-border-radius: 11px;
 	color: #ffe;
-	background: <?php echo $grad; ?> <?php if (!$nograd) { ?>url(<?php echo $plugin; ?>/images/grad-trans.png) repeat-x left -5px<?php } ?>;
+	background: <?php echo $grad; ?> <?php if (!$nograd) { ?>url(<?php echo $plugin; ?>/images/grad-trans.png) repeat-x <?php echo $dir; ?> -5px<?php } ?>;
 }
 
 #ozhmenu li:hover {
@@ -136,7 +135,7 @@ header('Content-type:text/css');
 	border-bottom-right-radius:5px;
 	width: 1*;  /* maybe needed for some Opera ? */
 	min-width:6em;
-	left: -999em; /* using left instead of display to hide menus because display: none isn't read by screen readers */
+	<?php echo $dir; ?>: -999em; /* using left instead of display to hide menus because display: none isn't read by screen readers */
 	list-style-position:auto;
 	list-style-type:auto;
 	z-index:1001;
@@ -144,33 +143,33 @@ header('Content-type:text/css');
 #ozhmenu li ul li { /* dropped down lists item */
 	background:transparent !important;
 	float:none;
-	text-align:left;
+	text-align:<?php echo $dir; ?>;
 }
 #ozhmenu li ul li a { /* links in dropped down list items*/
 	margin:0px;
 	color:#666;
 }
 #ozhmenu li:hover ul, #ozhmenu li.ozhmenu_over ul { /* lists dropped down under hovered list items */
-	left: auto;
+	<?php echo $dir; ?>: auto;
 	z-index:999999;
 }
 #ozhmenu li a #awaiting-mod, #ozhmenu li a .update-plugins {
 	position: absolute;
-	margin-left: 0.1em;
+	margin-<?php echo $dir; ?>: 0.1em;
 	font-size: 0.8em;
-	background-image: url(<?php echo $plugin; ?>/images/comment-stalk-fresh.gif);
+	background-image: url(<?php echo $plugin; ?>/images/comment-stalk-<?php echo ($dir == 'left' ? 'fresh' : 'rtl'); ?>.gif);
 	background-repeat: no-repeat;
-	background-position: -243px bottom;
+	background-position: <?php echo ($dir == 'left' ? '-243' : '-67'); ?>px bottom;
 	height: 1.7em;
 	width: 1em;
 }
 #ozhmenu li.ozhmenu_over a #awaiting-mod, #ozhmenu li a:hover #awaiting-mod, #ozhmenu li.ozhmenu_over a .update-plugins, #ozhmenu li a:hover .update-plugins {
-	background-position: -2px bottom;
+	background-position: <?php echo ($dir == 'left' ? '-2' : '-307'); ?>px bottom;
 }
 #ozhmenu li a #awaiting-mod span, #ozhmenu li a .update-plugins span {
 	color: #444;
 	top: -0.4em;
-	right: -0.5em;
+	<?php echo $opdir; ?>: -0.5em;
 	position: absolute;
 	display: block;
 	height: 1.3em;
@@ -195,13 +194,13 @@ header('Content-type:text/css');
 
 /* Top level icons */
 .ozhmenu_toplevel div.wp-menu-image {
-	float:left;
+	float:<?php echo $dir; ?>;
 	height:24px;
 	width:24px;
 }
 <?php if ($wpicons) { ?>
 #ozhmenu .ozhmenu_toplevel a.menu-top {
-	padding:0 5px 0 1px; /* override #ozhmenu a's padding:0 10 */
+	padding:<?php echo ($dir == 'left' ? '0 5px 0 1px' : '0 1px 0 5px'); ?>; /* override #ozhmenu a's padding:0 10 */
 }
 <?php } ?>
 
@@ -243,7 +242,7 @@ header('Content-type:text/css');
 #oam_menu-tools:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -211px -3px no-repeat;}
 #oam_menu-settings div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -241px -35px no-repeat;}
 #oam_menu-settings:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -241px -3px no-repeat;}
-#ozhmenu img.wp-menu-image {float:left;opacity:0.6;padding:5px 1px 0;filter:alpha(opacity=60);}
+#ozhmenu img.wp-menu-image {float:<?php echo $dir; ?>;opacity:0.6;padding:5px 1px 0;filter:alpha(opacity=60);}
 #ozhmenu .ozhmenu_toplevel:hover img.wp-menu-image {opacity:1;filter:alpha(opacity=100);}
 
 /* Mu Specific */
@@ -283,24 +282,14 @@ header('Content-type:text/css');
 span.count-0 {display:none;}
 <?php } ?>
 
-<?php if ($fluency) { ?>
-/* Fluency compat + fixes */
-#TB_overlay {z-index:99001;}
-#TB_window {z-index:99002;}
-<?php } ?>
-
-<?php if ($fluency && $icons) { ?>
-#ozhmenu li.ozhmenu_toplevel ul li.ozhmenu_sublevel a {padding-left:22px;}
-<?php } ?>
-
 <?php if ($icons) {
 	require(dirname(__FILE__).'/icons.php');
 ?>
 /* Icons */
 #ozhmenu .ozhmenu_sublevel a {
-	padding-left:22px;
+	padding-<?php echo $dir; ?>:22px;
 	background-repeat:no-repeat;
-	background-position:3px center;
+	background-position:<?php echo ($dir == 'left' ? '3px' : '97%'); ?> center;
 }
 .oam_plugin a {
 	background-image:url(<?php echo $plugin; ?>/images/cog.png);
@@ -313,7 +302,7 @@ span.count-0 {display:none;}
 	}
 
 } else { ?>
-#ozhmenu .ozhmenu_sublevel a {padding-left:5px;}
+#ozhmenu .ozhmenu_sublevel a {padding-<?php echo $dir; ?>:5px;}
 <?php } ?>
 
 <?php if ($mu && $icons) { ?>

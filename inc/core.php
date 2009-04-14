@@ -160,10 +160,13 @@ function wp_ozh_adminmenu () {
 	$ozh_menu .= "</ul></div>";
 	
 	if ($plugin_icons) {
+		global $text_direction;
+		$align = ($text_direction == 'rtl' ? 'right' : 'left');
 		echo "\n".'<style type="text/css">'."\n";
 		foreach($plugin_icons as $hook=>$icon) {
 			$hook = plugin_basename($hook);
-			echo "#oamsub_$hook a {background-image:url($icon);}\n";
+			//echo "#oamsub_$hook a {background-image:url($icon);}\n";
+			echo "#oamsub_$hook a {background:url($icon) center $align no-repeat;}\n";
 		}
 		echo "</style>\n";
 	}
@@ -221,7 +224,7 @@ JS;
 
 
 function wp_ozh_adminmenu_css() {
-	global $wp_ozh_adminmenu, $pagenow;
+	global $wp_ozh_adminmenu, $pagenow, $text_direction;
 		
 	// $submenu = ($wp_ozh_adminmenu['display_submenu'] or ($pagenow == "media-upload.php") ) ? 1 : 0;
 	// Making links relative so they're more readable and shorter in the query string (also made relative in the .css.php)
@@ -239,6 +242,7 @@ function wp_ozh_adminmenu_css() {
 		'f' => $wp_ozh_adminmenu['displayfav'],
 		'g' => $wp_ozh_adminmenu['grad'], // menu color
 		'n' => $wp_ozh_adminmenu['nograd'], // disable gradient bg
+		'd' => ($text_direction == 'rtl' ? 'right' : 'left'), // right-to-left locale?
 	);
 	$query = http_build_query($query);
 
@@ -301,7 +305,7 @@ function wp_ozh_adminmenu_init() {
 		$wp_ozh_adminmenu['wpicons'] = 1;
 	// upon Fluency activation+deactivation, too_many_plugins can be 0, let's fix this
 	if (!$wp_ozh_adminmenu['too_many_plugins']) $wp_ozh_adminmenu['too_many_plugins'] = 30;
-	
+
 	// This plugin will have its own icon of course
 	add_filter( 'ozh_adminmenu_icon', 'wp_ozh_adminmenu_customicon');
 	// Add Config link to plugin list

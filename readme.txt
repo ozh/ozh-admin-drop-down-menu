@@ -9,7 +9,7 @@ All admin links available in a neat horizontal drop down menu. Saves lots of scr
 
 == Description ==
 
-The lazy and the productive will love it : all admin links available in a neat CSS driven drop down menu. No need to click on "Manage" then "Pages" to edit pages, go to *any admin page* from *any admin page*.
+The lazy and the productive will love it : all admin links available in a neat horizontal CSS driven drop down menu. No need to click on "Manage" then "Pages" to edit pages, go to *any admin page* from *any admin page*.
 
 For documentation, examples, screenshot and a live demo, please refer to the official plugin page for [Admin Drop Down Menu](http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/ "Admin Drop Down Menu"). There is also an API for plugin coders (give your plugin its own special icon!).
 
@@ -19,6 +19,7 @@ Current version is for WordPress 2.7+ only. For WordPress 2.6.5 and older, see t
 
 1. Drop down menu with WordPress top level icons and sub level icons, configurable color scheme
 2. Normal or compact display
+3. Full RTL support for those funky locales!
 
 == Installation ==
 

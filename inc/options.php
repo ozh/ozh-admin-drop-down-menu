@@ -16,7 +16,7 @@ CHK;
 }
 
 function wp_ozh_adminmenu_options_page() {
-	global $wp_ozh_adminmenu;
+	global $wp_ozh_adminmenu, $text_direction;
 	
 	/**
 	echo "<pre>".wp_ozh_adminmenu_sanitize(print_r($_POST,true))."</pre>";
@@ -25,16 +25,17 @@ function wp_ozh_adminmenu_options_page() {
 	
 	$too_many_plugins = intval($wp_ozh_adminmenu['too_many_plugins']);
 	$grad = $wp_ozh_adminmenu['grad'];
+	$align = ($text_direction == 'rtl' ? 'right' : 'left');
 	
 	echo '
 	<style type="text/css">
 	.wrap {margin-bottom:2em}
-	.wrap ul {list-style-type:disc;padding-left:3em;}
+	.wrap ul {list-style-type:disc;padding-'.$align.':3em;}
 	input {border:0}
 	#oam_cp_wrap {overflow:hidden;}
 	#oam_cp_toggle {vertical-align:-2px;cursor:pointer}
-	.oam_cp_preset {cursor:pointer;float:left;width:30px;height:30px;-moz-border-radius:30px;-webkit-border-radius:30px;margin:4px 5px 2px 5px;}
-	#oam_colorpicker {float:left;}
+	.oam_cp_preset {cursor:pointer;float:'.$align.';width:30px;height:30px;-moz-border-radius:30px;-webkit-border-radius:30px;margin:4px 5px 2px 5px;}
+	#oam_colorpicker {float:'.$align.';}
 	
 	</style>
     <div class="wrap">
