@@ -2,8 +2,8 @@
 /*
 Plugin Name: Ozh' Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
-Description: Replaces admin menus with a CSS dropdown menu bar. Saves lots of clicks and page loads! <strong>For WordPress 2.7+</strong>
-Version: 3.2.4
+Description: All admin links available in a neat horizontal drop down menu. Saves lots of screen real estate! <strong>For WordPress 2.8+</strong>
+Version: 3.3
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
@@ -76,7 +76,9 @@ Author URI: http://planetOzh.com/
  * 3.2.1:     Added: ru_RU (thanks Fat Cow!)
  * 3.2.2:     Added: pt_BR (thanks Renato Tavares!)
  * 3.2.3:     Fixed: Missing icon for WP 2.8
- * 3.2.3:     Updated: tr_TR (thanks Baris Unver!)
+ * 3.2.4:     Updated: tr_TR (thanks Baris Unver!)
+ * 3.3:       Improved: compatibility with 2.8 (action links in Plugins page, better filter for custom icons thanks to Stephen Rider)
+              Fixed: Dashboard disappearing with 2.8
  */
 
 /***** Hook things in when visiting an admin page. When viewing a blog page, nothing even loads in memory. ****/
@@ -89,6 +91,10 @@ if (is_admin()) {
 	add_action('admin_menu', 'wp_ozh_adminmenu_add_page', -999); // Add option page
 	add_action('admin_head', 'wp_ozh_adminmenu_head', 999); // Insert CSS & JS in <head>
 	add_action('in_admin_footer', 'wp_ozh_adminmenu_footer'); // Add unobstrusive credits in footer
+	add_filter( 'plugin_action_links_'.plugin_basename(__FILE__), 'wp_ozh_adminmenu_plugin_actions', -10); // Add Config link to plugin list
+	add_filter( 'ozh_adminmenu_icon_ozh_admin_menu', 'wp_ozh_adminmenu_customicon'); // This plugin will have its own icon of course
+	add_filter( 'admin_notices', 'wp_ozh_adminmenu', -9999); // Add the new admin menu right after the header area. Make sure we're first.
+
 
 	/*
 	// Mu stuff. Disabled for now, we'll see maybe when wpmu & wp 2.7 sync

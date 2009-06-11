@@ -55,7 +55,8 @@ function wp_ozh_adminmenu () {
 		if ( $submenu_as_parent && !empty($submenu[$item[2]]) ) {
 			$submenu[$item[2]] = array_values($submenu[$item[2]]);  // Re-index.
 			$menu_hook = get_plugin_page_hook($submenu[$item[2]][0][2], $item[2]);
-			if ( file_exists(WP_PLUGIN_DIR . "/{$submenu[$item[2]][0][2]}") || !empty($menu_hook)) {
+			if ( ( ('index.php' != $submenu[$item[2]][0][2]) && file_exists(WP_PLUGIN_DIR . "/{$submenu[$item[2]][0][2]}") ) || !empty($menu_hook)) {
+
 				$admin_is_parent = true;
 				$href = "admin.php?page={$submenu[$item[2]][0][2]}";
 			} else {
@@ -63,7 +64,7 @@ function wp_ozh_adminmenu () {
 			}
 		} else if ( current_user_can($item[1]) ) {
 			$menu_hook = get_plugin_page_hook($item[2], 'admin.php');
-			if ( file_exists(WP_PLUGIN_DIR . "/{$item[2]}") || !empty($menu_hook) ) {
+			if ( ('index.php' != $item[2]) && file_exists(WP_PLUGIN_DIR . "/{$item[2]}") || !empty($menu_hook) ) {
 				$admin_is_parent = true;
 				$href = "admin.php?page={$item[2]}";
 			} else {
@@ -116,7 +117,7 @@ function wp_ozh_adminmenu () {
 
 				$menu_hook = get_plugin_page_hook($sub_item[2], $item[2]);
 				
-				if ( file_exists(WP_PLUGIN_DIR . "/{$sub_item[2]}") || ! empty($menu_hook) ) {
+				if ( ( ('index.php' != $sub_item[2]) && file_exists(WP_PLUGIN_DIR . "/{$sub_item[2]}") ) || ! empty($menu_hook) ) {
 					// If admin.php is the current page or if the parent exists as a file in the plugins or admin dir
 					$parent_exists = (!$admin_is_parent && file_exists(WP_PLUGIN_DIR . "/{$item[2]}") && !is_dir(WP_PLUGIN_DIR . "/{$item[2]}") ) || file_exists($item[2]);
 					if ( $parent_exists )
@@ -129,6 +130,7 @@ function wp_ozh_adminmenu () {
 					// Get icons?
 					if ($wp_ozh_adminmenu['icons']) {
 						$plugin_icon = apply_filters('ozh_adminmenu_icon', $sub_item[2]);
+						$plugin_icon = apply_filters('ozh_adminmenu_icon_'.$sub_item[2], $sub_item[2]);
 						if ($plugin_icon != $sub_item[2]) {
 							// we have an icon: no default plugin class & we store the icon location
 							$plugin_icons[wp_ozh_adminmenu_sanitize_id($sub_item[2])] = $plugin_icon;
@@ -306,13 +308,6 @@ function wp_ozh_adminmenu_init() {
 	// upon Fluency activation+deactivation, too_many_plugins can be 0, let's fix this
 	if (!$wp_ozh_adminmenu['too_many_plugins']) $wp_ozh_adminmenu['too_many_plugins'] = 30;
 
-	// This plugin will have its own icon of course
-	add_filter( 'ozh_adminmenu_icon', 'wp_ozh_adminmenu_customicon');
-	// Add Config link to plugin list
-	add_filter( 'plugin_action_links', 'wp_ozh_adminmenu_plugin_actions', -10, 2);
-	// Add the new admin menu right after the header area. Make sure we're first.
-	add_filter( 'admin_notices', 'wp_ozh_adminmenu', -9999);
-
 	// On minimode, add a Logout link to the Users menu
 	if ($wp_ozh_adminmenu['minimode'])
 		add_users_page(__('Log Out'), __('Log Out'), 1, 'ozh_admin_menu_logout');
@@ -326,8 +321,7 @@ function wp_ozh_adminmenu_load_page() {
 
 // Hooked into 'ozh_adminmenu_icon', this function give this plugin its own icon
 function wp_ozh_adminmenu_customicon($in) {
-	if ($in == 'ozh_admin_menu') return WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/images/ozh.png';
-	return $in;
+	return WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/images/ozh.png';
 }
 
 
@@ -345,14 +339,8 @@ function wp_ozh_adminmenu_options_page_includes() {
 
 
 // Add the 'Settings' link to the plugin page
-function wp_ozh_adminmenu_plugin_actions($links, $file) {
-	if ($file == plugin_basename(dirname(dirname(__FILE__)).'/wp_ozh_adminmenu.php')) {
-		foreach($links as $k=>$v) {
-			if (strpos($v, 'plugin-editor.php?file=') !== false)
-				unset($links[$k]);
-		}
-		$links[] = "<a href='options-general.php?page=ozh_admin_menu'><b>Settings</b></a>";
-	}
+function wp_ozh_adminmenu_plugin_actions($links) {
+	$links[] = "<a href='options-general.php?page=ozh_admin_menu'><b>Settings</b></a>";
 	return $links;
 }
 
