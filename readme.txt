@@ -1,7 +1,7 @@
 === Ozh' Admin Drop Down Menu ===
 Donate link: http://planetozh.com/exit/donate
 Tags: ozh, menu, menus, dashboard, admin, dropdown, drop down, productivity, css
-Requires at least: 2.7
+Requires at least: 2.8
 Tested up to: 9.9
 Stable tag: trunk
 
