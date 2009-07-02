@@ -24,6 +24,7 @@ Current version is for WordPress 2.7+ only. For WordPress 2.6.5 and older, see t
 == Changelog ==
 
 The changelog can be found:
+
 1. In the plugin source itself
 1. Here: http://plugins.trac.wordpress.org/log/ozh-admin-drop-down-menu?verbose=on
 
