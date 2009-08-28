@@ -82,6 +82,7 @@ Author URI: http://planetOzh.com/
  * 3.3.1:     Added: el (thanks friedlich!)
  * 3.3.2:     Added: be_BY (thanks ilyuha!)
               Fixed: silly toggling of the "Display Favorites" option (thanks johnbillion!)
+			  Improved: display with crappy IE8 (thanks Octav!)
  */
 
 /***** Hook things in when visiting an admin page. When viewing a blog page, nothing even loads in memory. ****/

@@ -104,6 +104,7 @@ header('Content-type:text/css');
 	-moz-border-radius: 0px;
 	-webkit-border-radius: 0px;
 }
+#ozhmenu .ozhmenu_sublevel { line-height: 100%; margin: 0; } /* IE8 fix. Die, IE8 */
 #ozhmenu .ozhmenu_sublevel a:hover,
 #ozhmenu .ozhmenu_sublevel a.current,
 #ozhmenu .ozhmenu_sublevel a.current:hover {
