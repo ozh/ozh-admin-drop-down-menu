@@ -116,7 +116,7 @@ function wp_ozh_adminmenu_options_page() {
 	<?php echo wp_ozh_adminmenu__("Remove the whole header bar for maximum screen real estate. Note: The quick link to your blog will be added to the menu, the Logout link in the Users sub-menu."); ?>
 	</td></tr>
 
-    <tr id="oam_fav_row" <?php echo ($wp_ozh_adminmenu['displayfav'] ? '' : 'style="display:none"') ?>><th scope="row"><?php echo wp_ozh_adminmenu__('Favorite Actions'); ?></th>
+    <tr id="oam_fav_row"><th scope="row"><?php echo wp_ozh_adminmenu__('Favorite Actions'); ?></th>
 	<td><label><?php wp_ozh_adminmenu_checkbox('displayfav'); ?>  <?php echo wp_ozh_adminmenu__('Display Favorite Actions'); ?></label><br/>
 	<?php echo wp_ozh_adminmenu__("Just in case you realize you don't need this anymore with such a fast and usable menu."); ?>
 	</td></tr>
