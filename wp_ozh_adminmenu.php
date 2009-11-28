@@ -3,7 +3,7 @@
 Plugin Name: Ozh' Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Description: All admin links available in a neat horizontal drop down menu. Saves lots of screen real estate! <strong>For WordPress 2.8+</strong>
-Version: 3.3.5
+Version: 3.3.6
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
@@ -87,6 +87,7 @@ Author URI: http://planetOzh.com/
  * 3.3.4:     Added: ro_RO (thanks Octav!)
               Added: uk_UA (thanks wpp.pp.ua)
  * 3.3.5:     Added: uk (thanks Jurko Chervony!)
+ * 3.3.6:     Minor cosmetic change to backend (twitter links)
 
  */
 
