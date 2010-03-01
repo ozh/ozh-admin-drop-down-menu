@@ -203,7 +203,13 @@ function wp_ozh_adminmenu_sanitize_id($url) {
 function wp_ozh_adminmenu_js() {
 	global $wp_ozh_adminmenu;
 	
-	$toomanyplugins = $wp_ozh_adminmenu['too_many_plugins'];
+	if( !empty($toomanyplugins) ) {
+		$toomanyplugins = $wp_ozh_adminmenu['too_many_plugins'];
+	} else {
+		$defaults = wp_ozh_adminmenu_defaults();
+		$toomanyplugins = $defaults['too_many_plugins'];
+		unset( $defaults );
+	}
 	$plugin_url = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__));
 	$insert_main_js = '<script src="'.$plugin_url.'/adminmenu.js" type="text/javascript"></script>';
 
