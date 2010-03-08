@@ -203,9 +203,8 @@ function wp_ozh_adminmenu_sanitize_id($url) {
 function wp_ozh_adminmenu_js() {
 	global $wp_ozh_adminmenu;
 	
-	if( !empty($toomanyplugins) ) {
-		$toomanyplugins = $wp_ozh_adminmenu['too_many_plugins'];
-	} else {
+	$toomanyplugins = $wp_ozh_adminmenu['too_many_plugins'];
+	if( empty($toomanyplugins) ) {
 		$defaults = wp_ozh_adminmenu_defaults();
 		$toomanyplugins = $defaults['too_many_plugins'];
 		unset( $defaults );
