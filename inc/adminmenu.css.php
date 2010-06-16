@@ -19,6 +19,7 @@ function wp_ozh_adminmenu_color($col) {
 
 // Get vars & needed links, make them relative to be sure no one will be leeching icons or anything from somewhere else
 $plugin      = make_link_relative( $_GET['p'] );
+$admin       = make_link_relative( $_GET['a'] );
 $icons       = ($_GET['i'] == 1) ? true : false ;
 $wpicons     = ($_GET['w'] == 1) ? true : false ;
 $compact     = ($_GET['c'] == 1) ? true : false ;
@@ -27,14 +28,16 @@ $hidebubble  = ($_GET['h'] == 1) ? true : false ;
 $display_fav = ($_GET['f'] == 1) ? true : false ;
 $nograd      = ($_GET['n'] == 1) ? true : false ;
 $dir         = ($_GET['d'] == 'right') ? 'right' : 'left' ; // text direction
-$opdir         = ($_GET['d'] == 'right') ? 'left' : 'right' ; // OPposite DIRection
+$opdir       = ($_GET['d'] == 'right') ? 'left' : 'right' ; // OPposite DIRection
 $grad        = ($_GET['g']) ? wp_ozh_adminmenu_color($_GET['g']) : '#676768' ;
-// $mu      = ($_GET['mu'] == 1) ? true : false;
-$mu = false;
 
 header('Content-type:text/css');
 
 ?>
+
+/*
+<?php var_dump( $admin, $_GET['a'] ); ?>
+*/
 
 /* Style for Ozh's Admin Drop Down Menu */
 /* Restyle or hide original items */
@@ -135,7 +138,7 @@ header('Content-type:text/css');
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
 	width: 1*;  /* maybe needed for some Opera ? */
-	min-width:6em;
+	zmin-width:10em;
 	<?php echo $dir; ?>: -999em; /* using left instead of display to hide menus because display: none isn't read by screen readers */
 	list-style-position:auto;
 	list-style-type:auto;
@@ -145,6 +148,7 @@ header('Content-type:text/css');
 	background:transparent !important;
 	float:none;
 	text-align:<?php echo $dir; ?>;
+	overflow:hidden;
 }
 #ozhmenu li ul li a { /* links in dropped down list items*/
 	margin:0px;
@@ -221,43 +225,48 @@ header('Content-type:text/css');
 #ozhmenu li.ozhmenu_toplevel ul li.toplevel_label span.update-plugins,
 #ozhmenu li.ozhmenu_toplevel ul li.toplevel_label span.pending-count {display:none;}
 
-#oam_menu-dashboard div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -61px -35px no-repeat;}
-#oam_menu-dashboard:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -61px -3px no-repeat;}
-#oam_menu-posts div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -272px -35px no-repeat;}
-#oam_menu-posts:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -272px -3px no-repeat;}
-#oam_menu-media div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -121px -35px no-repeat;}
-#oam_menu-media:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -121px -3px no-repeat;}
-#oam_menu-links div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -91px -35px no-repeat;}
-#oam_menu-links:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -91px -3px no-repeat;}
-#oam_menu-pages div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -151px -35px no-repeat;}
-#oam_menu-pages:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -151px -3px no-repeat;}
-#oam_menu-comments div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -31px -35px no-repeat;}
-#oam_menu-comments:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -31px -3px no-repeat;}
-#oam_menu-appearance div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -1px -35px no-repeat;}
-#oam_menu-appearance:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -1px -3px no-repeat;}
-#oam_menu-plugins div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -181px -35px no-repeat;}
-#oam_menu-plugins:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -181px -3px no-repeat;}
-#oam_menu-users div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -301px -35px no-repeat;}
-#oam_menu-users:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -301px -3px no-repeat;}
-#oam_menu-tools div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -211px -35px no-repeat;}
-#oam_menu-tools:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -211px -3px no-repeat;}
-#oam_menu-settings div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -241px -35px no-repeat;}
-#oam_menu-settings:hover div.wp-menu-image {background:transparent url(<?php echo $plugin; ?>/images/menu.png) -241px -3px no-repeat;}
+#oam_menu-site div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -363px -35px no-repeat;}
+#oam_menu-site:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -363px -3px no-repeat;}
+#oam_menu-dashboard div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -61px -35px no-repeat;}
+#oam_menu-dashboard:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -61px -3px no-repeat;}
+#oam_menu-posts div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -272px -35px no-repeat;}
+#oam_menu-posts:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -272px -3px no-repeat;}
+#oam_menu-media div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -121px -35px no-repeat;}
+#oam_menu-media:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -121px -3px no-repeat;}
+#oam_menu-links div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -91px -35px no-repeat;}
+#oam_menu-links:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -91px -3px no-repeat;}
+#oam_menu-pages div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -151px -35px no-repeat;}
+#oam_menu-pages:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -151px -3px no-repeat;}
+#oam_menu-comments div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -31px -35px no-repeat;}
+#oam_menu-comments:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -31px -3px no-repeat;}
+#oam_menu-appearance div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -1px -35px no-repeat;}
+#oam_menu-appearance:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -1px -3px no-repeat;}
+#oam_menu-plugins div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -181px -35px no-repeat;}
+#oam_menu-plugins:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -181px -3px no-repeat;}
+#oam_menu-users div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -301px -35px no-repeat;}
+#oam_menu-users:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -301px -3px no-repeat;}
+#oam_menu-tools div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -211px -35px no-repeat;}
+#oam_menu-tools:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -211px -3px no-repeat;}
+#oam_menu-settings div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -241px -35px no-repeat;}
+#oam_menu-settings:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -241px -3px no-repeat;}
 #ozhmenu img.wp-menu-image {float:<?php echo $dir; ?>;opacity:0.6;padding:5px 1px 0;filter:alpha(opacity=60);}
 #ozhmenu .ozhmenu_toplevel:hover img.wp-menu-image {opacity:1;filter:alpha(opacity=100);}
 
 /* Mu Specific */
 #ozhmumenu_head {
+	border:10px solid red;
 	color:#bbb;
 	font-weight:bolder;
 }
 #ozhmumenu_head #all-my-blogs {
+	border:10px solid red;
 	position:relative;
 	top:0px;
 	background:#ffa;
 	color:#000;
 }
 #ozhmenu #oam_bloglink a {
+	border:10px solid red;
 	font-weight:bolder;
 	color:#fff;
 }
@@ -295,6 +304,7 @@ span.count-0 {display:none;}
 .oam_plugin a {
 	background-image:url(<?php echo $plugin; ?>/images/cog.png);
 }
+#ozhmumenu .ozhmenu_sublevel a {background-image:url(<?php echo $plugin; ?>/images/world_link.png);}
 <?php
 	foreach($wp_ozh_adminmenu['icon_names'] as $link=>$icon) {
 		$link = wp_ozh_adminmenu_sanitize_id($link);
@@ -306,14 +316,5 @@ span.count-0 {display:none;}
 #ozhmenu .ozhmenu_sublevel a {padding-<?php echo $dir; ?>:5px;}
 <?php } ?>
 
-<?php if ($mu && $icons) { ?>
-#ozhmumenu .ozhmenu_sublevel a {background-image:url(<?php echo $plugin; ?>/images/world_link.png);}
-<?php
-	foreach($wp_ozh_adminmenu['icon_names_mu'] as $link=>$icon) {
-		$link = str_replace(array('.php','.','/'),array('','_','_'),$link);
-		echo "#oamsub_$link a {background-image:url($plugin/images/$icon.png);}\n";
-	}
-
-} ?>
 
 /**/

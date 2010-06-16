@@ -210,7 +210,7 @@ function wp_ozh_adminmenu_js() {
 		unset( $defaults );
 	}
 	$plugin_url = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__));
-	$insert_main_js = '<script src="'.$plugin_url.'/adminmenu.js" type="text/javascript"></script>';
+	$insert_main_js = '<script src="'.$plugin_url.'/js/adminmenu.js" type="text/javascript"></script>';
 
 	echo <<<JS
 <script type="text/javascript"><!--//--><![CDATA[//><!--
@@ -239,10 +239,9 @@ function wp_ozh_adminmenu_css() {
 	// query vars
 	$query = array(
 		'p' => wp_make_link_relative($plugin),
-		// 'a' => wp_make_link_relative(get_option('siteurl') . '/wp-admin'),
-		// 'mu => ((function_exists('wp_ozh_adminmenu_blogswitch_init')) ? 1 : 0),
+		'a' => get_admin_url(),
 		'i' => $wp_ozh_adminmenu['icons'],
-		'w' => 	$wp_ozh_adminmenu['wpicons'],
+		'w' => $wp_ozh_adminmenu['wpicons'],
 		'm' => $wp_ozh_adminmenu['minimode'],
 		'c' => $wp_ozh_adminmenu['compact'],
 		'h' => $wp_ozh_adminmenu['hidebubble'],
@@ -421,6 +420,9 @@ function wp_ozh_adminmenu_processform() {
 
 	add_action('admin_notices', create_function( '', "echo '$message';" ) );
 }
+
+
+
 
 
 ?>

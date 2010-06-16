@@ -3,7 +3,7 @@
 Plugin Name: Ozh' Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Description: All admin links available in a neat horizontal drop down menu. Saves lots of screen real estate! <strong>For WordPress 2.8+</strong>
-Version: 3.3.11
+Version: 3.4
 Author: Ozh
 Author URI: http://planetOzh.com/
 */
@@ -93,10 +93,11 @@ Author URI: http://planetOzh.com/
  * 3.3.9:     Fixed: the failed fixed of 3.3.7
  * 3.3.10:    Fixed: stupid way of inserting Farbtastic all over the place (thanks olov !)
  * 3.3.11:    Added: cs_CZ (thanks Honza!)
+ * 3.4:       Fixed: compatibility with WP 3.0
+              Improved: JS to resize-recolumn submenus
  */
 
 /***** Hook things in when visiting an admin page. When viewing a blog page, nothing even loads in memory. ****/
-
 if (is_admin()) {
 	global $wp_ozh_adminmenu;
 	require_once(dirname(__FILE__).'/inc/core.php');
@@ -105,19 +106,9 @@ if (is_admin()) {
 	add_action('admin_menu', 'wp_ozh_adminmenu_add_page', -999); // Add option page
 	add_action('admin_head', 'wp_ozh_adminmenu_head', 999); // Insert CSS & JS in <head>
 	add_action('in_admin_footer', 'wp_ozh_adminmenu_footer'); // Add unobstrusive credits in footer
-	add_filter( 'plugin_action_links_'.plugin_basename(__FILE__), 'wp_ozh_adminmenu_plugin_actions', -10); // Add Config link to plugin list
-	add_filter( 'ozh_adminmenu_icon_ozh_admin_menu', 'wp_ozh_adminmenu_customicon'); // This plugin will have its own icon of course
-	add_filter( 'admin_notices', 'wp_ozh_adminmenu', -9999); // Add the new admin menu right after the header area. Make sure we're first.
-
-
-	/*
-	// Mu stuff. Disabled for now, we'll see maybe when wpmu & wp 2.7 sync
-	global $wpmu_version;
-	if ($wpmu_version) {
-		require_once(dirname(__FILE__).'/inc/mu.php');
-		add_action( '_admin_menu', 'wp_ozh_adminmenu_remove_blogswitch_init', -100 ); // MU specific menu takeover
-	}
-	*/
+	add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'wp_ozh_adminmenu_plugin_actions', -10); // Add Config link to plugin list
+	add_filter('ozh_adminmenu_icon_ozh_admin_menu', 'wp_ozh_adminmenu_customicon'); // This plugin will have its own icon of course
+	add_filter('admin_notices', 'wp_ozh_adminmenu', -9999); // Add the new admin menu right after the header area. Make sure we're first.
 }
 
 ?>
