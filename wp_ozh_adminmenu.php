@@ -111,4 +111,15 @@ if (is_admin()) {
 	add_filter('admin_notices', 'wp_ozh_adminmenu', -9999); // Add the new admin menu right after the header area. Make sure we're first.
 }
 
+// Make sure it's WP 3.0+ only
+// require PHP 5
+function wp_ozh_adminmenu_check(){
+	global $wp_version;
+	if ( version_compare($wp_version, '3', '<') ) {
+		deactivate_plugins( basename(__FILE__) );
+		wp_die("Sorry, this plugin requires WordPress 3.0 at least");
+	}
+}
+register_activation_hook(__FILE__, 'wp_ozh_adminmenu_check');
+
 ?>
