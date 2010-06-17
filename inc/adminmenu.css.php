@@ -254,19 +254,16 @@ header('Content-type:text/css');
 
 /* Mu Specific */
 #ozhmumenu_head {
-	border:10px solid red;
 	color:#bbb;
 	font-weight:bolder;
 }
 #ozhmumenu_head #all-my-blogs {
-	border:10px solid red;
 	position:relative;
 	top:0px;
 	background:#ffa;
 	color:#000;
 }
 #ozhmenu #oam_bloglink a {
-	border:10px solid red;
 	font-weight:bolder;
 	color:#fff;
 }
