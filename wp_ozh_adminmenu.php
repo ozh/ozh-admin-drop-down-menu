@@ -95,6 +95,7 @@ Author URI: http://planetOzh.com/
  * 3.3.11:    Added: cs_CZ (thanks Honza!)
  * 3.4:       Fixed: compatibility with WP 3.0
               Improved: JS to resize-recolumn submenus
+ * 3.4.1:     Fixed: crappy red border for test I left in the CSS
  */
 
 /***** Hook things in when visiting an admin page. When viewing a blog page, nothing even loads in memory. ****/
