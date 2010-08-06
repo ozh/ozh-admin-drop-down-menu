@@ -36,7 +36,7 @@ header('Content-type:text/css');
 ?>
 
 /*
-<?php var_dump( $admin, $_GET['a'] ); ?>
+<?php var_dump( $admin ); ?>
 */
 
 /* Style for Ozh's Admin Drop Down Menu */

@@ -239,7 +239,7 @@ function wp_ozh_adminmenu_css() {
 	// query vars
 	$query = array(
 		'p' => wp_make_link_relative($plugin),
-		'a' => get_admin_url(),
+		'a' => wp_make_link_relative( get_admin_url() ),
 		'i' => $wp_ozh_adminmenu['icons'],
 		'w' => $wp_ozh_adminmenu['wpicons'],
 		'm' => $wp_ozh_adminmenu['minimode'],
