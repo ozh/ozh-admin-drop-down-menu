@@ -4,6 +4,7 @@ Tags: ozh, menu, menus, dashboard, admin, dropdown, drop down, productivity, css
 Requires at least: 3.0
 Tested up to: 9.9
 Stable tag: trunk
+Contributors: ozh
 
 All admin links available in a neat horizontal drop down menu. Saves lots of screen real estate!
 
