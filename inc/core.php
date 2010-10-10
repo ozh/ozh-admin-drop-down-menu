@@ -209,8 +209,8 @@ function wp_ozh_adminmenu_js() {
 		$toomanyplugins = $defaults['too_many_plugins'];
 		unset( $defaults );
 	}
-	$plugin_url = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__));
-	$insert_main_js = '<script src="'.$plugin_url.'/js/adminmenu.js" type="text/javascript"></script>';
+	$plugin_url = wp_ozh_adminmenu_pluginurl();
+	$insert_main_js = '<script src="'.$plugin_url.'inc/js/adminmenu.js" type="text/javascript"></script>';
 
 	echo <<<JS
 <script type="text/javascript"><!--//--><![CDATA[//><!--
@@ -235,7 +235,7 @@ function wp_ozh_adminmenu_css() {
 		
 	// $submenu = ($wp_ozh_adminmenu['display_submenu'] or ($pagenow == "media-upload.php") ) ? 1 : 0;
 	// Making links relative so they're more readable and shorter in the query string (also made relative in the .css.php)
-	$plugin = WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__));
+	$plugin = wp_ozh_adminmenu_pluginurl().'inc/';
 	// query vars
 	$query = array(
 		'p' => wp_make_link_relative($plugin),
@@ -252,7 +252,7 @@ function wp_ozh_adminmenu_css() {
 	);
 	$query = http_build_query($query);
 
-	echo "<link rel='stylesheet' href='$plugin/adminmenu.css.php?$query' type='text/css' media='all' />\n";
+	echo "<link rel='stylesheet' href='{$plugin}adminmenu.css.php?$query' type='text/css' media='all' />\n";
 }
 
 
@@ -288,16 +288,6 @@ function wp_ozh_adminmenu_init() {
 	if (isset($_POST['ozh_adminmenu']) && ($_POST['ozh_adminmenu'] == 1) )
 		wp_ozh_adminmenu_processform();
 	
-	// Superfluous double checking
-	if ( !defined('WP_CONTENT_URL') )
-		define( 'WP_CONTENT_URL', get_option('siteurl') . '/wp-content');
-	if ( !defined('WP_PLUGIN_URL') )
-		define( 'WP_PLUGIN_URL', WP_CONTENT_URL . '/plugins' );
-	if ( !defined('WP_CONTENT_DIR') )
-		define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
-	if ( !defined('WP_PLUGIN_DIR') )
-		define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' ); // full path, no trailing slash
-	
 	$defaults = wp_ozh_adminmenu_defaults();
 	
 	if (!count($wp_ozh_adminmenu)) {
@@ -325,7 +315,7 @@ function wp_ozh_adminmenu_load_page() {
 
 // Hooked into 'ozh_adminmenu_icon', this function give this plugin its own icon
 function wp_ozh_adminmenu_customicon($in) {
-	return WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)).'/images/ozh.png';
+	return wp_ozh_adminmenu_pluginurl().'inc/images/ozh.png';
 }
 
 
@@ -333,7 +323,7 @@ function wp_ozh_adminmenu_customicon($in) {
 function wp_ozh_adminmenu_add_page() {
 	$page = add_options_page('Admin Drop Down Menu', 'Admin Menu', 'manage_options', 'ozh_admin_menu', 'wp_ozh_adminmenu_options_page_includes');
 	add_action('admin_print_scripts-' . $page, 'wp_ozh_adminmenu_add_farbtastic');
-	add_action('admin_print_styles-' . $page, 'wp_ozh_adminmenu_add_farbtastic');
+	add_action('admin_print_styles-'  . $page, 'wp_ozh_adminmenu_add_farbtastic');
 }
 
 // Actually add Farbtastic
@@ -346,6 +336,11 @@ function wp_ozh_adminmenu_add_farbtastic() {
 function wp_ozh_adminmenu_options_page_includes() {
 	require_once(dirname(__FILE__).'/options.php');
 	wp_ozh_adminmenu_options_page();
+}
+
+// Return plugin URL (SSL pref compliant) (trailing slash)
+function wp_ozh_adminmenu_pluginurl() {
+	return plugin_dir_url( dirname(__FILE__) );
 }
 
 
