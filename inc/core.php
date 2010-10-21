@@ -10,7 +10,14 @@ function wp_ozh_adminmenu () {
 	
 	// echo "<pre>";print_r($menu);print_r($submenu);echo "</pre>";
 	
+	// Plugins: hack $menu & $submenu before I butcher them
+	$menu = apply_filters( 'pre_ozh_adminmenu_menu', $menu );
+	$submenu = apply_filters( 'pre_ozh_adminmenu_submenu', $submenu ); 
+	
 	$ozh_menu = '<div id="ozhmenu_wrap"><ul id="ozhmenu">';
+	
+	// Plugins: hack $ozh_menu before I start adding stuff to it
+	$ozh_menu = apply_filters( 'pre_ozh_adminmenu_ozh_menu', $ozh_menu );
 	
 	if ($wp_ozh_adminmenu['minimode'])
 		$ozh_menu .= '<li id="oam_bloglink" class="ozhmenu_toplevel">'.wp_ozh_adminmenu_blogtitle().'</li>';
@@ -161,6 +168,9 @@ function wp_ozh_adminmenu () {
 	
 	$ozh_menu .= "</ul></div>";
 	
+	// Plugins: hack $ozh_menu now it's complete
+	$ozh_menu = apply_filters( 'post_ozh_adminmenu_ozh_menu', $ozh_menu );
+
 	if ($plugin_icons) {
 		global $text_direction;
 		$align = ($text_direction == 'rtl' ? 'right' : 'left');
