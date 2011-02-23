@@ -59,7 +59,7 @@ function wp_ozh_adminmenu () {
 			$fullstyle = 'inline';
 		}
 
-		if ( $submenu_as_parent && !empty($submenu[$item[2]]) ) {
+		if ( isset( $submenu_as_parent ) && !empty( $submenu[$item[2]] ) ) {
 			$submenu[$item[2]] = array_values($submenu[$item[2]]);  // Re-index.
 			$menu_hook = get_plugin_page_hook($submenu[$item[2]][0][2], $item[2]);
 			if ( ( ('index.php' != $submenu[$item[2]][0][2]) && file_exists(WP_PLUGIN_DIR . "/{$submenu[$item[2]][0][2]}") ) || !empty($menu_hook)) {
@@ -100,6 +100,8 @@ function wp_ozh_adminmenu () {
 
 		// Sub level menus
 		if ( !empty($submenu[$item[2]]) ) {
+			if( !isset( $ulclass ) )
+				$ulclass = '';
 			$ozh_menu .= "\n\t\t<ul$ulclass><li class='toplevel_label'>$anchor</li>\n";
 			$first = true;
 			foreach ( $submenu[$item[2]] as $sub_key => $sub_item ) {
@@ -157,6 +159,9 @@ function wp_ozh_adminmenu () {
 				
 				$subid = 'oamsub_'.wp_ozh_adminmenu_sanitize_id($sub_item[2]);
 				$subanchor = strip_tags($sub_item[0]);
+				
+				if( !isset( $icon ) )
+					$icon = '';
 
 				$ozh_menu .= "\t\t\t<li class='ozhmenu_sublevel $icon' id='$subid'><a href='$suburl'$subclass>$subanchor</a></li>\n";
 			}			
@@ -171,11 +176,11 @@ function wp_ozh_adminmenu () {
 	// Plugins: hack $ozh_menu now it's complete
 	$ozh_menu = apply_filters( 'post_ozh_adminmenu_ozh_menu', $ozh_menu );
 
-	if ($plugin_icons) {
+	if ( isset( $plugin_icons ) ) {
 		global $text_direction;
 		$align = ($text_direction == 'rtl' ? 'right' : 'left');
 		echo "\n".'<style type="text/css">'."\n";
-		foreach($plugin_icons as $hook=>$icon) {
+		foreach( $plugin_icons as $hook=>$icon ) {
 			$hook = plugin_basename($hook);
 			//echo "#oamsub_$hook a {background-image:url($icon);}\n";
 			echo "#oamsub_$hook a {background:url($icon) center $align no-repeat;}\n";
