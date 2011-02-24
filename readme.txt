@@ -1,7 +1,7 @@
 === Ozh' Admin Drop Down Menu ===
 Donate link: http://planetozh.com/exit/donate
 Tags: ozh, menu, menus, dashboard, admin, dropdown, drop down, productivity, css
-Requires at least: 3.0
+Requires at least: 3.1
 Tested up to: 9.9
 Stable tag: trunk
 Contributors: ozh
@@ -14,7 +14,7 @@ The lazy and the productive will love it : all admin links available in a neat h
 
 For documentation, examples, screenshot and a live demo, please refer to the official plugin page for [Admin Drop Down Menu](http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/ "Admin Drop Down Menu"). There is also an API for plugin coders (give your plugin its own special icon!).
 
-Current version is for WordPress 3.0+ only. For older unsupported versions, see the plugin's page.
+Current version is for WordPress 3.1+ only. For older unsupported versions, see the plugin's page.
 
 == Screenshots ==
 

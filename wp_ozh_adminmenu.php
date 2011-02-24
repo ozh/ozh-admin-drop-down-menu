@@ -120,9 +120,9 @@ if ( is_admin() ){
 // Make sure it's WP 3.0+ only
 function wp_ozh_adminmenu_check(){
 	global $wp_version;
-	if ( version_compare($wp_version, '3', '<') ) {
+	if ( version_compare($wp_version, '3.1', '<') ) {
 		deactivate_plugins( basename(__FILE__) );
-		wp_die("Sorry, this plugin requires WordPress 3.0 at least");
+		wp_die("Sorry, this plugin requires WordPress 3.1 at least");
 	}
 }
 register_activation_hook(__FILE__, 'wp_ozh_adminmenu_check');
