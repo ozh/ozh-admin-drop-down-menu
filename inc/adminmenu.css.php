@@ -247,6 +247,8 @@ header('Content-type:text/css');
 #oam_menu-users:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -301px -3px no-repeat;}
 #oam_menu-tools div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -211px -35px no-repeat;}
 #oam_menu-tools:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -211px -3px no-repeat;}
+#oam_menu-update div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -211px -35px no-repeat;}
+#oam_menu-update:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -211px -3px no-repeat;}
 #oam_menu-settings div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -241px -35px no-repeat;}
 #oam_menu-settings:hover div.wp-menu-image {background:transparent url(<?php echo $admin; ?>/images/menu.png) -241px -3px no-repeat;}
 #ozhmenu img.wp-menu-image {float:<?php echo $dir; ?>;opacity:0.6;padding:5px 1px 0;filter:alpha(opacity=60);}

@@ -311,6 +311,7 @@ function wp_ozh_adminmenu_init() {
 	}
 	
 	$wp_ozh_adminmenu = array_merge($defaults, $wp_ozh_adminmenu);
+	
 	// Cannot have wpicons == 0 && compact == 1
 	if ($wp_ozh_adminmenu['compact'] == 1)
 		$wp_ozh_adminmenu['wpicons'] = 1;

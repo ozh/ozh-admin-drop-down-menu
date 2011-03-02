@@ -76,17 +76,19 @@ $wp_ozh_adminmenu['icon_names'] = array(
 		'options-privacy.php' => 'eye',
 		'options-permalink.php' => 'link_edit',
 
-/* Network Admin */
+/* Network Admin, missing icons only */
 
-	/* TODO */
+	/* Sites */
+		'sites.php' => 'world_link',
+		'site-new.php' => 'world_edit',
+	
+	/* Settings */
+		'settings.php' => 'wrench_orange',
+		'setup.php' => 'computer_edit',
+	
+	/* Update */
+		'upgrade.php' => 'lightning_go',
 
-	/* Super Admin */
-		'ms-admin.php' => 'tux',
-		'ms-sites.php' => 'world_link',
-		'ms-users.php' => 'user_go',
-		'ms-themes.php' => 'layers',
-		'ms-options.php' => 'computer_edit',
-		'ms-upgrade-network.php' => 'lightning_go',
 );
 
 ?>

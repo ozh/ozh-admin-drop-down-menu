@@ -3,7 +3,7 @@
 Plugin Name: Ozh' Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Description: All admin links available in a neat horizontal drop down menu. Saves lots of screen real estate! <strong>For WordPress 3.0+</strong>
-Version: 3.4.99
+Version: 3.5
 Author: Ozh
 Author URI: http://ozh.org/
 */
@@ -102,13 +102,15 @@ Author URI: http://ozh.org/
  * 3.4.5:     Fixed: reintroduced filters removed by accident in november 2008.
  * 3.4.99:    Updated: Quick compatibility with WP 3.1 (missing icons)
               Fixed: (some?) notices when debug mode on
+ * 3.5:       Updated: finished compat with WP 3.1 (added missing icons + proper init hooks used)
+              Fixed: JS bug introduced with WP 3.1 when resizing menus
  */
 
 /***** Hook things in when visiting an admin page. When viewing a blog page, nothing even loads in memory. ****/
 if ( is_admin() ){
 	global $wp_ozh_adminmenu;
 	require_once(dirname(__FILE__).'/inc/core.php');
-	add_action('admin_menu', 'wp_ozh_adminmenu_init', -1000);	// Init plugin defaults or read options
+	add_action('admin_init', 'wp_ozh_adminmenu_init', -1000);	// Init plugin defaults or read options
 	add_action('admin_menu', 'wp_ozh_adminmenu_add_page', -999); // Add option page
 	add_action('admin_head', 'wp_ozh_adminmenu_head', 999); // Insert CSS & JS in <head>
 	add_action('in_admin_footer', 'wp_ozh_adminmenu_footer'); // Add unobstrusive credits in footer
@@ -117,7 +119,7 @@ if ( is_admin() ){
 	add_filter('all_admin_notices', 'wp_ozh_adminmenu', -9999); // Add the new admin menu right after the header area. Make sure we're first.
 }
 
-// Make sure it's WP 3.0+ only
+// Make sure it's WP 3.1+ only
 function wp_ozh_adminmenu_check(){
 	global $wp_version;
 	if ( version_compare($wp_version, '3.1', '<') ) {

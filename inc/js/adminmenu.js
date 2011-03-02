@@ -36,20 +36,20 @@ jQuery(document).ready(function() {
 				var parentwidth = parseInt( jQuery('#'+target ).css('width') );
 				jQuery('#'+target+' ul').css('min-width', parentwidth+'px');
 				// Now check if we need to split in columns
-				var menulength = jQuery('#'+target+' ul li').length;
+				var menulength = jQuery('#'+target+' ul li.ozhmenu_sublevel').length;
 				if (menulength > oam_toomanypluygins) {
 					var maxw = 0;
 					// float every item to the left and get the biggest size
-					jQuery('#'+target+' ul li').each(function(){
+					jQuery('#'+target+' ul li.ozhmenu_sublevel').each(function(){
 						var width = parseInt(jQuery(this).css('width')) || '180';
+						console.log( width );
 						maxw = Math.max( width, maxw );
-						jQuery(this).css('float', 'left');
 					});
 					// Resize the whole submenu
-					if (maxw) {
+					if ( maxw ) {
 						var cols = parseInt(menulength / oam_toomanypluygins)+1;
-						jQuery('#'+target+' ul li').each(function(){
-							jQuery(this).css('width', maxw+'px');
+						jQuery('#'+target+' ul li.ozhmenu_sublevel').each(function(){
+							jQuery(this).css('width', maxw+'px').css('float', 'left');
 						});
 						// Give the submenu a width = (max item width)*number of columns + 5px between each column
 						jQuery('#'+target+' ul').css('width', ( cols*maxw + (5*(cols-1)) )+'px');
