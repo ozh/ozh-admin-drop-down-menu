@@ -225,7 +225,7 @@ function wp_ozh_adminmenu_js() {
 		unset( $defaults );
 	}
 	$plugin_url = wp_ozh_adminmenu_pluginurl();
-	$insert_main_js = '<script src="'.$plugin_url.'inc/js/adminmenu.js" type="text/javascript"></script>';
+	$insert_main_js = '<script src="'.$plugin_url.'inc/js/adminmenu.js?v='. OZH_MENU_VER .'" type="text/javascript"></script>';
 
 	echo <<<JS
 <script type="text/javascript"><!--//--><![CDATA[//><!--
@@ -253,6 +253,7 @@ function wp_ozh_adminmenu_css() {
 	$plugin = wp_ozh_adminmenu_pluginurl().'inc/';
 	// query vars
 	$query = array(
+		'v' => OZH_MENU_VER,
 		'p' => wp_make_link_relative($plugin),
 		'a' => wp_make_link_relative( get_admin_url() ),
 		'i' => $wp_ozh_adminmenu['icons'],

@@ -105,8 +105,12 @@ Author URI: http://ozh.org/
  * 3.5:       Updated: finished compat with WP 3.1 (added missing icons + proper init hooks used)
               Fixed: JS bug introduced with WP 3.1 when resizing menus
  * 3.5.1:     Added: nl_NL (thanks Cees van den Heuvel)
+ * 3.5.2:     Added: version constant
  */
 
+
+define( 'OZH_MENU_VER', '3.5.2' );
+ 
 /***** Hook things in when visiting an admin page. When viewing a blog page, nothing even loads in memory. ****/
 if ( is_admin() ){
 	global $wp_ozh_adminmenu;
