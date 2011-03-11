@@ -42,7 +42,6 @@ jQuery(document).ready(function() {
 					// float every item to the left and get the biggest size
 					jQuery('#'+target+' ul li.ozhmenu_sublevel').each(function(){
 						var width = parseInt(jQuery(this).css('width')) || '180';
-						console.log( width );
 						maxw = Math.max( width, maxw );
 					});
 					// Resize the whole submenu
