@@ -267,7 +267,7 @@ function wp_ozh_adminmenu_options_page() {
 	<li><?php echo wp_ozh_adminmenu__('you want to uninstall the plugin and leave no unnecessary entries in your database.');?></li>
 	<li><?php echo wp_ozh_adminmenu__('you want all settings to be reverted to their default values');?></li>
 	</ul>
-	<p class="submit" style="border-top:0px;padding:0;"><input style="color:red" name="submit" value="<?php echo wp_ozh_adminmenu__('Reset Settings');?>" onclick="return(confirm('<?php echo js_escape(wp_ozh_adminmenu__('Really do?'));?>'))" type="submit" /></p>
+	<p class="submit" style="border-top:0px;padding:0;"><input style="color:red" name="submit" value="<?php echo wp_ozh_adminmenu__('Reset Settings');?>" onclick="return(confirm('<?php echo esc_js(wp_ozh_adminmenu__('Really do?'));?>'))" type="submit" /></p>
 	<p><?php echo wp_ozh_adminmenu__('There is no undo, so be very sure you want to click the button!');?></p>
 	
 	</form>
@@ -277,8 +277,8 @@ function wp_ozh_adminmenu_options_page() {
 }
 
 // Sanitize string for display: escape HTML but preserve UTF8 (or whatever)
-function wp_ozh_adminmenu_sanitize($string) {
-	return stripslashes(attribute_escape($string));
+function wp_ozh_adminmenu_sanitize( $string ) {
+	return stripslashes( esc_attr( $string ) );
 	//return stripslashes(htmlentities($string, ENT_COMPAT, get_bloginfo('charset')));
 }
 

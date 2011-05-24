@@ -408,7 +408,7 @@ function wp_ozh_adminmenu_processform() {
 		foreach ($_POST as $k=>$v) {
 			$k = str_replace('oam_','',$k);
 			if (array_key_exists($k, $defaults)) {
-				$options[$k] = attribute_escape($v);
+				$options[$k] = esc_attr( $v );
 			}
 		}
 		
