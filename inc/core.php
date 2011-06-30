@@ -254,8 +254,8 @@ function wp_ozh_adminmenu_css() {
 	// query vars
 	$query = array(
 		'v' => OZH_MENU_VER,
-		'p' => wp_make_link_relative($plugin),
-		'a' => wp_make_link_relative( get_admin_url() ),
+		'p' => wp_make_link_relative( $plugin ),
+		'a' => wp_make_link_relative( trailingslashit( get_admin_url() ) ),
 		'i' => $wp_ozh_adminmenu['icons'],
 		'w' => $wp_ozh_adminmenu['wpicons'],
 		'm' => $wp_ozh_adminmenu['minimode'],
@@ -282,7 +282,6 @@ function wp_ozh_adminmenu_defaults() {
 	return array(
 		'grad' => '#676768',
 		'nograd' => 0,
-		'displayfav' => 1,
 		'compact' => 0,
 		'minimode' => 0,
 		'hidebubble' => 0,
@@ -385,7 +384,7 @@ function wp_ozh_adminmenu_load_text_domain() {
 
 function wp_ozh_adminmenu_footer() {
 	echo <<<HTML
-Thank you for using <a href="http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/">Admin Drop Down Menu</a>, a wonderful plugin by <a href="http://planetozh.com/blog/">Ozh</a><br/>
+<p id="footer-ozh-oam">Thank you for using <a href="http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/">Admin Drop Down Menu</a>, a wonderful plugin by <a href="http://planetozh.com/blog/">Ozh</a></p>
 HTML;
 }
 
