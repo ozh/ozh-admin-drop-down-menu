@@ -310,7 +310,8 @@ function wp_ozh_adminmenu_init() {
 		unset($wp_ozh_adminmenu[0]);
 	}
 	
-	$wp_ozh_adminmenu = array_merge($defaults, $wp_ozh_adminmenu);
+	// Allow plugins to modify the config
+	$wp_ozh_adminmenu = apply_filters( 'ozh_adminmenu_init_config', array_merge( $defaults, $wp_ozh_adminmenu ) );
 	
 	// Cannot have wpicons == 0 && compact == 1
 	if ($wp_ozh_adminmenu['compact'] == 1)
