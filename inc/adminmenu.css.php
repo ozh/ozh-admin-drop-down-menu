@@ -100,7 +100,7 @@ header('Content-type:text/css');
 }
 #ozhmenu li { /* all list items */
 	display:inline;
-	line-height:200%;
+	line-height:200% !important;
 	list-style-image:none;
 	list-style-position:outside;
 	list-style-type:none;

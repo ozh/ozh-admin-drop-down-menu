@@ -3,7 +3,7 @@
 Plugin Name: Ozh' Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Description: All admin links available in a neat horizontal drop down menu. Saves lots of screen real estate! <strong>For WordPress 3.0+</strong>
-Version: 3.6.2
+Version: 3.6.3
 Author: Ozh
 Author URI: http://ozh.org/
 */
@@ -112,10 +112,12 @@ Author URI: http://ozh.org/
               Fixed: useless double slash in image URLs in .css.php
  * 3.6.1:     Added: Filter for global config array
  * 3.6.2:     Fixed: compatibility with WP 3.3 (thanks brasofilo!)
+ * 3.6.3:     Fixed: compatibility with Chrome 17 (thanks Samuel Aguilera!)
+              Fixed: bug if user has not admin capability and option "Minimal Mode" is checked (thanks Ed!)
  */
 
 
-define( 'OZH_MENU_VER', '3.6.1' );
+define( 'OZH_MENU_VER', '3.6.3' );
  
 /***** Hook things in when visiting an admin page. When viewing a blog page, nothing even loads in memory. ****/
 if ( is_admin() ){

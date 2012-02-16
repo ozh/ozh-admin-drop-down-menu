@@ -321,7 +321,7 @@ function wp_ozh_adminmenu_init() {
 
 	// On minimode, add a Logout link to the Users menu
 	if ($wp_ozh_adminmenu['minimode'])
-		add_users_page(__('Log Out'), __('Log Out'), 1, 'ozh_admin_menu_logout');
+		add_users_page(__('Log Out'), __('Log Out'), 'read', 'ozh_admin_menu_logout');
 }
 
 // Stuff to do when loading the admin plugin page
