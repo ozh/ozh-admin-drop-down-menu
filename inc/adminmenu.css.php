@@ -209,6 +209,7 @@ header('Content-type:text/css');
 	-khtml-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	border-radius: 4px;
+	z-index:999999;
 }
 #ozhmenu li.ozhmenu_over a #awaiting-mod span, #ozhmenu li a:hover #awaiting-mod span, #ozhmenu li.ozhmenu_over a .update-plugins span, #ozhmenu li a:hover .update-plugins span {
 	background-color:#D54E21;
@@ -307,7 +308,8 @@ header('Content-type:text/css');
 
 <?php if ($minimode) { ?>
 /* Hide all header */
-#wphead {display:none;}
+#wpadminbar {display:none;}
+html.wp-toolbar{padding-top: 0px}
 <?php } ?>
 
 <?php if ($hidebubble) { ?>
