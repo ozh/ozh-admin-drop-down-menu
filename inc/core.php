@@ -82,7 +82,7 @@ function wp_ozh_adminmenu () {
 		$imgstyle = ($wp_ozh_adminmenu['wpicons']) ? '' : 'style="display:none"';
 		$img = '';
 		if ( isset($item[6]) && ! empty($item[6]) ) {
-			if ( 'none' === $item[6] )
+			if ( 'none' === $item[6] || 'div' === $item[6] )
 				$img = '<div '.$imgstyle.' class="wp-menu-image"><br /></div>';
 			else
 				$img = '<img '.$imgstyle.' class="wp-menu-image" src="' . $item[6] . '" alt="" />';
