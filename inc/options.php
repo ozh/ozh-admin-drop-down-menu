@@ -195,11 +195,6 @@ function wp_ozh_adminmenu_options_page() {
 		oam_toggle_row('#oam_fav_row');
 	});
 	
-	// Display favs
-	jQuery('#oam_check_displayfav').click(function(){
-		jQuery('#favorite-actions').toggle(200);
-	});
-
 	// Hide bubbles
 	jQuery('#oam_check_hidebubble').click(function(){
 		var display = (jQuery(this).attr('checked')) ? 'none' : 'inline';

@@ -261,7 +261,6 @@ function wp_ozh_adminmenu_css() {
 		'm' => $wp_ozh_adminmenu['minimode'],
 		'c' => $wp_ozh_adminmenu['compact'],
 		'h' => $wp_ozh_adminmenu['hidebubble'],
-		'f' => $wp_ozh_adminmenu['displayfav'],
 		'g' => $wp_ozh_adminmenu['grad'], // menu color
 		'n' => $wp_ozh_adminmenu['nograd'], // disable gradient bg
 		'd' => ($text_direction == 'rtl' ? 'right' : 'left'), // right-to-left locale?
