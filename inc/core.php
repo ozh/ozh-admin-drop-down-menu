@@ -82,8 +82,11 @@ function wp_ozh_adminmenu () {
 		$imgstyle = ($wp_ozh_adminmenu['wpicons']) ? '' : 'style="display:none"';
 		$img = '';
 		if ( isset($item[6]) && ! empty($item[6]) ) {
+			preg_match('/^dashicons/', $item[6], $matches);
 			if ( 'none' === $item[6] || 'div' === $item[6] )
 				$img = '<div '.$imgstyle.' class="wp-menu-image"><br /></div>';
+			elseif (!empty($matches))
+				$img = '<div '.$imgstyle.' class="wp-menu-image dashicons-before '.$item[6].'"><br /></div>';
 			else
 				$img = '<img '.$imgstyle.' class="wp-menu-image" src="' . $item[6] . '" alt="" />';
 		}
@@ -210,6 +213,7 @@ function wp_ozh_adminmenu_blogtitle() {
 
 
 function wp_ozh_adminmenu_sanitize_id($url) {
+	$url = preg_replace('/^customize.php\?return=.*$/', 'customize', $url);
 	$url = preg_replace('/(&|&amp;|&#038;)?_wpnonce=([^&]+)/', '', $url);
 	return str_replace(array('.php','.','/','?','='),array('','_','_','_','_'),$url);
 }

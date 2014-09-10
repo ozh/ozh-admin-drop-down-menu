@@ -39,6 +39,7 @@ $wp_ozh_adminmenu['icon_names'] = array(
 
 	/* Appearance */
 		'themes.php' => 'layout',
+		'customize.php' => 'picture_edit',
 		'widgets.php' => 'layout_content',
 		'theme-install.php' => 'layout_add',
 		'nav-menus.php' => 'layout_header',

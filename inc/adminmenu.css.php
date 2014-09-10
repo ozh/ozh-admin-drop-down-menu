@@ -61,6 +61,7 @@ header('Content-type:text/css');
 }
 #wpcontent, #footer, .folded #wpcontent, .folded #footer, .js.folded #wpcontent, .js.folded #footer {
     margin-left: 0px;
+    padding-left:0px;
 	margin-right:0px;
 }
 #wphead {
@@ -84,7 +85,7 @@ header('Content-type:text/css');
 	clear:both;
 }
 #ozhmenu { /* our new ul */
-	font-size:12px;
+	font-size:13px;
 	<?php echo $dir; ?>:0px;
 	list-style-image:none;
 	list-style-position:outside;

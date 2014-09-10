@@ -2,8 +2,8 @@
 /*
 Plugin Name: Ozh' Admin Drop Down Menu
 Plugin URI: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
-Description: All admin links available in a neat horizontal drop down menu. Saves lots of screen real estate! <strong>For WordPress 3.5+</strong>
-Version: 3.6.7
+Description: All admin links available in a neat horizontal drop down menu. Saves lots of screen real estate! <strong>For WordPress 4.0+</strong>
+Version: 3.6.8
 Author: Ozh
 Author URI: http://ozh.org/
 */
@@ -118,10 +118,14 @@ Author URI: http://ozh.org/
  * 3.6.5:     Added: sk_SK (thanks Branco Radenovich)
  * 3.6.6:     Fixed: glitch possibly causing entries in server error logs for trying to load non existent images (thanks Ze!)
  * 3.6.7:     Fixed: notice due to deprecated variable (thanks Davit!)
+ * 3.6.8:     Fixed: missing dashicons in top level menus (thanks Muhammad Mahmoud!)
+              Fixed: missing icon for the Customize menu
+              Updated: misc style to match WP 4.0
+              Changed: min ver is WP 4.0
  */
 
 
-define( 'OZH_MENU_VER', '3.6.7' );
+define( 'OZH_MENU_VER', '3.6.8' );
  
 /***** Hook things in when visiting an admin page. When viewing a blog page, nothing even loads in memory. ****/
 if ( is_admin() ){
@@ -136,12 +140,12 @@ if ( is_admin() ){
 	add_filter('in_admin_header', 'wp_ozh_adminmenu', -9999); // Add the new admin menu right after the header area. Make sure we're first.
 }
 
-// Make sure it's WP 3.5+ only
+// Make sure it's WP 4.0+ only
 function wp_ozh_adminmenu_check(){
 	global $wp_version;
-	if ( version_compare($wp_version, '3.5', '<') ) {
+	if ( version_compare($wp_version, '4.0', '<') ) {
 		deactivate_plugins( basename(__FILE__) );
-		wp_die("Sorry, this plugin requires WordPress 3.5 at least");
+		wp_die("Sorry, this plugin requires WordPress 4.0 at least");
 	}
 }
 register_activation_hook(__FILE__, 'wp_ozh_adminmenu_check');
