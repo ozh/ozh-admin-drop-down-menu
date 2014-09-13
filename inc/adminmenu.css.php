@@ -122,25 +122,19 @@ header('Content-type:text/css');
 #ozhmenu li:hover,
 #ozhmenu li.ozhmenu_over,
 #ozhmenu li .wp-has-current-submenu {
-	-moz-border-radius: 11px;
-	-webkit-border-radius: 11px;
+	border-radius: 11px;
 	color: #ffe;
 	background: <?php echo $grad; ?> <?php if (!$nograd) { ?>url(<?php echo $plugin; ?>images/grad-trans.png) repeat-x <?php echo $dir; ?> -5px<?php } ?>;
 }
 
 #ozhmenu li:hover {
-	-moz-border-radius: 0px;
-	-webkit-border-radius: 0px;
+	border-radius: 0px;
 }
 #ozhmenu .ozhmenu_sublevel { line-height: 100%; margin: 0; } /* IE8 fix. Die, IE8 */
 #ozhmenu .ozhmenu_sublevel a:hover,
 #ozhmenu .ozhmenu_sublevel a.current,
 #ozhmenu .ozhmenu_sublevel a.current:hover {
 	background-color: #e4f2fd;
-	-moz-border-radius-topleft: 0px;
-	-moz-border-radius-topright: 0px;
-	-webkit-border-top-left-radius:0;
-	-webkit-border-top-right-radius:0;
 	border-top-left-radius:0;
 	border-top-right-radius:0;
 	color: #555;
@@ -156,14 +150,9 @@ header('Content-type:text/css');
 	border-left:1px solid #ccc ;
 	border-right:1px solid #ccc ;
 	border-bottom:1px solid #c6d9e9 ;
-	-moz-border-radius-bottomleft:5px;
-	-moz-border-radius-bottomright:5px;
-	-webkit-border-bottom-left-radius:5px;
-	-webkit-border-bottom-right-radius:5px;
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
 	width: 1*;  /* maybe needed for some Opera ? */
-	zmin-width:10em;
 	<?php echo $dir; ?>: -999em; /* using left instead of display to hide menus because display: none isn't read by screen readers */
 	list-style-position:auto;
 	list-style-type:auto;
@@ -183,7 +172,7 @@ header('Content-type:text/css');
 	<?php echo $dir; ?>: auto;
 	z-index:999999;
 }
-#ozhmenu li a #awaiting-mod, #ozhmenu li a .update-plugins {
+#ozhmenu li a .awaiting-mod, #ozhmenu li a .update-plugins {
 	position: absolute;
 	margin-<?php echo $dir; ?>: 0.1em;
 	font-size: 0.8em;
@@ -193,10 +182,10 @@ header('Content-type:text/css');
 	height: 1.7em;
 	width: 1em;
 }
-#ozhmenu li.ozhmenu_over a #awaiting-mod, #ozhmenu li a:hover #awaiting-mod, #ozhmenu li.ozhmenu_over a .update-plugins, #ozhmenu li a:hover .update-plugins {
+#ozhmenu li.ozhmenu_over a .awaiting-mod, #ozhmenu li a:hover .awaiting-mod, #ozhmenu li.ozhmenu_over a .update-plugins, #ozhmenu li a:hover .update-plugins {
 	background-position: <?php echo ($dir == 'left' ? '-2' : '-307'); ?>px bottom;
 }
-#ozhmenu li a #awaiting-mod span, #ozhmenu li a .update-plugins span {
+#ozhmenu li a .awaiting-mod span, #ozhmenu li a .update-plugins span {
 	color: #444;
 	top: -0.4em;
 	<?php echo $opdir; ?>: -0.5em;
@@ -205,14 +194,11 @@ header('Content-type:text/css');
 	height: 1.3em;
 	line-height: 1.4em;
 	padding: 0 0.8em;
-	background-color: #bbb;#2583AD;
-	-moz-border-radius: 4px;
-	-khtml-border-radius: 4px;
-	-webkit-border-radius: 4px;
+	background-color: #bbb;
 	border-radius: 4px;
 	z-index:999999;
 }
-#ozhmenu li.ozhmenu_over a #awaiting-mod span, #ozhmenu li a:hover #awaiting-mod span, #ozhmenu li.ozhmenu_over a .update-plugins span, #ozhmenu li a:hover .update-plugins span {
+#ozhmenu li.ozhmenu_over a .awaiting-mod span, #ozhmenu li a:hover .awaiting-mod span, #ozhmenu li.ozhmenu_over a .update-plugins span, #ozhmenu li a:hover .update-plugins span {
 	background-color:#D54E21;
 }
 #ozhmenu .current {

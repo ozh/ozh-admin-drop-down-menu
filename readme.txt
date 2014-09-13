@@ -12,12 +12,13 @@ All admin links available in a neat horizontal drop down menu. Saves lots of scr
 
 The lazy and the productive will love it : all admin links available in a neat horizontal CSS driven drop down menu. No need to click on "Manage" then "Pages" to edit pages. And plenty more space on your screen.
 
-For documentation, examples, screenshot and a live demo, please refer to the official plugin page for [Admin Drop Down Menu](http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/ "Admin Drop Down Menu"). There is also an API for plugin coders (give your plugin its own special icon!).
+For documentation, examples and screenshots, please refer to the official plugin page for [Admin Drop Down Menu](http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/ "Admin Drop Down Menu"). There is also an API for plugin coders (give your plugin its own special icon!).
 
 For older unsupported versions (for older unsupported WordPress installs), see the plugin's page.
 
 Plugin doc: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
 Plugin dev: https://github.com/ozh/ozh-admin-drop-down-menu
+Issues, features and pull requests: https://github.com/ozh/ozh-admin-drop-down-menu
 
 == Screenshots ==
 
@@ -29,8 +30,9 @@ Plugin dev: https://github.com/ozh/ozh-admin-drop-down-menu
 
 The changelog can be found:
 
-1. In the plugin source itself
+1. In the [plugin source](https://github.com/ozh/ozh-admin-drop-down-menu/blob/master/wp_ozh_adminmenu.php)
 1. Here: http://plugins.trac.wordpress.org/log/ozh-admin-drop-down-menu?verbose=on
+1. There: https://github.com/ozh/ozh-admin-drop-down-menu/commits/master
 
 == Installation ==
 
