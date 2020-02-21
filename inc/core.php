@@ -308,7 +308,7 @@ function wp_ozh_adminmenu_init() {
 	
 	$defaults = wp_ozh_adminmenu_defaults();
 	
-	if (!count($wp_ozh_adminmenu)) {
+	if (!is_array($wp_ozh_adminmenu) || !count($wp_ozh_adminmenu)) {
 		$wp_ozh_adminmenu = (array)get_option('ozh_adminmenu');
 		unset($wp_ozh_adminmenu[0]);
 	}
