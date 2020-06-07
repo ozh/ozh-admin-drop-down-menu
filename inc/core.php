@@ -433,11 +433,6 @@ function wp_ozh_adminmenu_processform() {
 	$message .= '<p>'.sprintf(wp_ozh_adminmenu__('Admin Drop Down Menu settings <strong>%s</strong>'), $msg)."</p>\n";
 	$message .= "</div>\n";
 
-	add_action('admin_notices', create_function( '', "echo '$message';" ) );
+	add_action('admin_notices', function() use ($message) {echo $message;} );
 }
 
-
-
-
-
-?>

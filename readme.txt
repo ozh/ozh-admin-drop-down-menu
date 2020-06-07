@@ -2,11 +2,13 @@
 Donate link: http://planetozh.com/exit/donate
 Tags: ozh, menu, menus, dashboard, admin, dropdown, drop down, productivity, css
 Requires at least: 4.0
-Tested up to: 9.9
+Tested up to: 5.4.1
+Requires PHP: 5.6
 Stable tag: trunk
 Contributors: ozh
 
 All admin links available in a neat horizontal drop down menu. Saves lots of screen real estate!
+
 
 == Description ==
 
@@ -20,11 +22,18 @@ Plugin doc: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down
 Plugin dev: https://github.com/ozh/ozh-admin-drop-down-menu
 Issues, features and pull requests: https://github.com/ozh/ozh-admin-drop-down-menu
 
+
+== Support ==
+
+On [Github](https://github.com/ozh/ozh-admin-drop-down-menu). I don't read WordPress support forums.
+
+
 == Screenshots ==
 
 1. Drop down menu with WordPress top level icons and sub level icons, configurable color scheme
 2. Normal or compact display
 3. Full RTL support for those funky locales!
+
 
 == Changelog ==
 
@@ -33,6 +42,7 @@ The changelog can be found:
 1. In the [plugin source](https://github.com/ozh/ozh-admin-drop-down-menu/blob/master/wp_ozh_adminmenu.php)
 1. Here: http://plugins.trac.wordpress.org/log/ozh-admin-drop-down-menu?verbose=on
 1. There: https://github.com/ozh/ozh-admin-drop-down-menu/commits/master
+
 
 == Installation ==
 

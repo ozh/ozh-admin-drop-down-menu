@@ -91,5 +91,3 @@ $wp_ozh_adminmenu['icon_names'] = array(
 		'upgrade.php' => 'lightning_go',
 
 );
-
-?>
