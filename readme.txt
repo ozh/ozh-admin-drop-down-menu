@@ -16,17 +16,15 @@ The lazy and the productive will love it : all admin links available in a neat h
 
 For documentation, examples and screenshots, please refer to the official plugin page for [Admin Drop Down Menu](http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/ "Admin Drop Down Menu"). There is also an API for plugin coders (give your plugin its own special icon!).
 
-For older unsupported versions (for older unsupported WordPress installs), see the plugin's page.
+== Questions and Support ==
 
-Plugin doc: http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/
-Plugin dev: https://github.com/ozh/ozh-admin-drop-down-menu
-Issues, features and pull requests: https://github.com/ozh/ozh-admin-drop-down-menu
+Plugin doc: [http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/](http://planetozh.com/blog/my-projects/wordpress-admin-menu-drop-down-css/)
 
+On [Github](https://github.com/ozh/ozh-admin-drop-down-menu). **I don't read WordPress support forums**.
 
-== Support ==
+== Frequently Asked Questions ==
 
-On [Github](https://github.com/ozh/ozh-admin-drop-down-menu). I don't read WordPress support forums.
-
+Question? [Github](https://github.com/ozh/ozh-admin-drop-down-menu). **I don't read WordPress support forums**.
 
 == Screenshots ==
 
