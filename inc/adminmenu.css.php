@@ -317,7 +317,7 @@ span.count-0 {display:none;}
 	background-image:url(<?php echo $plugin; ?>images/cog.png);
 }
 #ozhmumenu .ozhmenu_sublevel a {background-image:url(<?php echo $plugin; ?>images/world_link.png);}
-#ozhmenu img.wp-menu-image {max-width: 20px;}
+#ozhmenu img.wp-menu-image {max-width: 24px;max-height:24px;}
 <?php
 	foreach($wp_ozh_adminmenu['icon_names'] as $link=>$icon) {
 		$link = wp_ozh_adminmenu_sanitize_id($link);
