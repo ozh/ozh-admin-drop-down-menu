@@ -1,4 +1,4 @@
-# Ozh' Admin Drop Down Menu
+# Ozh' Admin Drop Down Menu ![WordPress Plugin Downloads](https://img.shields.io/wordpress/plugin/dt/ozh-admin-drop-down-menu)
 
 All admin links available in a neat horizontal drop down menu. Saves lots of screen real estate!
 
